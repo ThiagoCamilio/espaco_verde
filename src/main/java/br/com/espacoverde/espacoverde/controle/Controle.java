@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class Controle {
-    
+
     @Autowired
     private RepositorioProduto acaoProduto;
-    
+
     @Autowired
     private ServiceProduto serviceProduto;
 
@@ -40,10 +40,10 @@ public class Controle {
     }
 
     @PostMapping("/cadastroProduto")
-    public ResponseEntity<?> cadastroProduto(@RequestBody Produto p) {        
-        
+    public ResponseEntity<?> cadastroProduto(@RequestBody Produto p) {
+
         return serviceProduto.cadastrar(p);
 
     }
-    
+
 }
