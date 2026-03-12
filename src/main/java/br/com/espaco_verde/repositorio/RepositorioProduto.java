@@ -1,11 +1,11 @@
-package br.com.espacoverde.espacoverde.repositorio;
+package br.com.espaco_verde.repositorio;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.espacoverde.espacoverde.entity.Produto;
+import br.com.espaco_verde.entity.Produto;
 
 @Repository
 public interface RepositorioProduto extends CrudRepository<Produto, Integer>{

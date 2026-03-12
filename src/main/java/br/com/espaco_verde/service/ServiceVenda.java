@@ -1,4 +1,4 @@
-package br.com.espacoverde.espacoverde.service;
+package br.com.espaco_verde.service;
 
 import org.springframework.stereotype.Service;
 

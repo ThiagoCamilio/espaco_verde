@@ -1,11 +1,11 @@
-package br.com.espacoverde.espacoverde.service;
+package br.com.espaco_verde.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import br.com.espacoverde.espacoverde.entity.Produto;
-import br.com.espacoverde.espacoverde.repositorio.RepositorioProduto;
+import br.com.espaco_verde.entity.Produto;
+import br.com.espaco_verde.repositorio.RepositorioProduto;
 
 @Service
 public class ServiceProduto{
@@ -21,12 +21,12 @@ public class ServiceProduto{
             mensagem = "Por favor insira um nome para o produto"; 
             return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
 
-        }else if (produto.getPrecoDeCusto() <= 0){
+        }else if (produto.getPrecoCusto() <= 0){
             
             mensagem = "Por favor insira um preço de custo valido para o produto";
             return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
 
-        }else if (produto.getPrecoDeVenda() < produto.getPrecoDeCusto()){
+        }else if (produto.getPreco() < produto.getPrecoCusto()){
             
             mensagem = "Por favor insira um preço de custo valido para o produto";
             return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);    

@@ -1,10 +1,10 @@
-package br.com.espacoverde.espacoverde;
+package br.com.espaco_verde;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EspacoverdeApplicationTests {
+class EspacoVerdeApplicationTests {
 
 	@Test
 	void contextLoads() {
