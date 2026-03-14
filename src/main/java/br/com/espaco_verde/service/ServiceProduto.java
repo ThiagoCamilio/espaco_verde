@@ -5,13 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import br.com.espaco_verde.entity.Produto;
-import br.com.espaco_verde.repositorio.RepositorioProduto;
+import br.com.espaco_verde.repository.RepositoryProduto;
 
 @Service
 public class ServiceProduto{
 
     @Autowired
-    private RepositorioProduto repo;
+    private RepositoryProduto repo;
     private String mensagem;
 
     public ResponseEntity<?> cadastrar(Produto produto){
@@ -42,4 +42,9 @@ public class ServiceProduto{
 
     }
 
+    public Produto findById(int id) {
+
+        return repo.findById(id);
+
+    }
 }

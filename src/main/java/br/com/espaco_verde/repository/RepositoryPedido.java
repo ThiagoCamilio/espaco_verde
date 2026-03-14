@@ -1,4 +1,4 @@
-package br.com.espaco_verde.repositorio;
+package br.com.espaco_verde.repository;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface RepositorioPedido extends CrudRepository<Pedido, Integer>{
+public interface RepositoryPedido extends CrudRepository<Pedido, Integer>{
 
     List<Pedido> findAll();
 

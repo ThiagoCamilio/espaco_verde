@@ -1,5 +1,6 @@
-package br.com.espaco_verde.controle;
+package br.com.espaco_verde.control;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.espaco_verde.entity.Produto;
 import br.com.espaco_verde.entity.TiposProdutos;
-import br.com.espaco_verde.repositorio.RepositorioProduto;
+import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.service.ServiceProduto;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,18 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-public class Controle {
+public class Control {
 
     @Autowired
-    private RepositorioProduto acaoProduto;
+    private RepositoryProduto acaoProduto;
 
     @Autowired
     private ServiceProduto serviceProduto;
 
     @GetMapping("")
-    public String mensagem(){
+    public String mensagem(HttpSession session){
 
-        return "Bem Vindo. Essa sera futuramente a api para a floricultura Espaço Verde. Ainda estamos em construção";
+        return "PAGINA INICIAL";
 
     }
 

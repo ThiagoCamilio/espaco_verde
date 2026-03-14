@@ -5,13 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "Carrinho")
 @Table(name = "Carrinhos")
 @NoArgsConstructor
-public class Carrinho {
+public class Carrinho implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter
@@ -37,6 +41,15 @@ public class Carrinho {
             this.preco = produto.getPrecoVenda() * produto.getQuantidade();
         }
         this.cupomDesconto = cupomDesconto;
+
+    }
+
+    public Carrinho(List<ProdutoCarrinho> produtosCarrinho){
+
+        this.produtosCarrinho = produtosCarrinho;
+        for (ProdutoCarrinho produto : produtosCarrinho){
+            this.preco = produto.getPrecoVenda() * produto.getQuantidade();
+        }
 
     }
 

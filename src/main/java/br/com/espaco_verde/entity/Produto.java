@@ -9,13 +9,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Entity(name = "produtos")
 @Table(name = "Produtos")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Produto {
+public class Produto implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

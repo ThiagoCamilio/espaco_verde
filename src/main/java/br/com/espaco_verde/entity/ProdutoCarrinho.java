@@ -13,12 +13,18 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Entity(name = "ProodutosVendas")
 @Table(name = "ProdutosVendas")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class ProdutoCarrinho {
+public class ProdutoCarrinho implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

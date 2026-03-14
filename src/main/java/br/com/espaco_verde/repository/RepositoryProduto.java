@@ -1,4 +1,4 @@
-package br.com.espaco_verde.repositorio;
+package br.com.espaco_verde.repository;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import br.com.espaco_verde.entity.Produto;
 
 @Repository
-public interface RepositorioProduto extends CrudRepository<Produto, Integer>{
+public interface RepositoryProduto extends CrudRepository<Produto, Integer>{
     
     public List<Produto> findAll();
 
