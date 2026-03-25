@@ -35,7 +35,7 @@ public class Control {
     @GetMapping("/mock")
     public void mock() {
 
-        Produto produto1 = new Produto( "Margarida", TiposProdutos.OUTRO, 2, "Hojekk", 2.1, 3.1);
+        Produto produto1 = new Produto( "Margarida", TiposProdutos.OUTRO, 2, "23/03/2026", 2.1, 3.1);
         acaoProduto.save(produto1);
 
     }

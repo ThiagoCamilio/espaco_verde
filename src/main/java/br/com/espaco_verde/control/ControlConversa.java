@@ -1,8 +1,10 @@
 package br.com.espaco_verde.control;
 
+import br.com.espaco_verde.entity.Conversa;
 import br.com.espaco_verde.entity.Mensagem;
 import br.com.espaco_verde.entity.MensagemCliente;
 import br.com.espaco_verde.entity.MensagemSistema;
+import br.com.espaco_verde.service.ServiceConversa;
 import br.com.espaco_verde.service.ServiceMensagens;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,13 +14,16 @@ import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.JsonNode;
 
 @RestController
-public class ControlMensagens {
+public class ControlConversa {
 
     @Value("${api.verify_token}")
     private String token ="token-verificacao";
 
     @Autowired
     private ServiceMensagens serviceMensagens;
+
+    @Autowired
+    private ServiceConversa serviceConversa;
 
     @GetMapping("/home")
     public String home(){
@@ -47,7 +52,8 @@ public class ControlMensagens {
 
         Mensagem mensagem = serviceMensagens.parseJson(json);
 
-        if (mensagem instanceof MensagemSistema msgSistema && msgSistema.getStatus().equals("sent")){
+
+        /*if (mensagem instanceof MensagemSistema msgSistema && msgSistema.getStatus().equals("sent")){
 
             System.out.println("Resposta enviada ao cliente");
             System.out.println(msgSistema.getStatus());
@@ -64,19 +70,22 @@ public class ControlMensagens {
             System.out.println(msgSistema.getStatus());
             return new ResponseEntity<>(HttpStatusCode.valueOf(200));
 
-        }else if (mensagem instanceof MensagemCliente msgCliente){
+        }else*/
+        if (mensagem instanceof MensagemCliente msgCliente){
 
-            String phoneNumber = msgCliente.getRemetente();
-            String message = "FUNCIONOU";
             System.out.println(msgCliente.getRemetente() + " enviou " + msgCliente.getTexto());
-            serviceMensagens.sendMessage(phoneNumber, message);
-            return new ResponseEntity<>(HttpStatusCode.valueOf(200));
+
+            serviceConversa.getConversa(msgCliente);
+
+            serviceMensagens.readMessage(msgCliente);
+
+            serviceConversa.processarMensagem(msgCliente);
 
         } else {
 
-            System.out.println("Algo deu errado");
-            return new ResponseEntity<>(HttpStatusCode.valueOf(200));
+            System.out.println("Mensagem do sistema");
 
         }
+        return new ResponseEntity<>(HttpStatusCode.valueOf(200));
     }
 }

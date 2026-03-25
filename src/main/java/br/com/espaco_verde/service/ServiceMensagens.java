@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import tools.jackson.databind.JsonNode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,9 +36,15 @@ public class ServiceMensagens {
         if (value.has("messages")){
 
             MensagemCliente msg = new MensagemCliente();
+            msg.setId(value.at("/messages/0/id").asString());
             msg.setTipo(value.at("/messages/0/type").asString());
             msg.setRemetente(value.at("/messages/0/from").asString());
-            msg.setTexto(value.at("/messages/0/text/body").asString());
+            if(value.at(("/messages/0")).has("text")){
+                msg.setTexto(value.at("/messages/0/text/body").asString());
+            }else{
+                msg.setTexto(value.at("/messages/0/interactive/button_reply/id").asString());
+            }
+
             msg.setTimestamp(value.at("/messages/0/timestamp").asString());
             return msg;
 
@@ -51,7 +59,7 @@ public class ServiceMensagens {
 
     }
 
-    public void sendMessage(String toPhone, String messageText){
+    public void readMessage(MensagemCliente mensagem){
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -63,14 +71,71 @@ public class ServiceMensagens {
 
         Map<String, Object> body = new HashMap<>();
         body.put("messaging_product", "whatsapp");
-        body.put("to", toPhone);
+        body.put("status", "read");
+        body.put("message_id", mensagem.getId());
+        body.put("typing_indicator", Map.of("type", "text"));
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+    }
+
+    public void sendTextMessage(MensagemCliente mensagem, String messageText){
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = apiUrl+phoneNumberId+"/messages";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(acessToken);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("messaging_product", "whatsapp");
+        body.put("to", mensagem.getRemetente());
         body.put("type", "text");
         body.put("text", Map.of("body", messageText));
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
-        System.out.println("Resposta da Meta: " + response.getBody());
+
+    }
+
+    public void sendButtonMessage(MensagemCliente mensagem){
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = apiUrl+phoneNumberId+"/messages";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(acessToken);
+
+        List<Map<String, Object>> botoes = new ArrayList<>();
+
+        botoes.add(Map.of("type", "reply", "reply", Map.of("id", "produtos", "title", "produtos")));
+        botoes.add(Map.of("type", "reply", "reply", Map.of("id", "carrinho", "title", "carrinho")));
+        botoes.add(Map.of("type", "reply", "reply", Map.of("id", "finalizar compra", "title", "finalizar compra")));
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("messaging_product", "whatsapp");
+        body.put("to", mensagem.getRemetente());
+        body.put("type", "interactive");
+        body.put("interactive",
+                Map.of("type", "button", "header",
+                    Map.of("type", "text", "text","Menu Principal"),
+                "body",
+                    Map.of("text", "Esse é o Menu Principal, escolha uma das opções abaixo"),
+                "action",
+                    Map.of("buttons", botoes)
+        ));
+
+        System.out.println(body);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
 
     }
 
