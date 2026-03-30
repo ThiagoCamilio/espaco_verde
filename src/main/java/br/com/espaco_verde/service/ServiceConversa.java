@@ -3,8 +3,9 @@ package br.com.espaco_verde.service;
 import br.com.espaco_verde.entity.Conversa;
 import br.com.espaco_verde.entity.EstadoConversa;
 import br.com.espaco_verde.entity.MensagemCliente;
+import br.com.espaco_verde.entity.Pagina;
 import br.com.espaco_verde.repository.RepositoryConversa;
-import br.com.espaco_verde.repository.RepositoryTemplateResposta;
+import br.com.espaco_verde.repository.RepositoryPagina;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,53 +19,62 @@ public class ServiceConversa {
     private ServiceMensagens serviceMensagens;
 
     @Autowired
-    private RepositoryTemplateResposta repositoryTemplateResposta;
+    private RepositoryPagina repositoryPagina;
 
     public void processarMensagem(MensagemCliente mensagem){
 
         Conversa conversa = getConversa(mensagem);
-        String resposta;
-        EstadoConversa estadoAtual = conversa.getEstadoConversa();
-        String texto = mensagem.getTexto().toLowerCase();
+        String retorno;
+        Pagina paginaAtual = conversa.getPaginaAtual();
+        String respostaCliente = mensagem.getTexto().toLowerCase();
 
-        switch (estadoAtual){
-            case MENU_PRINCIPAL:
-                System.out.println(estadoAtual);
-                System.out.println(texto);
-                if (texto.equals("produtos")){
-                    resposta = repositoryTemplateResposta.findById("produtos").getTexto();
-                    conversa.setEstadoConversa(EstadoConversa.ESCOLHA_PRODUTOS);
-                    serviceMensagens.sendTextMessage(mensagem, resposta);
-                    break;
 
-                }else {
-                    resposta = "Desculpe, não entendi, digite novamente";
-                    serviceMensagens.sendTextMessage(mensagem, resposta);
-                    serviceMensagens.sendButtonMessage(mensagem);
-                    break;
-                }
+        for (Pagina p : paginaAtual.getProximasPaginas()){
 
-            case ESCOLHA_PRODUTOS:
-                resposta = "Ainda não disponivel";
-                serviceMensagens.sendTextMessage(mensagem, resposta);
+            if(p.getId().equals(respostaCliente)){
+                paginaAtual = p;
+                break;
+            }
+
+        }
+
+        if (paginaAtual.equals(conversa.getPaginaAtual())){
+
+            retorno = "Desculpe, não entendi, digite novamente";
+            serviceMensagens.sendTextMessage(mensagem, retorno);
+
+        }
+
+
+        switch (paginaAtual.getId()){
+            case "menu_principal":
+                System.out.println(paginaAtual);
+                System.out.println(respostaCliente);
+                serviceMensagens.sendButtonMessage(mensagem, paginaAtual);
                 break;
 
-            case CARRINHO:
-                resposta = "Ainda não disponivel";
-                serviceMensagens.sendTextMessage(mensagem, resposta);
+            case "produtos":
+                retorno = "Ainda não disponivel";
+                serviceMensagens.sendTextMessage(mensagem, retorno);
                 break;
 
-            case FINALIZANDO_COMPRA:
-                resposta = "Ainda não disponivel";
-                serviceMensagens.sendTextMessage(mensagem, resposta);
+            case "carrinho":
+                retorno = "Ainda não disponivel";
+                serviceMensagens.sendTextMessage(mensagem, retorno);
+                break;
+
+            case "checkout":
+                retorno = "Ainda não disponivel";
+                serviceMensagens.sendTextMessage(mensagem, retorno);
                 break;
 
             default:
-                conversa.setEstadoConversa(EstadoConversa.MENU_PRINCIPAL);
-                serviceMensagens.sendButtonMessage(mensagem);
+                //conversa.setEstadoConversa(EstadoConversa.MENU_PRINCIPAL);
+                //serviceMensagens.sendButtonMessage(mensagem);
                 break;
         }
 
+        conversa.setPaginaAtual(paginaAtual);
         repositoryConversa.save(conversa);
 
 
@@ -79,7 +89,7 @@ public class ServiceConversa {
 
         }else {
 
-            Conversa conversa = new Conversa(mensagem.getRemetente(), mensagem.getId(), EstadoConversa.NOVA);
+            Conversa conversa = new Conversa(mensagem.getRemetente(), mensagem.getId(), repositoryPagina.findById("menu_principal"));
             repositoryConversa.save(conversa);
             return conversa;
 

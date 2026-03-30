@@ -17,15 +17,16 @@ public class Conversa {
 
     private String idMensagem;
 
-    @Enumerated(EnumType.STRING)
-    private EstadoConversa estadoConversa;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "pagina_atual_id")
+    private Pagina paginaAtual;
 
 
     public Conversa(String telefone, String idMensagem) {
 
         this.telefone = telefone;
         this.idMensagem = idMensagem;
-        this.estadoConversa = null;
+        this.paginaAtual = null;
 
     }
 }

@@ -1,8 +1,8 @@
 package br.com.espaco_verde.service;
 
-import br.com.espaco_verde.entity.Mensagem;
-import br.com.espaco_verde.entity.MensagemCliente;
-import br.com.espaco_verde.entity.MensagemSistema;
+import br.com.espaco_verde.entity.*;
+import br.com.espaco_verde.repository.RepositoryPagina;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +28,9 @@ public class ServiceMensagens {
 
     @Value("${api.phone.number.id}")
     private String phoneNumberId;
+
+    @Autowired
+    private RepositoryPagina repositoryPagina;
 
     public Mensagem parseJson(JsonNode json){
 
@@ -102,7 +105,7 @@ public class ServiceMensagens {
 
     }
 
-    public void sendButtonMessage(MensagemCliente mensagem){
+    public void sendButtonMessage(MensagemCliente mensagem, Pagina pagina){
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -114,9 +117,11 @@ public class ServiceMensagens {
 
         List<Map<String, Object>> botoes = new ArrayList<>();
 
-        botoes.add(Map.of("type", "reply", "reply", Map.of("id", "produtos", "title", "produtos")));
-        botoes.add(Map.of("type", "reply", "reply", Map.of("id", "carrinho", "title", "carrinho")));
-        botoes.add(Map.of("type", "reply", "reply", Map.of("id", "finalizar compra", "title", "finalizar compra")));
+        for(Pagina p : pagina.getProximasPaginas()){
+
+            botoes.add(Map.of("type", "reply", "reply", Map.of("id", p.getId(), "title", p.getId())));
+
+        }
 
         Map<String, Object> body = new HashMap<>();
         body.put("messaging_product", "whatsapp");
