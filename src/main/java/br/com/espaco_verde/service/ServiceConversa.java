@@ -1,7 +1,6 @@
 package br.com.espaco_verde.service;
 
 import br.com.espaco_verde.entity.Conversa;
-import br.com.espaco_verde.entity.EstadoConversa;
 import br.com.espaco_verde.entity.MensagemCliente;
 import br.com.espaco_verde.entity.Pagina;
 import br.com.espaco_verde.repository.RepositoryConversa;
