@@ -32,6 +32,13 @@ build/
 ### VS Code ###
 .vscode/
 
+### uploads ###
+uploads/
 
-### .env ###
-.env
+### compiled output ###
+/dist
+/tmp
+/out-tsc
+
+### dependencies ###
+/node_modulesl
