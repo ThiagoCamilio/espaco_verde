@@ -35,3 +35,12 @@ build/
 
 ### .env ###
 .env
+
+#compiled output
+/dist
+/tmp
+/out-tsc
+
+#dependencies
+/node_modules
+.angular/
