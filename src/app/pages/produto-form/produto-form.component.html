@@ -1,0 +1,242 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<header>
+  <div class="header-container">
+    <div class="logo">
+      <i class="fas fa-leaf"></i>
+      <h1>Espaço Verde</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a routerLink="/" routerLinkActive="active">Início</a></li>
+        <li><a routerLink="/produtos" routerLinkActive="active">Produtos</a></li>
+        <li><a routerLink="/cadastro" routerLinkActive="active" class="active">Cadastro</a></li>
+        <li><a routerLink="/sobre" routerLinkActive="active">Sobre</a></li>
+        <li><a routerLink="/contato" routerLinkActive="active">Contato</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="login-btn" (click)="onLogin()">
+        <i class="fas fa-user"></i> Entrar
+      </button>
+      <button (click)="toggleCart()">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-badge" *ngIf="cartItemsCount > 0">{{ cartItemsCount }}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="banner">
+  <div class="banner-content">
+    <h2>Cadastre novos produtos</h2>
+    <p>Adicione produtos ao nosso estoque e ajude a manter o verde sempre presente</p>
+    <button class="cta-button" (click)="scrollToForm()">
+      <i class="fas fa-arrow-down"></i> Começar agora
+    </button>
+  </div>
+</div>
+
+<div class="form-container" id="form-container">
+  <div class="form-header">
+    <h2><i class="fas fa-leaf"></i> Cadastro de Produtos</h2>
+    <p>Preencha os dados abaixo para cadastrar um novo produto no sistema</p>
+  </div>
+
+  <div *ngIf="successMessage" class="success-message">
+    <i class="fas fa-check-circle"></i> {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message-global">
+    <i class="fas fa-exclamation-triangle"></i> {{ errorMessage }}
+  </div>
+
+  <form #produtoForm="ngForm" (ngSubmit)="onSubmit()">
+    <!-- Nome do Produto -->
+    <div class="form-group">
+      <label for="nome">
+        <i class="fas fa-tag"></i> Nome do Produto *
+      </label>
+      <input
+        type="text"
+        id="nome"
+        name="nome"
+        [(ngModel)]="produto.nome"
+        #nome="ngModel"
+        required
+        minlength="3"
+        maxlength="100"
+        placeholder="Digite o nome do produto"
+        [class.is-invalid]="nome.invalid && nome.touched">
+      <div *ngIf="nome.invalid && nome.touched" class="error-message">
+        <span *ngIf="nome.errors?.['required']">Nome é obrigatório</span>
+        <span *ngIf="nome.errors?.['minlength']">Nome deve ter no mínimo 3 caracteres</span>
+        <span *ngIf="nome.errors?.['maxlength']">Nome deve ter no máximo 100 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="tipo">
+        <i class="fas fa-category"></i> Tipo do Produto *
+      </label>
+      <select
+        id="tipo"
+        name="tipo"
+        [(ngModel)]="produto.tipo"
+        #tipo="ngModel"
+        required
+        [class.is-invalid]="tipo.invalid && tipo.touched">
+        <option value="" disabled>Selecione um tipo</option>
+        <option *ngFor="let tipo of tiposProdutos" [value]="tipo">
+          {{ getTipoIcon(tipo) }} {{ getTipoDescricao(tipo) }}
+        </option>
+      </select>
+      <div *ngIf="tipo.invalid && tipo.touched" class="error-message">
+        <span *ngIf="tipo.errors?.['required']">Tipo do produto é obrigatório</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="quantidade">
+        <i class="fas fa-boxes"></i> Quantidade em Estoque *
+      </label>
+      <input
+        type="number"
+        id="quantidade"
+        name="quantidade"
+        [(ngModel)]="produto.quantidade"
+        #quantidade="ngModel"
+        required
+        min="0"
+        max="99999"
+        step="1"
+        placeholder="Digite a quantidade"
+        [class.is-invalid]="quantidade.invalid && quantidade.touched">
+      <div *ngIf="quantidade.invalid && quantidade.touched" class="error-message">
+        <span *ngIf="quantidade.errors?.['required']">Quantidade é obrigatória</span>
+        <span *ngIf="quantidade.errors?.['min']">Quantidade não pode ser negativa</span>
+        <span *ngIf="quantidade.errors?.['max']">Quantidade máxima é 99999</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dataDeEntrada">
+        <i class="fas fa-calendar-alt"></i> Data de Entrada *
+      </label>
+      <input
+        type="date"
+        id="dataDeEntrada"
+        name="dataDeEntrada"
+        [(ngModel)]="produto.dataDeEntrada"
+        #dataDeEntrada="ngModel"
+        required
+        [max]="today"
+        [class.is-invalid]="dataDeEntrada.invalid && dataDeEntrada.touched">
+      <div *ngIf="dataDeEntrada.invalid && dataDeEntrada.touched" class="error-message">
+        <span *ngIf="dataDeEntrada.errors?.['required']">Data de entrada é obrigatória</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="precoCusto">
+        <i class="fas fa-dollar-sign"></i> Preço de Custo *
+      </label>
+      <input
+        type="number"
+        id="precoCusto"
+        name="precoCusto"
+        [(ngModel)]="produto.precoCusto"
+        #precoCusto="ngModel"
+        required
+        min="0"
+        step="0.01"
+        placeholder="Digite o preço de custo"
+        [class.is-invalid]="precoCusto.invalid && precoCusto.touched">
+      <div *ngIf="precoCusto.invalid && precoCusto.touched" class="error-message">
+        <span *ngIf="precoCusto.errors?.['required']">Preço de custo é obrigatório</span>
+        <span *ngIf="precoCusto.errors?.['min']">Preço de custo não pode ser negativo</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="preco">
+        <i class="fas fa-tag"></i> Preço de Venda *
+      </label>
+      <input
+        type="number"
+        id="preco"
+        name="preco"
+        [(ngModel)]="produto.preco"
+        #preco="ngModel"
+        required
+        min="0"
+        step="0.01"
+        placeholder="Digite o preço de venda"
+        [class.is-invalid]="(preco.invalid && preco.touched) || (produto.preco < produto.precoCusto && produto.preco > 0)">
+      <div *ngIf="preco.invalid && preco.touched" class="error-message">
+        <span *ngIf="preco.errors?.['required']">Preço de venda é obrigatório</span>
+        <span *ngIf="preco.errors?.['min']">Preço de venda não pode ser negativo</span>
+      </div>
+      <div *ngIf="produto.preco < produto.precoCusto && produto.preco > 0" class="error-message">
+        <i class="fas fa-exclamation-triangle"></i> Preço de venda menor que o preço de custo!
+      </div>
+    </div>
+
+    <div class="form-summary" *ngIf="isFormValid()">
+      <h4><i class="fas fa-chart-line"></i> Resumo do Produto</h4>
+      <div class="summary-details">
+        <p><strong>Lucro Estimado:</strong> {{ calculateProfit() | currency:'BRL' }}</p>
+        <p><strong>Margem de Lucro:</strong> {{ calculateProfitMargin() | percent:'1.2-2' }}</p>
+        <p><strong>Valor Total em Estoque:</strong> {{ calculateTotalStockValue() | currency:'BRL' }}</p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit" [disabled]="!isFormValid()">
+        <i class="fas fa-save"></i> Cadastrar Produto
+      </button>
+      <button type="button" class="btn-reset" (click)="resetForm()">
+        <i class="fas fa-undo-alt"></i> Limpar Formulário
+      </button>
+    </div>
+  </form>
+</div>
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>Espaço Verde</h3>
+      <p>Seu jardim dos sonhos começa aqui. Oferecemos as melhores plantas e acessórios para você criar seu espaço verde.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Links Úteis</h3>
+      <ul>
+        <li><a routerLink="/">Início</a></li>
+        <li><a routerLink="/produtos">Produtos</a></li>
+        <li><a routerLink="/cadastro">Cadastro</a></li>
+        <li><a routerLink="/sobre">Sobre Nós</a></li>
+        <li><a routerLink="/contato">Contato</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Contato</h3>
+      <p><i class="fas fa-phone"></i> (11) 99999-9999</p>
+      <p><i class="fas fa-envelope"></i> contato&#64;espacoverde.com.br</p>
+      <p><i class="fas fa-map-marker-alt"></i> Rio Azul, PRS - Brasil</p>
+    </div>
+    <div class="footer-section">
+      <h3>Horário de Funcionamento</h3>
+      <p>Segunda a Sexta: 8h às 18h</p>
+      <p>Sábado: 8h às 14h</p>
+      <p>Domingo: Fechado</p>
+    </div>
+  </div>
+  <div class="copyright">
+    <p>&copy; 2026 Espaço Verde. Todos os direitos reservados.</p>
+  </div>
+</footer>
