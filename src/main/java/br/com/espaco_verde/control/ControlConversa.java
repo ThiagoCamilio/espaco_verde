@@ -1,22 +1,26 @@
 package br.com.espaco_verde.control;
 
-import br.com.espaco_verde.entity.Conversa;
-import br.com.espaco_verde.entity.Mensagem;
-import br.com.espaco_verde.entity.MensagemCliente;
-import br.com.espaco_verde.entity.MensagemSistema;
+import br.com.espaco_verde.entity.*;
+import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.service.ServiceConversa;
 import br.com.espaco_verde.service.ServiceMensagens;
+import br.com.espaco_verde.service.ServiceProduto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.jackson.autoconfigure.JacksonProperties;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.JsonNode;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 public class ControlConversa {
 
-    @Value("${api.verify_token}")
+    @Value("${wa.api.verify.token}")
     private String token ="token-verificacao";
 
     @Autowired
@@ -25,12 +29,31 @@ public class ControlConversa {
     @Autowired
     private ServiceConversa serviceConversa;
 
+    @Autowired
+    private RepositoryProduto repositoryProduto;
+
     @GetMapping("/home")
     public String home(){
 
         return "Ola";
 
     }
+
+    /*@GetMapping("/testeCarousel")
+    public void testeCarousel(){
+
+        MensagemCliente m = new MensagemCliente("Oi", "42991057267", "Mensagem");
+
+        List<Produto> produtos = repositoryProduto.findAll();
+
+        Map<String, Object> map = serviceMensagens.sendCarouselMessage(m , produtos);
+
+        for (String keys : map.keySet())
+        {
+            System.out.println(keys + ":"+ map.get(keys));
+        }
+    }*/
+
 
 
     @GetMapping("/webhook")
@@ -48,7 +71,7 @@ public class ControlConversa {
     }
 
     @PostMapping("/webhook")
-    public ResponseEntity<?> webhook(@RequestBody JsonNode json){
+    public ResponseEntity<?> webhook(@RequestBody JsonNode json) throws Exception {
 
         Mensagem mensagem = serviceMensagens.parseJson(json);
 
@@ -73,19 +96,14 @@ public class ControlConversa {
         }else*/
         if (mensagem instanceof MensagemCliente msgCliente){
 
-            System.out.println(msgCliente.getRemetente() + " enviou " + msgCliente.getTexto());
-
             serviceConversa.getConversa(msgCliente);
 
             serviceMensagens.readMessage(msgCliente);
 
             serviceConversa.processarMensagem(msgCliente);
 
-        } else {
-
-            System.out.println("Mensagem do sistema");
-
         }
+
         return new ResponseEntity<>(HttpStatusCode.valueOf(200));
     }
 }

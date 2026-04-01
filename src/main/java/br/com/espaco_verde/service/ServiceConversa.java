@@ -3,10 +3,13 @@ package br.com.espaco_verde.service;
 import br.com.espaco_verde.entity.Conversa;
 import br.com.espaco_verde.entity.MensagemCliente;
 import br.com.espaco_verde.entity.Pagina;
+import br.com.espaco_verde.entity.Produto;
 import br.com.espaco_verde.repository.RepositoryConversa;
 import br.com.espaco_verde.repository.RepositoryPagina;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ServiceConversa {
@@ -18,15 +21,17 @@ public class ServiceConversa {
     private ServiceMensagens serviceMensagens;
 
     @Autowired
+    private ServiceProduto serviceProduto;
+
+    @Autowired
     private RepositoryPagina repositoryPagina;
 
-    public void processarMensagem(MensagemCliente mensagem){
+    public void processarMensagem(MensagemCliente mensagem) throws Exception {
 
         Conversa conversa = getConversa(mensagem);
         String retorno;
         Pagina paginaAtual = conversa.getPaginaAtual();
         String respostaCliente = mensagem.getTexto().toLowerCase();
-
 
         for (Pagina p : paginaAtual.getProximasPaginas()){
 
@@ -34,7 +39,6 @@ public class ServiceConversa {
                 paginaAtual = p;
                 break;
             }
-
         }
 
         if (paginaAtual.equals(conversa.getPaginaAtual())){
@@ -44,17 +48,16 @@ public class ServiceConversa {
 
         }
 
-
         switch (paginaAtual.getId()){
             case "menu_principal":
-                System.out.println(paginaAtual);
-                System.out.println(respostaCliente);
+
                 serviceMensagens.sendButtonMessage(mensagem, paginaAtual);
                 break;
 
             case "produtos":
-                retorno = "Ainda não disponivel";
-                serviceMensagens.sendTextMessage(mensagem, retorno);
+
+                List<Produto> produtos = serviceProduto.listarTodos();
+                serviceMensagens.sendCarouselMessage(mensagem, produtos);
                 break;
 
             case "carrinho":

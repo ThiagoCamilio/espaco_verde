@@ -20,14 +20,17 @@ import java.util.Map;
 @Service
 public class ServiceMensagens {
 
-    @Value("${api.url}")
-    private String apiUrl;
+    @Value("${wa.api.url}")
+    private String waApiUrl;
 
-    @Value("${api.acess.token}")
-    private String acessToken;
+    @Value("${wa.api.acess.token}")
+    private String waAcessToken;
 
-    @Value("${api.phone.number.id}")
-    private String phoneNumberId;
+    @Value("${wa.api.phone.number.id}")
+    private String waPhoneNumberId;
+
+    @Value("${local.api.url}")
+    private String localApiUrl;
 
     @Autowired
     private RepositoryPagina repositoryPagina;
@@ -66,11 +69,11 @@ public class ServiceMensagens {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String url = apiUrl+phoneNumberId+"/messages";
+        String url = waApiUrl + waPhoneNumberId +"/messages";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(acessToken);
+        headers.setBearerAuth(waAcessToken);
 
         Map<String, Object> body = new HashMap<>();
         body.put("messaging_product", "whatsapp");
@@ -87,11 +90,11 @@ public class ServiceMensagens {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String url = apiUrl+phoneNumberId+"/messages";
+        String url = waApiUrl + waPhoneNumberId +"/messages";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(acessToken);
+        headers.setBearerAuth(waAcessToken);
 
         Map<String, Object> body = new HashMap<>();
         body.put("messaging_product", "whatsapp");
@@ -109,11 +112,11 @@ public class ServiceMensagens {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String url = apiUrl+phoneNumberId+"/messages";
+        String url = waApiUrl + waPhoneNumberId +"/messages";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(acessToken);
+        headers.setBearerAuth(waAcessToken);
 
         List<Map<String, Object>> botoes = new ArrayList<>();
 
@@ -128,15 +131,52 @@ public class ServiceMensagens {
         body.put("to", mensagem.getRemetente());
         body.put("type", "interactive");
         body.put("interactive",
-                Map.of("type", "button", "header",
-                    Map.of("type", "text", "text","Menu Principal"),
-                "body",
-                    Map.of("text", "Esse é o Menu Principal, escolha uma das opções abaixo"),
-                "action",
-                    Map.of("buttons", botoes)
+                Map.of("type", "button",
+                        "header", Map.of("type", "text", "text","Menu Principal"),
+                        "body", Map.of("text", "Esse é o Menu Principal, escolha uma das opções abaixo"),
+                        "action", Map.of("buttons", botoes)
         ));
 
-        System.out.println(body);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+
+    }
+
+    public void sendCarouselMessage(MensagemCliente mensagem , List<Produto> produtos) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = waApiUrl + waPhoneNumberId + "/messages";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(waAcessToken);
+
+        List<Map<String, Object>> cartoes = new ArrayList<>();
+        for (Produto p : produtos) {
+
+            List<Map<String, Object>> botoesCard = new ArrayList<>();
+            botoesCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "1", "title", "Add Carrinho")));
+
+            cartoes.add(Map.of("card_index", Integer.toString(produtos.indexOf(p)),
+                    "type","cta_url",
+                    "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/produtos/imagem/"+p.getImagem())),
+                    "body", Map.of("text", p.getNome() +" "+p.getDescricao()),
+                    "action", Map.of("buttons", botoesCard)
+            ));
+
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("messaging_product", "whatsapp");
+        body.put("to", mensagem.getRemetente());
+        body.put("type", "interactive");
+        body.put("interactive",
+                Map.of("type", "carousel",
+                        "body", Map.of("text", "Seguem os produtos disponiveis"),
+                        "action", Map.of("cards", cartoes)
+                ));
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
 

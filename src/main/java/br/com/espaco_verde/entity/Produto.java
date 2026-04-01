@@ -16,40 +16,42 @@ import java.io.Serializable;
 @Table(name = "Produtos")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @EqualsAndHashCode(of = "id")
 public class Produto implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = 1L;
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+    @Serial
+    private static final long serialVersionUID = 1L;
+    @Getter @Setter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-  private String nome;
+    @Getter @Setter
+    private String nome;
 
-  @Enumerated(EnumType.STRING)
-  private TiposProdutos tipo;
+    @Getter @Setter
+    @Enumerated(EnumType.STRING)
+    private TiposProdutos tipo;
 
-  private int quantidade;
+    @Getter @Setter
+    private int quantidade;
 
-  private String dataDeEntrada;
+    @Getter @Setter
+    private String dataDeEntrada;
 
-  private double precoCusto;
+    @Getter @Setter
+    private double precoCusto;
 
-  private double preco;
+    @Getter @Setter
+    private double preco;
 
-  private String descricao;
-
-  private String imagem;
-
-  public Produto (String nome, TiposProdutos tipo, int quantidade, String dataDeEntrada, double precoCusto, double preco){
-    this.nome = nome;
-    this.tipo = tipo;
-    this.quantidade = quantidade;
-    this.dataDeEntrada = dataDeEntrada;
-    this.precoCusto = precoCusto;
-    this.preco = preco;
-  }
+    public Produto (String nome, TiposProdutos tipo, int quantidade, String dataDeEntrada, double precoCusto, double preco){
+        this.nome = nome;
+        this.tipo = tipo;
+        this.quantidade = quantidade;
+        this.dataDeEntrada = dataDeEntrada;
+        this.precoCusto = precoCusto;
+        this.preco = preco;
+    }
 }
+
