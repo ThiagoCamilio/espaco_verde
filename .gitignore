@@ -41,4 +41,6 @@ uploads/
 /out-tsc
 
 ### dependencies ###
-/node_modulesl
+/node_modules
+
+.angular/

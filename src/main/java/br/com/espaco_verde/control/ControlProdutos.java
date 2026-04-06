@@ -52,7 +52,7 @@ public class ControlProdutos {
     }
 
     @PostMapping("/cadastroProduto")
-    public ResponseEntity<?> cadastroProduto(@RequestPart("dados") Produto p, @RequestPart("imagem") MultipartFile imagem) {
+    public ResponseEntity<?> cadastroProduto(@RequestPart("produto") Produto p, @RequestPart("imagem") MultipartFile imagem) {
 
         try {
             serviceProduto.cadastrar(p, imagem);

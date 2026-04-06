@@ -162,7 +162,7 @@ public class ServiceMensagens {
             cartoes.add(Map.of("card_index", Integer.toString(produtos.indexOf(p)),
                     "type","cta_url",
                     "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/produtos/imagem/"+p.getImagem())),
-                    "body", Map.of("text", p.getNome() +" "+p.getDescricao()),
+                    "body", Map.of("text", p.getNome()),
                     "action", Map.of("buttons", botoesCard)
             ));
 

@@ -1,14 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
-import {CurrencyPipe, PercentPipe} from '@angular/common';
+import {CurrencyPipe, PercentPipe, CommonModule } from '@angular/common';
+import { RouterLink, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ProductService } from '../../services/product.service';
 
 export enum TiposProdutos {
-  PLANTAS = 'PLANTAS',
-  VASOS = 'VASOS',
-  FERTILIZANTES = 'FERTILIZANTES',
-  FERRAMENTAS = 'FERRAMENTAS',
-  DECORACAO = 'DECORACAO',
-  SEMENTES = 'SEMENTES'
+  FLOR_CORTE = 'FLOR_CORTE',
+  FLOR_MUDA = 'FLOR_MUDA',
+  ARVORE_FRUTIFERA = 'ARVORE_FRUTIFERA',
+  ARVORE_ORNAMENTAL = 'ARVORE_ORNAMENTAL',
+  VASO = 'VASO',
+  BUQUE = 'BUQUE',
+  CESTA = 'CESTA',
+  OUTRO = 'OUTRO'
+
 }
 
 export interface Produto {
@@ -19,6 +25,7 @@ export interface Produto {
   dataDeEntrada: string;
   precoCusto: number;
   preco: number;
+  imagem: string;
 }
 
 @Component({
@@ -27,7 +34,9 @@ export interface Produto {
   imports: [
     FormsModule,
     CurrencyPipe,
-    PercentPipe
+    PercentPipe,
+    CommonModule,
+    RouterLink
   ],
   templateUrl: './produto-form.component.html',
   styleUrl: './produto-form.component.css'
@@ -40,7 +49,8 @@ export class ProdutoFormComponent implements OnInit {
     quantidade: 0,
     dataDeEntrada: '',
     precoCusto: 0,
-    preco: 0
+    preco: 0,
+    imagem: ''
   };
 
   tiposProdutos = Object.values(TiposProdutos);
@@ -49,8 +59,10 @@ export class ProdutoFormComponent implements OnInit {
   errorMessage: string = '';
   today: string = '';
   cartItemsCount: number = 0;
+  imagePreview: string | ArrayBuffer | null = null;
+  arquivoSelecionado!: File
 
-  constructor() {
+  constructor(private produtoService: ProductService) {
     this.today = new Date().toISOString().split('T')[0];
   }
 
@@ -71,19 +83,19 @@ export class ProdutoFormComponent implements OnInit {
     setTimeout(() => {
       console.log('Produto cadastrado:', this.produto);
 
-      // this.produtoService.save(this.produto).subscribe(
-      //   (response) => {
-      //     this.successMessage = 'Produto cadastrado com sucesso!';
-      //     this.resetForm();
-      //   },
-      //   (error) => {
-      //     this.errorMessage = 'Erro ao cadastrar produto. Tente novamente.';
-      //   }
-      // );
+      this.produtoService.save(this.produto, this.arquivoSelecionado).subscribe({
+        next: (res) => {
+        alert('Produto salvo!');
+
+      },
+      error: (err) => alert('Erro ao salvar produto.')
+      });
+
+      this.successMessage = 'Produto cadastrado com sucesso!';
+      this.showLoading(false);
+      this.resetForm();
 
       // Simula sucesso
-      this.successMessage = 'Produto cadastrado com sucesso!';
-      this.resetForm();
       this.showLoading(false);
 
       setTimeout(() => {
@@ -116,7 +128,8 @@ export class ProdutoFormComponent implements OnInit {
       quantidade: 0,
       dataDeEntrada: '',
       precoCusto: 0,
-      preco: 0
+      preco: 0,
+      imagem: ''
     };
     this.clearMessages();
   }
@@ -195,6 +208,19 @@ export class ProdutoFormComponent implements OnInit {
   toggleCart(): void {
     console.log('Abrir carrinho');
   }
+
+  onFileSelected(event:any){
+    const file = event.target.files[0];
+    if(file){
+      this.arquivoSelecionado = file
+      const reader = new FileReader();
+      reader.onload = ()=>{
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
 
   private loadCartCount(): void {
     // Implementar lógica para carregar itens do carrinho
