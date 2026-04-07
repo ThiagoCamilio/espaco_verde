@@ -1,0 +1,123 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<header>
+  <div class="header-container">
+    <div class="logo">
+      <i class="fas fa-leaf"></i>
+      <h1>Espaço Verde</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#">Início</a></li>
+        <li><a href="#">Produtos</a></li>
+        <li><a href="#">Cadastro</a></li>
+        <li><a href="#">Sobre</a></li>
+        <li><a href="#">Contato</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="login-btn active">
+        <i class="fas fa-user"></i> Entrar
+      </button>
+      <button>
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-badge">3</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="banner">
+  <div class="banner-content">
+    <h2>Bem-vindo de volta!</h2>
+  </div>
+</div>
+
+<div class="form-container" id="form-container">
+  <div class="form-header">
+    <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+    <p>Informe suas credenciais para acessar sua conta</p>
+  </div>
+  <form>
+    <div class="form-group">
+      <label for="email">
+        <i class="fas fa-envelope"></i> E-mail *
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Digite seu e-mail">
+    </div>
+    <div class="form-group">
+      <label for="senha">
+        <i class="fas fa-lock"></i> Senha *
+      </label>
+      <div style="position: relative;">
+        <input
+          type="password"
+          id="senha"
+          name="senha"
+          placeholder="Digite sua senha">
+      </div>
+    </div>
+    <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+      <label style="display: flex; align-items: center; cursor: pointer;">
+        <input type="checkbox" style="width: auto; margin-right: 8px;">
+        <span>Lembrar-me</span>
+      </label>
+      <a href="#" class="forgot-password">Esqueci minha senha?</a>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-submit">
+        <i class="fas fa-sign-in-alt"></i> Entrar
+      </button>
+      <button type="button" class="btn-reset">
+        <i class="fas fa-undo-alt"></i> Limpar
+      </button>
+    </div>
+
+    <div class="register-link" style="text-align: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
+      <p>Não tem uma conta? <a href="#" style="color: var(--verde-principal); text-decoration: none; font-weight: 600;">Cadastre-se aqui</a></p>
+    </div>
+  </form>
+</div>
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>Espaço Verde</h3>
+      <p>Seu jardim dos sonhos começa aqui. Oferecemos as melhores plantas e acessórios para você criar seu espaço verde.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Links Úteis</h3>
+      <ul>
+        <li><a href="#">Início</a></li>
+        <li><a href="#">Produtos</a></li>
+        <li><a href="#">Cadastro</a></li>
+        <li><a href="#">Sobre Nós</a></li>
+        <li><a href="#">Contato</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Contato</h3>
+      <p><i class="fas fa-phone"></i> (11) 99999-9999</p>
+      <p><i class="fas fa-envelope"></i> contato&#64;espacoverde.com.br</p>
+      <p><i class="fas fa-map-marker-alt"></i> Rio Azul, PR - Brasil</p>
+    </div>
+    <div class="footer-section">
+      <h3>Horário de Funcionamento</h3>
+      <p>Segunda a Sexta: 8h às 18h</p>
+      <p>Sábado: 8h às 14h</p>
+      <p>Domingo: Fechado</p>
+    </div>
+  </div>
+  <div class="copyright">
+    <p>&copy; 2026 Espaço Verde. Todos os direitos reservados.</p>
+  </div>
+</footer>

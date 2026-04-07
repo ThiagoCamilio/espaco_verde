@@ -2,11 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CatalogComponent } from './pages/catalag/catalag.component';
 import { ProdutoFormComponent } from './pages/produto-form/produto-form.component';
+import { LoginFormComponent } from './pages/login-form/login-form.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/catalog', pathMatch: 'full' },
   { path: 'catalog', component: CatalogComponent },
-  { path: 'cadastro', component: ProdutoFormComponent }
+  { path: 'cadastro', component: ProdutoFormComponent },
+  { path: 'login', component: LoginFormComponent },
+
 ];
 
 @NgModule({
