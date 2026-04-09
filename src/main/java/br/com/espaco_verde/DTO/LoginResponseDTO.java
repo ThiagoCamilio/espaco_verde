@@ -1,4 +1,4 @@
 package br.com.espaco_verde.DTO;
 
-public record LoginResponseDTO() {
+public record LoginResponseDTO(String token) {
 }

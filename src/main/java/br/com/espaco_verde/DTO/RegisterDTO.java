@@ -1,4 +1,6 @@
 package br.com.espaco_verde.DTO;
 
-public record RegisterDTO() {
+import br.com.espaco_verde.entity.UserRole;
+
+public record RegisterDTO(String name, String login, String password, UserRole role) {
 }

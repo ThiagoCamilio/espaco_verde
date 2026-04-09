@@ -4,10 +4,8 @@ import br.com.espaco_verde.entity.*;
 import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.service.ServiceConversa;
 import br.com.espaco_verde.service.ServiceMensagens;
-import br.com.espaco_verde.service.ServiceProduto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.jackson.autoconfigure.JacksonProperties;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequestMapping("whatsapp")
 @RestController
 public class ControlConversa {
 
