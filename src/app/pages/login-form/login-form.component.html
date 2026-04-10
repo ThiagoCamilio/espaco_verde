@@ -7,11 +7,11 @@
     </div>
     <nav>
       <ul>
-        <li><a href="#">Início</a></li>
-        <li><a href="#">Produtos</a></li>
-        <li><a href="#">Cadastro</a></li>
-        <li><a href="#">Sobre</a></li>
-        <li><a href="#">Contato</a></li>
+        <li><a routerLink="/catalog">Início</a></li>
+        <li><a routerLink="/catalog">Produtos</a></li>
+        <li><a routerLink="/catalog">Cadastro</a></li>
+        <li><a routerLink="/catalog">Sobre</a></li>
+        <li><a routerLink="/catalog">Contato</a></li>
       </ul>
     </nav>
     <div class="header-actions">
@@ -37,7 +37,7 @@
     <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
     <p>Informe suas credenciais para acessar sua conta</p>
   </div>
-  <form>
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="email">
         <i class="fas fa-envelope"></i> E-mail *
@@ -46,6 +46,7 @@
         type="email"
         id="email"
         name="email"
+        [(ngModel)]="user.login"
         placeholder="Digite seu e-mail">
     </div>
     <div class="form-group">
@@ -57,6 +58,7 @@
           type="password"
           id="senha"
           name="senha"
+          [(ngModel)]="user.password"
           placeholder="Digite sua senha">
       </div>
     </div>

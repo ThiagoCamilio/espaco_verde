@@ -2,7 +2,6 @@ import {Component, OnInit } from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
 import {CurrencyPipe, PercentPipe, CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { ProductService } from '../../services/product.service';
 
 export enum TiposProdutos {
@@ -75,33 +74,27 @@ export class ProdutoFormComponent implements OnInit {
     if (!this.validateProduct()) {
       return;
     }
-
     // Simula loading
     this.showLoading(true);
 
     // Simula envio para API
-    setTimeout(() => {
-      console.log('Produto cadastrado:', this.produto);
+    console.log('Produto cadastrado:', this.produto);
 
-      this.produtoService.save(this.produto, this.arquivoSelecionado).subscribe({
-        next: (res) => {
-        alert('Produto salvo!');
+    this.produtoService.save(this.produto, this.arquivoSelecionado).subscribe({
+      next: (res) => {
+      alert('Produto salvo!');
 
-      },
-      error: (err) => alert('Erro ao salvar produto.')
-      });
+    },
+    error: (err) => alert('Erro ao salvar produto.')
+    });
 
-      this.successMessage = 'Produto cadastrado com sucesso!';
-      this.showLoading(false);
-      this.resetForm();
+    this.successMessage = 'Produto cadastrado com sucesso!';
+    this.showLoading(false);
+    this.resetForm();
 
-      // Simula sucesso
-      this.showLoading(false);
+    // Simula sucesso
+    this.showLoading(false);
 
-      setTimeout(() => {
-        this.successMessage = '';
-      }, 3000);
-    }, 1000);
   }
 
   private validateProduct(): boolean {
