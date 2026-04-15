@@ -25,9 +25,8 @@ public class ServiceProduto{
 
     @Autowired
     private RepositoryProduto repositoryProduto;
-    private String mensagem;
 
-    public ResponseEntity<?> cadastrar(Produto produto, MultipartFile imagem) throws IOException {
+    public ResponseEntity<?> register(Produto produto, MultipartFile imagem) throws IOException {
 
         Path diretorio = Paths.get(diretorioUpload);
         if (!Files.exists(diretorio)){
@@ -46,7 +45,7 @@ public class ServiceProduto{
 
     }
 
-    public List<Produto> listarTodos() throws Exception{
+    public List<Produto> listAll() throws Exception{
         return repositoryProduto.findAll();
     }
 

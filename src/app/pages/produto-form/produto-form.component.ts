@@ -3,29 +3,9 @@ import {FormsModule, NgForm} from '@angular/forms';
 import {CurrencyPipe, PercentPipe, CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
+import { Product } from '../../models/product';
+import { TiposProdutos } from '../../models/tipos-produtos';
 
-export enum TiposProdutos {
-  FLOR_CORTE = 'FLOR_CORTE',
-  FLOR_MUDA = 'FLOR_MUDA',
-  ARVORE_FRUTIFERA = 'ARVORE_FRUTIFERA',
-  ARVORE_ORNAMENTAL = 'ARVORE_ORNAMENTAL',
-  VASO = 'VASO',
-  BUQUE = 'BUQUE',
-  CESTA = 'CESTA',
-  OUTRO = 'OUTRO'
-
-}
-
-export interface Produto {
-  id?: number;
-  nome: string;
-  tipo: TiposProdutos | string;
-  quantidade: number;
-  dataDeEntrada: string;
-  precoCusto: number;
-  preco: number;
-  imagem: string;
-}
 
 @Component({
   selector: 'app-produto-form',
@@ -42,7 +22,7 @@ export interface Produto {
 })
 export class ProdutoFormComponent implements OnInit {
 
-  produto: Produto = {
+  produto: Product = {
     nome: '',
     tipo: '',
     quantidade: 0,
@@ -191,7 +171,6 @@ export class ProdutoFormComponent implements OnInit {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
-
 
   onLogin(): void {
     console.log('Abrir modal de login');

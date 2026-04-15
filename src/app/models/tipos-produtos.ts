@@ -1,0 +1,12 @@
+export enum TiposProdutos {
+
+    FLOR_CORTE = 'FLOR_CORTE',
+    FLOR_MUDA = 'FLOR_MUDA',
+    ARVORE_FRUTIFERA = 'ARVORE_FRUTIFERA',
+    ARVORE_ORNAMENTAL = 'ARVORE_ORNAMENTAL',
+    VASO = 'VASO',
+    BUQUE = 'BUQUE',
+    CESTA = 'CESTA',
+    OUTRO = 'OUTRO'
+
+}

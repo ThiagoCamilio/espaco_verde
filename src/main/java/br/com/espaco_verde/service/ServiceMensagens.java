@@ -153,17 +153,17 @@ public class ServiceMensagens {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(waAcessToken);
 
-        List<Map<String, Object>> cartoes = new ArrayList<>();
+        List<Map<String, Object>> cards = new ArrayList<>();
         for (Produto p : produtos) {
 
-            List<Map<String, Object>> botoesCard = new ArrayList<>();
-            botoesCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "1", "title", "Add Carrinho")));
+            List<Map<String, Object>> buttonCard = new ArrayList<>();
+            buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "1", "title", "Add Carrinho")));
 
-            cartoes.add(Map.of("card_index", Integer.toString(produtos.indexOf(p)),
+            cards.add(Map.of("card_index", Integer.toString(produtos.indexOf(p)),
                     "type","cta_url",
                     "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/produtos/imagem/"+p.getImagem())),
                     "body", Map.of("text", p.getNome()),
-                    "action", Map.of("buttons", botoesCard)
+                    "action", Map.of("buttons", buttonCard)
             ));
 
         }
@@ -175,7 +175,7 @@ public class ServiceMensagens {
         body.put("interactive",
                 Map.of("type", "carousel",
                         "body", Map.of("text", "Seguem os produtos disponiveis"),
-                        "action", Map.of("cards", cartoes)
+                        "action", Map.of("cards", cards)
                 ));
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);

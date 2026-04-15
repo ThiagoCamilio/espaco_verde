@@ -56,7 +56,7 @@ public class ServiceConversa {
 
             case "produtos":
 
-                List<Produto> produtos = serviceProduto.listarTodos();
+                List<Produto> produtos = serviceProduto.listAll();
                 serviceMensagens.sendCarouselMessage(mensagem, produtos);
                 break;
 

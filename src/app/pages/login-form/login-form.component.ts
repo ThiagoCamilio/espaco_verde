@@ -17,7 +17,7 @@ import { User } from '../../models/user';
     LoginService
   ]
 })
-export class LoginFormComponent implements OnInit{
+export class LoginFormComponent{
 
   user: User ={
     login: "",
@@ -27,9 +27,6 @@ export class LoginFormComponent implements OnInit{
   constructor(private loginService: LoginService){
   }
   
-  ngOnInit(): void {
-    console.log("init");
-  };
 
   onSubmit():void{
     

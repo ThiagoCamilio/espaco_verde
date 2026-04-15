@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 
 @RestController
@@ -37,26 +38,17 @@ public class ControlProdutos {
     private  String diretorioUpload;
 
     @GetMapping("")
-    public String mensagem(HttpSession session){
+    public List<Produto> listAll() throws Exception {
 
-        return "PAGINA INICIAL";
-
-    }
-
-    @GetMapping("/mock")
-    public void mock() {
-
-        Produto produto1 = new Produto( "Margarida", TiposProdutos.OUTRO, 2, "23/03/2026", 2.1, 3.1);
-        acaoProduto.save(produto1);
+        return serviceProduto.listAll();
 
     }
 
-    @PostMapping("/cadastroProduto")
-    public ResponseEntity<?> cadastroProduto(@RequestPart("produto") Produto p, @RequestPart("imagem") MultipartFile imagem) {
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestPart("produto") Produto p, @RequestPart("imagem") MultipartFile imagem) {
 
         try {
-            serviceProduto.cadastrar(p, imagem);
-            return ResponseEntity.status(200).body("Produto salvo com sucesso");
+            return serviceProduto.register(p, imagem);
         } catch (IIOException e){
             return ResponseEntity.status(500).body("Erro ao salvar o produto");
         } catch (IOException e) {
@@ -65,7 +57,7 @@ public class ControlProdutos {
     }
 
     @GetMapping("/imagem/{nomeImagem:.+}")
-    public ResponseEntity<Resource> exibirImagem(@PathVariable String nomeImagem){
+        public ResponseEntity<Resource> exibirImagem(@PathVariable String nomeImagem){
 
         try {
 
