@@ -2,7 +2,7 @@ package br.com.espaco_verde.control;
 
 import br.com.espaco_verde.DTO.AuthenticationDTO;
 import br.com.espaco_verde.DTO.LoginResponseDTO;
-import br.com.espaco_verde.DTO.RegisterDTO;
+import br.com.espaco_verde.DTO.RegisterUserDTO;
 import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.repository.RepositoryUser;
 import br.com.espaco_verde.service.ServiceToken;
@@ -45,7 +45,7 @@ public class ControllerAuthentication {
     }
 
     @GetMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
+    public ResponseEntity register(@RequestBody @Valid RegisterUserDTO data){
 
         if (repositoryUser.findByLogin(data.login()) != null){
             return ResponseEntity.badRequest().build();

@@ -1,5 +1,7 @@
 package br.com.espaco_verde.service;
 
+import br.com.espaco_verde.DTO.RegisterProductDTO;
+import br.com.espaco_verde.DTO.ResponseProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +30,9 @@ public class ServiceProduto{
     @Autowired
     private ServiceImage serviceImage;
 
-    public ResponseEntity<?> register(Produto product, MultipartFile image) throws IOException {
+    public ResponseEntity<?> register(RegisterProductDTO productDTO, MultipartFile image) throws IOException {
+
+        Produto product = productDTO.toEntity();
 
         if(!image.isEmpty()){
             String imageName = serviceImage.saveImage(image);
@@ -40,7 +45,9 @@ public class ServiceProduto{
 
     }
 
-    public ResponseEntity<?> update(Produto product, MultipartFile image) throws IOException{
+    public ResponseEntity<?> update(RegisterProductDTO productDTO, MultipartFile image) throws IOException{
+
+        Produto product = productDTO.toEntity();
 
         String currentImage = repositoryProduto.findById(product.getId()).getImagem();
         product.setImagem(currentImage);
@@ -55,13 +62,22 @@ public class ServiceProduto{
         return new ResponseEntity<>(repositoryProduto.save(product), HttpStatus.CREATED);
     }
 
-    public List<Produto> listAll() throws Exception{
-        return repositoryProduto.findAll();
+    public List<ResponseProductDTO> listAll() throws Exception{
+        List<Produto> products = repositoryProduto.findAll();
+        List<ResponseProductDTO> dtos = new ArrayList<>();
+        for(Produto p : products){
+            ResponseProductDTO dto = new ResponseProductDTO(p);
+            dtos.add(dto);
+        }
+
+        return dtos;
     }
 
-    public Produto findById(int id) {
+    public ResponseProductDTO findById(int id) {
 
-        return repositoryProduto.findById(id);
+        Produto product = repositoryProduto.findById(id);
+        ResponseProductDTO dto = new ResponseProductDTO(product) ;
+        return dto;
 
     }
 }

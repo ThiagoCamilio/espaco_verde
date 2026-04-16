@@ -1,5 +1,6 @@
 package br.com.espaco_verde.service;
 
+import br.com.espaco_verde.DTO.ResponseProductDTO;
 import br.com.espaco_verde.entity.Conversa;
 import br.com.espaco_verde.entity.MensagemCliente;
 import br.com.espaco_verde.entity.Pagina;
@@ -56,7 +57,7 @@ public class ServiceConversa {
 
             case "produtos":
 
-                List<Produto> produtos = serviceProduto.listAll();
+                List<ResponseProductDTO> produtos = serviceProduto.listAll();
                 serviceMensagens.sendCarouselMessage(mensagem, produtos);
                 break;
 

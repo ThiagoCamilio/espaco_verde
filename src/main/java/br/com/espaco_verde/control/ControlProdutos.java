@@ -1,5 +1,7 @@
 package br.com.espaco_verde.control;
 
+import br.com.espaco_verde.DTO.RegisterProductDTO;
+import br.com.espaco_verde.DTO.ResponseProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -36,14 +38,14 @@ public class ControlProdutos {
     private  String diretorioUpload;
 
     @GetMapping("")
-    public List<Produto> listAll() throws Exception {
+    public List<ResponseProductDTO> listAll() throws Exception {
 
         return serviceProduto.listAll();
 
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestPart("produto") Produto p, @RequestPart("imagem") MultipartFile imagem) {
+    public ResponseEntity<?> register(@RequestPart("produto") RegisterProductDTO p, @RequestPart("imagem") MultipartFile imagem) {
 
         try {
             return serviceProduto.register(p, imagem);
@@ -79,7 +81,7 @@ public class ControlProdutos {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestPart("produto") Produto p, @RequestPart("imagem") MultipartFile imagem){
+    public ResponseEntity<?> update(@RequestPart("produto") RegisterProductDTO p, @RequestPart("imagem") MultipartFile imagem){
         try {
             return serviceProduto.update(p, imagem);
         } catch (IIOException e){
