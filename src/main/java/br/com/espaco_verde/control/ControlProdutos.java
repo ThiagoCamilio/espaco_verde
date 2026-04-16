@@ -1,6 +1,5 @@
 package br.com.espaco_verde.control;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.com.espaco_verde.entity.Produto;
-import br.com.espaco_verde.entity.TiposProdutos;
 import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.service.ServiceProduto;
 
@@ -56,12 +54,11 @@ public class ControlProdutos {
         }
     }
 
-    @GetMapping("/imagem/{nomeImagem:.+}")
-        public ResponseEntity<Resource> exibirImagem(@PathVariable String nomeImagem){
+    @GetMapping("/imagem/{imageName:.+}")
+    public ResponseEntity<Resource> showImage(@PathVariable String imageName){
 
         try {
-
-            Path caminho = Paths.get(diretorioUpload).resolve(nomeImagem);
+            Path caminho = Paths.get(diretorioUpload).resolve(imageName);
             Resource recurso = new UrlResource(caminho.toUri());
 
             if(recurso.exists() || recurso.isReadable()){
@@ -79,5 +76,16 @@ public class ControlProdutos {
             return ResponseEntity.internalServerError().build();
         }
 
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestPart("produto") Produto p, @RequestPart("imagem") MultipartFile imagem){
+        try {
+            return serviceProduto.update(p, imagem);
+        } catch (IIOException e){
+            return ResponseEntity.status(500).body("Erro ao salvar o produto");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

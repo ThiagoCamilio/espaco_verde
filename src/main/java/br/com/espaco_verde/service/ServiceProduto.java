@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ServiceProduto{
@@ -26,23 +24,35 @@ public class ServiceProduto{
     @Autowired
     private RepositoryProduto repositoryProduto;
 
-    public ResponseEntity<?> register(Produto produto, MultipartFile imagem) throws IOException {
+    @Autowired
+    private ServiceImage serviceImage;
 
-        Path diretorio = Paths.get(diretorioUpload);
-        if (!Files.exists(diretorio)){
-            Files.createDirectory(diretorio);
+    public ResponseEntity<?> register(Produto product, MultipartFile image) throws IOException {
+
+        if(!image.isEmpty()){
+            String imageName = serviceImage.saveImage(image);
+            product.setImagem(imageName);
+        }else {
+            product.setImagem(repositoryProduto.findById(product.getId()).getImagem());
         }
 
-        String nomeImagem = UUID.randomUUID().toString() + "_" + imagem.getOriginalFilename();
-        Path caminhoImagem = diretorio.resolve(nomeImagem);
+        return new ResponseEntity<>(repositoryProduto.save(product), HttpStatus.CREATED);
 
-        Files.copy(imagem.getInputStream(), caminhoImagem, StandardCopyOption.REPLACE_EXISTING);
+    }
 
-        produto.setImagem(nomeImagem);
+    public ResponseEntity<?> update(Produto product, MultipartFile image) throws IOException{
 
-        return new ResponseEntity<>(repositoryProduto.save(produto), HttpStatus.CREATED);
+        String currentImage = repositoryProduto.findById(product.getId()).getImagem();
+        product.setImagem(currentImage);
 
+        if (!image.isEmpty()){
+            String newImageName = serviceImage.updateImage(product, image);
+            product.setImagem(newImageName);
+        }else{
+            product.setImagem(repositoryProduto.findById(product.getId()).getImagem());
+        }
 
+        return new ResponseEntity<>(repositoryProduto.save(product), HttpStatus.CREATED);
     }
 
     public List<Produto> listAll() throws Exception{
