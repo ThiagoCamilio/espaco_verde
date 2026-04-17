@@ -1,33 +1,23 @@
-<!-- header.component.html -->
-<header class="header">
-  <div class="container">
+<header>
+  <div class="header-container">
     <div class="logo">
-      <a routerLink="/">
-        <img src="assets/logo.png" alt="Espaço Verde">
-        <span>Espaço Verde</span>
-      </a>
+      <i class="fas fa-leaf"></i>
+      <h1>Espaço Verde</h1>
     </div>
 
-    <nav class="nav">
+    <nav>
       <ul>
-        <li><a routerLink="/" routerLinkActive="active">Home</a></li>
-        <li><a routerLink="/products" routerLinkActive="active">Produtos</a></li>
-        <li><a routerLink="/about" routerLinkActive="active">Sobre</a></li>
-        <li><a routerLink="/contact" routerLinkActive="active">Contato</a></li>
+        <li><a routerLink="/home">Início</a></li>
+        <li><a routerLink="/cadastro">Sobre</a></li>
+        <li><a routerLink="/cadastro">Contato</a></li>
+        <li><a routerLink="/cadastro">Promoções</a></li>
       </ul>
     </nav>
 
     <div class="header-actions">
-      <button class="search-btn">
-        <i class="fas fa-search"></i>
-      </button>
-
-      <button class="cart-btn" (click)="toggleCart()">
-        <i class="fas fa-shopping-cart"></i>
-        <span class="cart-count" *ngIf="cartItemCount > 0">
-          {{ cartItemCount }}
-        </span>
-      </button>
+      <button><i class="fas fa-search"></i></button>
+      <button><i class="fas fa-shopping-cart"></i></button>
+      <button class="login-btn" (click)="navigateTo('login')">Entrar</button>
     </div>
   </div>
 </header>

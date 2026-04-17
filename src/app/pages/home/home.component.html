@@ -1,1 +1,29 @@
-<p>home works!</p>
+<section class="banner">
+  <div class="banner-content">
+    <h2>Bem-vindo à Espaço Verde</h2>
+    <p>Descubra nossa coleção de plantas e flores para todos os momentos especiais</p>
+    <button class="cta-button">Ver Ofertas</button>
+  </div>
+</section>
+
+<section class="filters">
+  <h3>Filtrar por Categoria:</h3>
+  <div class="filter-options">
+    <button [class.active]="activeFilter === 'Todas'" (click)="filterProducts('Todas')">Todas</button>
+    <button [class.active]="activeFilter === 'Flores'" (click)="filterProducts('Flores')">Flores</button>
+    <button [class.active]="activeFilter === 'Plantas'" (click)="filterProducts('Plantas')">Plantas</button>
+    <button [class.active]="activeFilter === 'Arranjos'" (click)="filterProducts('Arranjos')">Arranjos</button>
+    <button [class.active]="activeFilter === 'Presentes'" (click)="filterProducts('Presentes')">Presentes</button>
+    <button [class.active]="activeFilter === 'Promoções'" (click)="filterProducts('Promoções')">Promoções</button>
+  </div>
+</section>
+
+<section class="products">
+  <h2>Nossos Produtos</h2>
+  <div class="product-grid">
+    <app-produto-card
+      *ngFor="let p of products"
+      [product]="p">
+    </app-produto-card>
+  </div>
+</section>

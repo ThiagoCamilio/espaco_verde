@@ -1,32 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <i class="fas fa-leaf"></i>
-      <h1>Espaço Verde</h1>
-    </div>
-    <nav>
-      <ul>
-        <li><a routerLink="/catalog">Catalogo</a></li>
-        <li><a routerLink="/produtos">Produtos</a></li>
-        <li><a routerLink="/cadastro">Cadastro</a></li>
-        <li><a routerLink="/sobre">Sobre</a></li>
-        <li><a routerLink="/contato">Contato</a></li>
-
-      </ul>
-    </nav>
-    <div class="header-actions">
-      <button class="login-btn" (click)="onLogin()">
-        <i class="fas fa-user"></i> Entrar
-      </button>
-      <button (click)="toggleCart()">
-        <i class="fas fa-shopping-cart"></i>
-        <span class="cart-badge" *ngIf="cartItemsCount > 0">{{ cartItemsCount }}</span>
-      </button>
-    </div>
-  </div>
-</header>
-
 <div class="banner">
   <div class="banner-content">
     <h2>Cadastre novos produtos</h2>
@@ -213,43 +184,3 @@
     </div>
   </form>
 </div>
-
-<footer>
-  <div class="footer-container">
-    <div class="footer-section">
-      <h3>Espaço Verde</h3>
-      <p>Seu jardim dos sonhos começa aqui. Oferecemos as melhores plantas e acessórios para você criar seu espaço verde.</p>
-      <div class="social-icons">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-whatsapp"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-      </div>
-    </div>
-    <div class="footer-section">
-      <h3>Links Úteis</h3>
-      <ul>
-        <li><a routerLink="/">Início</a></li>
-        <li><a routerLink="/produtos">Produtos</a></li>
-        <li><a routerLink="/cadastro">Cadastro</a></li>
-        <li><a routerLink="/sobre">Sobre Nós</a></li>
-        <li><a routerLink="/contato">Contato</a></li>
-      </ul>
-    </div>
-    <div class="footer-section">
-      <h3>Contato</h3>
-      <p><i class="fas fa-phone"></i> (11) 99999-9999</p>
-      <p><i class="fas fa-envelope"></i> contato&#64;espacoverde.com.br</p>
-      <p><i class="fas fa-map-marker-alt"></i> Rio Azul, PRS - Brasil</p>
-    </div>
-    <div class="footer-section">
-      <h3>Horário de Funcionamento</h3>
-      <p>Segunda a Sexta: 8h às 18h</p>
-      <p>Sábado: 8h às 14h</p>
-      <p>Domingo: Fechado</p>
-    </div>
-  </div>
-  <div class="copyright">
-    <p>&copy; 2026 Espaço Verde. Todos os direitos reservados.</p>
-  </div>
-</footer>

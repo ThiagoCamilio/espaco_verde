@@ -1,7 +1,5 @@
-
-
 .card {
-  background-color: var(--branco);
+  background-color: white;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -33,18 +31,18 @@
 }
 
 .card-body h3 {
-  color: var(--preto);
+  color: black;
   margin-bottom: 0.5rem;
 }
 
 .product-category {
-  color: var(--verde-secundario);
+  color: #4caf50;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
 }
 
 .product-price {
-  color: var(--verde-principal);
+  color:  #2e7d32;
   font-weight: bold;
   font-size: 1.2rem;
   margin: 0.5rem 0;

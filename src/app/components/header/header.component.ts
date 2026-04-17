@@ -1,17 +1,19 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
+  imports:[RouterLink],
   standalone: true,
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
   cartItemCount: number = 0;
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService, private router: Router) { }
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe((items: any[]) => {
@@ -21,5 +23,10 @@ export class HeaderComponent implements OnInit {
 
   toggleCart(): void {
     this.cartService.toggleCart();
+  }
+
+  
+  navigateTo(route: string) {
+    this.router.navigate([`/${route}`]);
   }
 }
