@@ -1,0 +1,1 @@
+:root{--sidebar-width: 0px}footer{margin-left:var(--sidebar-width);transition:margin-left .3s ease}

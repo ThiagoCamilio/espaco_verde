@@ -1,0 +1,9 @@
+.dashboard-content{
+    margin-left: 80px;
+    transition: margin-left 0.3s ease;
+
+}
+
+.content-expanded{
+    margin-left: 160px;
+}       

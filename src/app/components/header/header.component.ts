@@ -10,16 +10,11 @@ import { Router, RouterLink } from '@angular/router';
   standalone: true,
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent{
   cartItemCount: number = 0;
 
   constructor(private cartService: CartService, private router: Router) { }
 
-  ngOnInit(): void {
-    this.cartService.cartItems$.subscribe((items: any[]) => {
-      this.cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
-    });
-  }
 
   toggleCart(): void {
     this.cartService.toggleCart();

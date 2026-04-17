@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --sidebar-width: 0px;
+}
+
+footer {
+  margin-left: var(--sidebar-width);
+  transition: margin-left 0.3s ease; /* Para um efeito suave */
+}

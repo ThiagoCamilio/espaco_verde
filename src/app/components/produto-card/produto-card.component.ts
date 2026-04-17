@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Product } from '../../models/product';
 import { environment } from '../../../environment';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 @Component({
   selector: 'app-produto-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgFor],
   templateUrl: './produto-card.component.html',
   styleUrl: './produto-card.component.css'
 })

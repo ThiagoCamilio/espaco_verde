@@ -19,49 +19,6 @@ body {
   color: var(--preto);
 }
 
-.banner {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1487530811176-3780de880c2d?ixlib=rb-4.0.3') center/cover no-repeat;
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-  padding: 2rem;
-}
-
-.banner-content {
-  max-width: 800px;
-}
-
-.banner h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.banner p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-}
-
-.cta-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-}
-
-.cta-button:hover {
-  opacity: 1;
-  background-color: rgba(76, 175, 80, 0.5);
-  transform: translateY(+3px);
-}
-
 .filters {
   background-color: white;
   padding: 1.5rem;

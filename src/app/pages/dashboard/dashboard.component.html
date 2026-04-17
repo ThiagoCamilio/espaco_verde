@@ -1,0 +1,12 @@
+<section class="banner">
+  <app-banner></app-banner>
+</section>
+
+<section class="content-cards">
+  <div class="card-grid">
+    <app-produto-card
+      *ngFor="let p of products"
+      [product]="p">
+    </app-produto-card>
+  </div>
+</section>

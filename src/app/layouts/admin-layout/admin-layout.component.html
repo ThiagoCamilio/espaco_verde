@@ -1,0 +1,7 @@
+<app-sidebar [isExpanded]="isSidebarOpen" (toggle)="toggleSidebar()">
+
+</app-sidebar>
+
+<main class="dashboard-content" [class.content-expanded]="  isSidebarOpen">
+    <router-outlet></router-outlet>
+</main>
