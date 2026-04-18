@@ -12,9 +12,6 @@ import br.com.espaco_verde.repository.RepositoryProduto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +70,7 @@ public class ServiceProduto{
         return dtos;
     }
 
-    public ResponseProductDTO findById(int id) {
+    public ResponseProductDTO listById(int id) {
 
         Produto product = repositoryProduto.findById(id);
         ResponseProductDTO dto = new ResponseProductDTO(product) ;

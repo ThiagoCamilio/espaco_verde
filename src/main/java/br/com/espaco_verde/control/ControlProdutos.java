@@ -44,6 +44,13 @@ public class ControlProdutos {
 
     }
 
+    @GetMapping("/produto/{id}")
+    public ResponseProductDTO listById(@PathVariable int id) throws Exception {
+
+        return serviceProduto.listById(id);
+
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestPart("produto") RegisterProductDTO p, @RequestPart("imagem") MultipartFile imagem) {
 

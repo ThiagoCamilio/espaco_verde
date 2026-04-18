@@ -4,6 +4,7 @@ import br.com.espaco_verde.entity.Produto;
 import br.com.espaco_verde.entity.TiposProdutos;
 
 public record ResponseProductDTO(
+        int id,
         String nome,
         TiposProdutos tipo,
         int quantidade,
@@ -16,6 +17,7 @@ public record ResponseProductDTO(
     public ResponseProductDTO (Produto p){
 
         this(
+            p.getId(),
             p.getNome(),
             p.getTipo(),
             p.getQuantidade(),

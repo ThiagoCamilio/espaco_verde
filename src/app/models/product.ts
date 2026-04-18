@@ -1,7 +1,7 @@
 import { TiposProdutos } from "./tipos-produtos";
 
 export interface Product {
-      id?: number;
+      id?: string;
       nome: string;
       tipo: TiposProdutos | string;
       quantidade: number;

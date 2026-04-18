@@ -1,0 +1,29 @@
+<div class="container-details">
+
+    <div class="top-section">
+        <div class="image-wraper">
+            <img [src]="baseImageUrl + product.imagem" [alt]="product.nome" class="image">
+        </div>
+
+        <div class="side-btns">
+
+        </div>
+    </div>
+    <div class="product-info">
+        <span class="product-type">{{product.tipo}}</span>
+
+        <div class="product-name">
+            <h1 class="name">{{product.nome}}</h1>
+            <span class="price">{{product.preco | currency:'BRL'}}</span>
+        </div>
+        <div class="product-quantity">
+            <strong>Qtn: {{product.quantidade}} unidades</strong> 
+        </div>
+
+        <hr class="divider">
+        <div class="desc-section">
+            <h3>Descrição</h3>
+            <p>vou colocar mais tarde</p>
+        </div>
+    </div> 
+</div>

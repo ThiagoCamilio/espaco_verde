@@ -10,12 +10,6 @@
   transform: translateY(-5px);
 }
 
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
 .image-container {
   height: 200px;
   overflow: hidden;
@@ -34,11 +28,27 @@
 
 .card-body {
   padding: 1.5rem;
+
+}
+
+.header{
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100%;
 }
 
 .card-body h3 {
+  display: inline-block;
+  flex: 1;
+  white-space: nowrap;
   color: black;
-  margin-bottom: 0.5rem;
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
 }
 
 .product-category {
@@ -52,10 +62,4 @@
   font-weight: bold;
   font-size: 1.2rem;
   margin: 0.5rem 0;
-}
-
-.product-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
 }

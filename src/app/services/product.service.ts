@@ -28,4 +28,8 @@ export class ProductService {
     return this.http.get<Product[]>(this.URL);
 
   }
+
+  listById(id:string): Observable<Product>{
+    return this.http.get<Product>(`${this.URL}/produto/`+id)
+  }
 }

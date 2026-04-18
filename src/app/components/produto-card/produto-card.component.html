@@ -1,12 +1,6 @@
-<div class="card">
-    <div class="image-container">
-        <img [src]="baseImageUrl + product.imagem"
-             [alt]="product.nome">
-    </div>
-    <div class="card-body">
-        <h3>{{product.nome}}</h3>
-        <p class="product-category">{{product.tipo}}</p>
-        <p class="product-price">{{product.preco | currency:'BRL'}}</p>
-    </div>
+<div class="product-grid">
+    <app-base-product-card
+        *ngFor="let p of products"
+        [product]="p">  
+    </app-base-product-card>
 </div>
-    

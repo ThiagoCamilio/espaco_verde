@@ -1,12 +1,18 @@
-<aside class="sidebar" [class.expanded]="isExpanded" (click)="toggleSidebar()">
-    
+<aside class="sidebar" [class.expanded]="isExpanded">
+
     <div class="top">
-        <p>Ainda nao temos nada aqui</p>
+        <button class="btn-toggle" (click)="toggleSidebar()" aria-label="Toggle Sidebar"> 
+            <div class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
     </div>
 
     <div class="menu">
         <div class="menu-itens">
-            <a class="menu-item" title="Estoque">
+            <a class="menu-item" title="Estoque" routerLink="/admin/estoque">
                 <i class="fa-solid fa-barcode"></i><span class="menu-text"> Estoque</span>
             </a>    
         </div>

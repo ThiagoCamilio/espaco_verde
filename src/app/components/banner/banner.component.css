@@ -1,6 +1,7 @@
 .banner {
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1487530811176-3780de880c2d?ixlib=rb-4.0.3') center/cover no-repeat;
   height: 400px;
+  min-width: 186px;
   display: flex;
   align-items: center;
   justify-content: center;

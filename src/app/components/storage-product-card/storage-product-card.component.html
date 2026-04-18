@@ -1,0 +1,15 @@
+<div class="product-grid">
+    <app-base-product-card
+        *ngFor="let p of products"
+        [product]="p"
+        [route]="'produto/'+p.id!"
+    >  
+        <div class="storage-info">
+            <strong> Qnt: {{p.quantidade}}</strong>
+        </div>
+        <div class="action-btns">
+            <button class="btn-edit"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+            <button class="btn-delete"><i class="fa-solid fa-trash-can"></i> Excluir</button>
+        </div>
+    </app-base-product-card>
+</div>

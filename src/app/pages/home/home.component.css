@@ -5,15 +5,6 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-:root {
-  --verde-principal: #2e7d32;
-  --verde-secundario: #4caf50;
-  --verde-claro: #e8f5e9;
-  --preto: #212121;
-  --branco: #ffffff;
-  --cinza: #f5f5f5;
-}
-
 body {
   background-color: var(--cinza);
   color: var(--preto);
@@ -64,12 +55,6 @@ body {
   margin-bottom: 2rem;
   color: #2e7d32;
   font-size: 2rem;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
 }
 
 .details-btn, .add-to-cart {

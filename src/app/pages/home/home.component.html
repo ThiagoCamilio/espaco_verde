@@ -14,10 +14,7 @@
 
 <section class="products">
   <h2>Nossos Produtos</h2>
-  <div class="product-grid">
     <app-produto-card
-      *ngFor="let p of products"
-      [product]="p">
+      [products]="products">
     </app-produto-card>
-  </div>
 </section>
