@@ -2,6 +2,13 @@
 
 </app-sidebar>
 
-<main class="dashboard-content" [class.content-expanded]="  isSidebarOpen">
-    <router-outlet></router-outlet>
-</main>
+<div class="admin-layout">
+
+
+    <main class="dashboard-content" [class.content-expanded]="  isSidebarOpen">
+        <section class="banner">
+            <app-banner></app-banner>
+        </section>
+        <router-outlet></router-outlet>
+    </main>
+</div>

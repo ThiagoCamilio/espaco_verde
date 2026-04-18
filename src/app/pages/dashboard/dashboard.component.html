@@ -1,12 +1,21 @@
-<section class="banner">
-  <app-banner></app-banner>
-</section>
-
-<section class="content-cards">
-  <div class="card-grid">
-    <app-produto-card
-      *ngFor="let p of products"
-      [product]="p">
-    </app-produto-card>
-  </div>
-</section>
+<div class="dashboard-container">
+  <section class="content-cards">
+    <div class="card-grid">
+      <app-dashboard-card 
+        title="Estoque"
+        background="img/estoque.jpg"
+        route = "/admin/estoque">
+      </app-dashboard-card>
+      
+      <app-dashboard-card
+        title="Relatorios"
+        background="img/relatorios.jpg">
+      </app-dashboard-card>
+      
+      <app-dashboard-card
+        title="Atendimento Remoto"
+        background="img/whatsapp.jpeg">>
+      </app-dashboard-card>
+    </div>
+  </section>
+</div>

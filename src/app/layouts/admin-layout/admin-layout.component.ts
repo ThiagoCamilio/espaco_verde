@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
+import { BannerComponent } from '../../components/banner/banner.component';
 
 @Component({
   selector: 'app-admin-layout',
@@ -10,7 +11,8 @@ import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
     RouterOutlet,
     RouterLink,
     SidebarComponent,
-    DashboardComponent
+    DashboardComponent,
+    BannerComponent
   ],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css'

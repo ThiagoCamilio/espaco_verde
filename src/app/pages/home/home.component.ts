@@ -5,6 +5,7 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 import { ProductCardComponent } from '../../components/produto-card/produto-card.component';
 import { BannerComponent } from '../../components/banner/banner.component';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-home',
@@ -24,10 +25,11 @@ export class HomeComponent implements OnInit{
 
   activeFilter: string = 'Todas';
 
-  constructor(private router: Router, private productService: ProductService) {}
+  constructor(private router: Router, private productService: ProductService, public layoutService: LayoutService) {}
 
   ngOnInit(): void {
     this.loadProducts();
+    this.layoutService.updateBannerText("Bem-vindo à Espaço Verde!","Descubra nossa coleção de plantas e flores para todos os momentos especiais", "Veja nossas ofertas");
   }
 
   loadProducts(){

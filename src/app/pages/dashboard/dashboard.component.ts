@@ -4,8 +4,9 @@ import { RouterLink } from '@angular/router';
 import { ProductCardComponent } from '../../components/produto-card/produto-card.component';
 import { NgFor } from '@angular/common';
 import { Product } from '../../models/product';
-import { ProductService } from '../../services/product.service';
 import { BannerComponent } from '../../components/banner/banner.component';
+import { LayoutService } from '../../services/layout.service';
+import { DashboardCardComponent } from '../../components/dashboard-card/dashboard-card.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,30 +16,19 @@ import { BannerComponent } from '../../components/banner/banner.component';
     RouterLink, 
     ProductCardComponent, 
     NgFor,
-    BannerComponent
+    BannerComponent,
+    DashboardCardComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit{
 
-  constructor(private productService: ProductService){}
+  constructor(private layoutService: LayoutService){}
 
   products : Product[] = []
 
   ngOnInit(): void {
-    this.loadProducts();
+    this.layoutService.updateBannerText("Bem-vindo ao seu Dashboard!", "Gerencie seu estoque e veja relatorios de suas vendas", "Comece agora");
   }
-
-  loadProducts(){
-    this.productService.listAll().subscribe({
-      next:(data) =>{
-        this.products = data;
-      },
-      error(err){
-        console.log("Houve um erro", err)
-      }
-    })
-  }
-
 }

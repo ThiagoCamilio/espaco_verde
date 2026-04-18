@@ -31,13 +31,6 @@ public class ControlConversa {
     @Autowired
     private RepositoryProduto repositoryProduto;
 
-    @GetMapping("/home")
-    public String home(){
-
-        return "Ola";
-
-    }
-
     /*@GetMapping("/testeCarousel")
     public void testeCarousel(){
 

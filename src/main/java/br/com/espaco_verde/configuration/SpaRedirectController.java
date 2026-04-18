@@ -10,5 +10,4 @@ public class SpaRedirectController {
     public String redirect(){
         return "forward:/index.html";
     }
-
 }

@@ -8,6 +8,7 @@ import { AuthGuard } from './services/auth-guard.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { StorageComponent } from './pages/storage/storage.component';
 
 export const routes: Routes = [
   /*{ path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -33,6 +34,7 @@ export const routes: Routes = [
       { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent},
       { path: 'cadastro', component: ProdutoFormComponent },
+      { path: 'estoque', component: StorageComponent}
 
     ]
   }

@@ -1,7 +1,7 @@
 <section class="banner">
     <div class="banner-content">
-        <h2>Bem-vindo à Espaço Verde</h2>
-        <p>Descubra nossa coleção de plantas e flores para todos os momentos especiais</p>
-        <button class="cta-button">Ver Ofertas</button>
+        <h2>{{layoutService.title$ | async}}</h2>
+        <p>{{layoutService.text$ | async}}</p>
+        <button class="cta-button">{{layoutService.btnText$ | async}}</button>
     </div>
 </section>
