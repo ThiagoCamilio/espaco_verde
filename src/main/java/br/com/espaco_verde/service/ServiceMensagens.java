@@ -1,6 +1,6 @@
 package br.com.espaco_verde.service;
 
-import br.com.espaco_verde.DTO.ResponseProductDTO;
+import br.com.espaco_verde.DTO.ProductDTO;
 import br.com.espaco_verde.entity.*;
 import br.com.espaco_verde.repository.RepositoryPagina;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +144,7 @@ public class ServiceMensagens {
 
     }
 
-    public void sendCarouselMessage(MensagemCliente mensagem , List<ResponseProductDTO> produtos) {
+    public void sendCarouselMessage(MensagemCliente mensagem , List<ProductDTO> produtos) {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -155,7 +155,7 @@ public class ServiceMensagens {
         headers.setBearerAuth(waAcessToken);
 
         List<Map<String, Object>> cards = new ArrayList<>();
-        for (ResponseProductDTO p : produtos) {
+        for (ProductDTO p : produtos) {
 
             List<Map<String, Object>> buttonCard = new ArrayList<>();
             buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "1", "title", "Add Carrinho")));

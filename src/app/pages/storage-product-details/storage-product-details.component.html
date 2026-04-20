@@ -1,29 +1,51 @@
-<div class="container-details">
+<div class="container-details" *ngIf="product">
 
     <div class="top-section">
         <div class="image-wraper">
-            <img [src]="baseImageUrl + product.imagem" [alt]="product.nome" class="image">
+            <img *ngIf="!imagePreview" [src]="baseImageUrl + product.imagem" [alt]="product.nome" class="image">
+            <div *ngIf="editToggle" class="upload-btn">
+                <img *ngIf="imagePreview" [src]="imagePreview" (imagePreview) = "baseImageUrl + product.imagem" alt="Preview da imagem" class="image">
+                <label for="file-input" class="custom-file-input">
+                        <i class="fa-solid fa-camera"></i>  Alterar imagem
+                </label>
+                <input type="file" (change)="onFileSelected($event)" accept="image/*" id="file-input">
+            </div>
         </div>
 
-        <div class="side-btns">
+        <div class="action-btns">
+            <button *ngIf="editToggle" class="btn-save" (click)="saveEdit()"><i class="fa-solid fa-check"></i> Salvar</button>
+            <button *ngIf="editToggle" class="btn-cancel" (click)="onEditToggle()"><i class="fa-solid fa-x"></i> Cancelar</button>
 
+            <button *ngIf="!editToggle" class="btn-edit" (click)="onEditToggle()"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+            <button *ngIf="!editToggle" class="btn-delete"><i class="fa-solid fa-trash-can"></i> Excluir</button>
         </div>
     </div>
-    <div class="product-info">
-        <span class="product-type">{{product.tipo}}</span>
+    <div class="product-info-section">
 
-        <div class="product-name">
-            <h1 class="name">{{product.nome}}</h1>
-            <span class="price">{{product.preco | currency:'BRL'}}</span>
+        <div class="product-header">        
+            <h1 *ngIf="!editToggle" class="name">{{product.nome}}</h1>
+            <input *ngIf="editToggle" [(ngModel)]="editedProduct.nome" class="input-product-name" placeholder="Nome">
+
+            <div class="product-quantity">
+                <strong *ngIf="!editToggle">{{product.quantidade}} unidades</strong> 
+            <input *ngIf="editToggle" type="number" [(ngModel)]="editedProduct.quantidade" class="input-product-quantity" placeholder="Quantidade">
         </div>
-        <div class="product-quantity">
-            <strong>Qtn: {{product.quantidade}} unidades</strong> 
         </div>
+        
+        <span *ngIf="!editToggle" class="product-type">{{product.tipo}}</span>
+        <input *ngIf="editToggle" [(ngModel)]="editedProduct.tipo" class="input-product-type" placeholder="Tipo">
+
+        <span *ngIf="!editToggle" class="price" >{{product.preco | currency:'BRL'}}</span>
+        <div *ngIf="editToggle" class="edit-price-wrapper">
+                R$<input type="number" [(ngModel)]="editedProduct.preco" class="input-product-price" placeholder="Preço">
+        </div>
+
 
         <hr class="divider">
         <div class="desc-section">
             <h3>Descrição</h3>
-            <p>vou colocar mais tarde</p>
+            <p *ngIf="!editToggle">{{product.descricao}}</p>
+            <textarea *ngIf="editToggle" [(ngModel)]="editedProduct.descricao" class="input-product-desc" placeholder="Descrição"></textarea>
         </div>
     </div> 
 </div>

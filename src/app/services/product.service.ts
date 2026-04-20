@@ -19,7 +19,16 @@ export class ProductService {
     formData.append('produto', blob);
     formData.append('imagem', imagem);
 
-    return this.http.post(`${this.URL}/register `, formData);
+    if(produto.id){
+      
+      console.log(produto.id)
+      return this.http.put(`${this.URL}/update `, formData);
+    
+    }else{
+
+      return this.http.post(`${this.URL}/register `, formData);
+    
+    } 
 
   }
 

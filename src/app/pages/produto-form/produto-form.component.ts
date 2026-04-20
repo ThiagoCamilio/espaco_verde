@@ -29,7 +29,8 @@ export class ProdutoFormComponent implements OnInit {
     dataDeEntrada: '',
     precoCusto: 0,
     preco: 0,
-    imagem: ''
+    imagem: '',
+    descricao:''
   };
 
   tiposProdutos = Object.values(TiposProdutos);
@@ -54,11 +55,6 @@ export class ProdutoFormComponent implements OnInit {
     if (!this.validateProduct()) {
       return;
     }
-    // Simula loading
-    this.showLoading(true);
-
-    // Simula envio para API
-    console.log('Produto cadastrado:', this.produto);
 
     this.produtoService.save(this.produto, this.arquivoSelecionado).subscribe({
       next: (res) => {
@@ -69,11 +65,7 @@ export class ProdutoFormComponent implements OnInit {
     });
 
     this.successMessage = 'Produto cadastrado com sucesso!';
-    this.showLoading(false);
     this.resetForm();
-
-    // Simula sucesso
-    this.showLoading(false);
 
   }
 
@@ -102,7 +94,8 @@ export class ProdutoFormComponent implements OnInit {
       dataDeEntrada: '',
       precoCusto: 0,
       preco: 0,
-      imagem: ''
+      imagem: '',
+      descricao: ''
     };
     this.clearMessages();
   }

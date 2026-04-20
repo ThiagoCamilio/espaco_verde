@@ -42,13 +42,16 @@ public class Produto implements Serializable {
 
     private String imagem;
 
-    public Produto (String nome, TiposProdutos tipo, int quantidade, String dataDeEntrada, double precoCusto, double preco){
+    private String descricao;
+
+    public Produto (String nome, TiposProdutos tipo, int quantidade, String dataDeEntrada, double precoCusto, double preco, String descricao){
         this.nome = nome;
         this.tipo = tipo;
         this.quantidade = quantidade;
         this.dataDeEntrada = dataDeEntrada;
         this.precoCusto = precoCusto;
         this.preco = preco;
+        this.descricao = descricao;
     }
 }
 

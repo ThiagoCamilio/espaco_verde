@@ -9,7 +9,8 @@ public record RegisterProductDTO(
         int quantidade,
         String dataDeEntrada,
         double precoCusto,
-        double preco
+        double preco,
+        String descricao
 ){
 
     public Produto toEntity(){
@@ -21,6 +22,7 @@ public record RegisterProductDTO(
         p.setDataDeEntrada(this.dataDeEntrada);
         p.setPrecoCusto(this.precoCusto);
         p.setPreco(this.preco);
+        p.setDescricao(this.descricao);
         return p;
 
     }

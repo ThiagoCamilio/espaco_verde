@@ -9,4 +9,5 @@ export interface Product {
       precoCusto: number;
       preco: number;
       imagem: string;
+      descricao: string;
 }

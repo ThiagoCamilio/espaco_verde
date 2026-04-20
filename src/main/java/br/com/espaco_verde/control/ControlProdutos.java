@@ -1,7 +1,7 @@
 package br.com.espaco_verde.control;
 
 import br.com.espaco_verde.DTO.RegisterProductDTO;
-import br.com.espaco_verde.DTO.ResponseProductDTO;
+import br.com.espaco_verde.DTO.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.espaco_verde.entity.Produto;
 import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.service.ServiceProduto;
 
@@ -38,14 +37,14 @@ public class ControlProdutos {
     private  String diretorioUpload;
 
     @GetMapping("")
-    public List<ResponseProductDTO> listAll() throws Exception {
+    public List<ProductDTO> listAll() throws Exception {
 
         return serviceProduto.listAll();
 
     }
 
     @GetMapping("/produto/{id}")
-    public ResponseProductDTO listById(@PathVariable int id) throws Exception {
+    public ProductDTO listById(@PathVariable int id) throws Exception {
 
         return serviceProduto.listById(id);
 
@@ -88,7 +87,7 @@ public class ControlProdutos {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestPart("produto") RegisterProductDTO p, @RequestPart("imagem") MultipartFile imagem){
+    public ResponseEntity<?> update(@RequestPart("produto") ProductDTO p, @RequestPart("imagem") MultipartFile imagem){
         try {
             return serviceProduto.update(p, imagem);
         } catch (IIOException e){

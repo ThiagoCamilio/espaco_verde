@@ -1,7 +1,7 @@
 package br.com.espaco_verde.service;
 
 import br.com.espaco_verde.DTO.RegisterProductDTO;
-import br.com.espaco_verde.DTO.ResponseProductDTO;
+import br.com.espaco_verde.DTO.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -42,8 +42,9 @@ public class ServiceProduto{
 
     }
 
-    public ResponseEntity<?> update(RegisterProductDTO productDTO, MultipartFile image) throws IOException{
+    public ResponseEntity<?> update(ProductDTO productDTO, MultipartFile image) throws IOException{
 
+        System.out.println(productDTO.id());
         Produto product = productDTO.toEntity();
 
         String currentImage = repositoryProduto.findById(product.getId()).getImagem();
@@ -59,21 +60,21 @@ public class ServiceProduto{
         return new ResponseEntity<>(repositoryProduto.save(product), HttpStatus.CREATED);
     }
 
-    public List<ResponseProductDTO> listAll() throws Exception{
+    public List<ProductDTO> listAll() throws Exception{
         List<Produto> products = repositoryProduto.findAll();
-        List<ResponseProductDTO> dtos = new ArrayList<>();
+        List<ProductDTO> dtos = new ArrayList<>();
         for(Produto p : products){
-            ResponseProductDTO dto = new ResponseProductDTO(p);
+            ProductDTO dto = new ProductDTO(p);
             dtos.add(dto);
         }
 
         return dtos;
     }
 
-    public ResponseProductDTO listById(int id) {
+    public ProductDTO listById(int id) {
 
         Produto product = repositoryProduto.findById(id);
-        ResponseProductDTO dto = new ResponseProductDTO(product) ;
+        ProductDTO dto = new ProductDTO(product) ;
         return dto;
 
     }

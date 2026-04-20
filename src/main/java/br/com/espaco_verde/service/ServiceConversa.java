@@ -1,10 +1,9 @@
 package br.com.espaco_verde.service;
 
-import br.com.espaco_verde.DTO.ResponseProductDTO;
+import br.com.espaco_verde.DTO.ProductDTO;
 import br.com.espaco_verde.entity.Conversa;
 import br.com.espaco_verde.entity.MensagemCliente;
 import br.com.espaco_verde.entity.Pagina;
-import br.com.espaco_verde.entity.Produto;
 import br.com.espaco_verde.repository.RepositoryConversa;
 import br.com.espaco_verde.repository.RepositoryPagina;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ public class ServiceConversa {
 
             case "produtos":
 
-                List<ResponseProductDTO> produtos = serviceProduto.listAll();
+                List<ProductDTO> produtos = serviceProduto.listAll();
                 serviceMensagens.sendCarouselMessage(mensagem, produtos);
                 break;
 
