@@ -22,7 +22,9 @@ export class StorageComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadProducts();
-    this.layoutService.updateBannerText("Bem-vindo ao Estoque!", "Cadastre ou altere seus produtos", "Comece agora");
+    setTimeout(() =>{
+      this.layoutService.updateBannerText("Bem-vindo ao Estoque!", "Cadastre ou altere seus produtos", "Comece agora");
+    });
   }
 
   loadProducts(){

@@ -29,7 +29,10 @@ export class HomeComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadProducts();
-    this.layoutService.updateBannerText("Bem-vindo à Espaço Verde!","Descubra nossa coleção de plantas e flores para todos os momentos especiais", "Veja nossas ofertas");
+    setTimeout(()=>{
+      this.layoutService.updateBannerText("Bem-vindo à Espaço Verde!","Descubra nossa coleção de plantas e flores para todos os momentos especiais", "Veja nossas ofertas");
+    })
+    
   }
 
   loadProducts(){

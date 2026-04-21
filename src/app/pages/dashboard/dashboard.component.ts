@@ -26,9 +26,9 @@ export class DashboardComponent implements OnInit{
 
   constructor(private layoutService: LayoutService){}
 
-  products : Product[] = []
-
   ngOnInit(): void {
-    this.layoutService.updateBannerText("Bem-vindo ao seu Dashboard!", "Gerencie seu estoque e veja relatorios de suas vendas", "Comece agora");
+    setTimeout(() => {
+      this.layoutService.updateBannerText("Bem-vindo ao seu Dashboard!", "Gerencie seu estoque e veja relatorios de suas vendas", "Comece agora");
+    });
   }
 }

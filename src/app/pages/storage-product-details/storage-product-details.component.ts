@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class StorageProductDetailsComponent implements OnInit{
 
-  product!: Product;
+  product!: any;
   editedProduct!: Product;
   productId: string | null = null;
   baseImageUrl = `${environment.apiUrl}/produtos/imagem/`;
@@ -31,7 +31,9 @@ export class StorageProductDetailsComponent implements OnInit{
   constructor(private route: ActivatedRoute, private productService : ProductService, private bannerService: BannerService){}
 
   ngOnInit(): void {
-    this.bannerService.showBanner.next(false);
+    setTimeout(()=>{
+      this.bannerService.showBanner.next(false);
+    })
     this.productId = this.route.snapshot.paramMap.get('id');
     this.productService.listById(this.productId!).subscribe({
       next: (data) =>{
@@ -73,8 +75,8 @@ export class StorageProductDetailsComponent implements OnInit{
  saveEdit():void{
     this.productService.save(this.editedProduct, this.selectedFile).subscribe({
       next: (res) => {
+      this.product = res  
       alert('Produto salvo!');
-
     },
     error: (err) => alert('Erro ao salvar produto.')
     });
