@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../models/product';
 import { BaseProductCardComponent } from '../base-product-card/base-product-card.component';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-storage-product-card',
@@ -10,7 +11,9 @@ import { RouterLink } from '@angular/router';
   imports: [
     BaseProductCardComponent,
     NgFor,
-    RouterLink
+    RouterLink,
+    DeleteModalComponent,
+    NgIf
   ],
   templateUrl: './storage-product-card.component.html',
   styleUrl: './storage-product-card.component.css'
@@ -18,4 +21,11 @@ import { RouterLink } from '@angular/router';
 export class StorageProductCardComponent {
   @Input() products!: Product[];
   @Input() product!: Product;
+  @Output() selectedProduct = new EventEmitter<any>();
+
+  onModalClick(event: Event):void{
+    event.stopPropagation();
+    this.selectedProduct.emit(this.product);
+  }
+
 }

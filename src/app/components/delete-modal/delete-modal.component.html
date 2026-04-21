@@ -1,0 +1,20 @@
+<div class="overlay">
+
+</div>
+
+<div class="delete-modal">
+    <div class="modal-header">
+        <h1>ATENÇÃO!!</h1>
+    </div>
+    
+    <div class="modal-body">
+        <p>Realmente deseja apagar <strong>{{product.nome}}</strong>?</p>
+        <small>Essa ação não pode ser desfeita</small>
+    </div>
+
+    <div class="modal-btns">
+        <button class="modal-btn-yes" (click)="exclude()">Sim, apagar</button>
+        <button class="modal-btn-no" (click)="close()">Não</button>
+    </div>
+    
+</div>

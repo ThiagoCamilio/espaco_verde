@@ -1,7 +1,17 @@
 <section class="products">
   <div class="product-grid">
     <app-storage-product-card
-      [products]="products">
+      *ngFor="let p of products"
+      [product] = "p"
+      (selectedProduct) = "selectProduct($event)">
     </app-storage-product-card>
   </div>
 </section>
+
+<div *ngIf="modalToggle" class="modal">
+  <app-delete-modal 
+      [product]="selectedProduct"
+      (closeModal) = "modalToggle = false"
+      (excludeSucess) ="loadProducts()">    
+  </app-delete-modal>
+</div>

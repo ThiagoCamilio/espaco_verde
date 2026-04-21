@@ -17,9 +17,18 @@
             <button *ngIf="editToggle" class="btn-cancel" (click)="onEditToggle()"><i class="fa-solid fa-x"></i> Cancelar</button>
 
             <button *ngIf="!editToggle" class="btn-edit" (click)="onEditToggle()"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-            <button *ngIf="!editToggle" class="btn-delete"><i class="fa-solid fa-trash-can"></i> Excluir</button>
+            <button *ngIf="!editToggle" class="btn-delete" (click)="onModalToggle()"><i class="fa-solid fa-trash-can"></i> Excluir</button>
         </div>
     </div>
+
+    <div *ngIf="modalToggle" class="modal">
+        <app-delete-modal 
+            [product]=product
+            (closeModal) = "modalToggle = false">
+            
+        </app-delete-modal>
+    </div>
+
     <div class="product-info-section">
 
         <div class="product-header">        

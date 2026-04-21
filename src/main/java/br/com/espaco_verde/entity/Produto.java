@@ -8,6 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,6 +21,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
+@SQLDelete(sql = "UPDATE produtos SET excluido = true WHERE id = ?")
+@SQLRestriction("excluido = false")
 public class Produto implements Serializable {
 
     @Serial
@@ -43,6 +47,8 @@ public class Produto implements Serializable {
     private String imagem;
 
     private String descricao;
+
+    private boolean excluido = false;
 
     public Produto (String nome, TiposProdutos tipo, int quantidade, String dataDeEntrada, double precoCusto, double preco, String descricao){
         this.nome = nome;

@@ -1,15 +1,12 @@
-<div class="product-grid">
-    <app-base-product-card
-        *ngFor="let p of products"
-        [product]="p"
-        [route]="'produto/'+p.id!"
-    >  
-        <div class="storage-info">
-            <strong> Qnt: {{p.quantidade}}</strong>
-        </div>
-        <div class="action-btns">
-            <button class="btn-edit" [routerLink]="['produto/'+p.id]" [queryParams]="{edit :true}"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-            <button class="btn-delete" [routerLink]="['admin/dashboard']"><i class="fa-solid fa-trash-can"></i> Excluir</button>
-        </div>
-    </app-base-product-card>
-</div>
+<app-base-product-card
+    [product]="product"
+    [route]="'produto/'+product.id!"
+>  
+    <div class="storage-info">
+        <strong> Qnt: {{product.quantidade}}</strong>
+    </div>
+    <div class="action-btns">
+        <button class="btn-edit" [routerLink]="['produto/'+product.id]" [queryParams]="{edit :true}"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+        <button class="btn-delete" (click)="onModalClick($event)"><i class="fa-solid fa-trash-can"></i> Excluir</button>
+    </div>
+</app-base-product-card>

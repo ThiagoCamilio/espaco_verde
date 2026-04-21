@@ -2,15 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { LayoutService } from '../../services/layout.service';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { StorageProductCardComponent } from '../../components/storage-product-card/storage-product-card.component';
+import { DeleteModalComponent } from '../../components/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-storage',
   standalone: true,
   imports: [
     StorageProductCardComponent,
-    NgFor
+    NgFor,
+    DeleteModalComponent,
+    NgIf
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.css'
@@ -18,7 +21,9 @@ import { StorageProductCardComponent } from '../../components/storage-product-ca
 export class StorageComponent implements OnInit{
   constructor(private layoutService: LayoutService, private productService: ProductService){}
 
-  products : Product[] = []
+  products : Product[] = [];
+  selectedProduct:any;
+  modalToggle: boolean = false;
 
   ngOnInit(): void {
     this.loadProducts();
@@ -36,6 +41,11 @@ export class StorageComponent implements OnInit{
         console.log("Houve um erro", err)
       },
     })
+  }
+
+  selectProduct(product: any){
+    this.modalToggle = !this.modalToggle;
+    this.selectedProduct = product;
   }
 
 }

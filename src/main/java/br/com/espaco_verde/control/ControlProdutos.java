@@ -96,4 +96,9 @@ public class ControlProdutos {
             throw new RuntimeException(e);
         }
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable int id){
+        return serviceProduto.delete(id);
+    }
 }

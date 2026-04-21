@@ -41,4 +41,8 @@ export class ProductService {
   listById(id:string): Observable<Product>{
     return this.http.get<Product>(`${this.URL}/produto/`+id)
   }
+
+  delete(id:string){
+    return this.http.delete<Product>(`${this.URL}/delete/`+id)
+  }
 }

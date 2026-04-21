@@ -6,13 +6,15 @@ import { BannerService } from '../../services/banner.service';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../environment';
 import { FormsModule } from '@angular/forms';
+import { DeleteModalComponent } from '../../components/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-storage-product-details',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    DeleteModalComponent
   ],
   templateUrl: './storage-product-details.component.html',
   styleUrl: './storage-product-details.component.css'
@@ -24,6 +26,7 @@ export class StorageProductDetailsComponent implements OnInit{
   productId: string | null = null;
   baseImageUrl = `${environment.apiUrl}/produtos/imagem/`;
   editToggle: boolean = false;
+  modalToggle: boolean = false;
   imagePreview: string | ArrayBuffer | null = null;
   selectedFile!: File
   
@@ -70,6 +73,10 @@ export class StorageProductDetailsComponent implements OnInit{
     this.editToggle = !this.editToggle;
     this.editedProduct = JSON.parse(JSON.stringify(this.product))
     this.imagePreview = null;
+  }
+
+  onModalToggle():void{
+    this.modalToggle = !this.modalToggle;
   }
 
  saveEdit():void{

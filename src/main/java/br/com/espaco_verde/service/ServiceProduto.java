@@ -78,4 +78,9 @@ public class ServiceProduto{
         return dto;
 
     }
+
+    public ResponseEntity<?> delete(int id) {
+        repositoryProduto.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
