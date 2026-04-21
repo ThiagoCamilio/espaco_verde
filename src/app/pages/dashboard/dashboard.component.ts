@@ -16,7 +16,6 @@ import { DashboardCardComponent } from '../../components/dashboard-card/dashboar
     RouterLink, 
     ProductCardComponent, 
     NgFor,
-    BannerComponent,
     DashboardCardComponent
   ],
   templateUrl: './dashboard.component.html',

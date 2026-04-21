@@ -5,6 +5,7 @@ import { RouterLink, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 import { TiposProdutos } from '../../models/tipos-produtos';
+import { LayoutService } from '../../services/layout.service';
 
 
 @Component({
@@ -42,11 +43,14 @@ export class ProdutoFormComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   arquivoSelecionado!: File
 
-  constructor(private produtoService: ProductService) {
+  constructor(private produtoService: ProductService, private layoutService: LayoutService) {
     this.today = new Date().toISOString().split('T')[0];
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.layoutService.updateBannerText("Cadastre novos produtos", "Adicione produtos ao seu estoque ", "Começar agora");
+    });
     this.loadCartCount();
   }
 
