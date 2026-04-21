@@ -6,6 +6,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { StorageProductCardComponent } from '../../components/storage-product-card/storage-product-card.component';
 import { DeleteModalComponent } from '../../components/delete-modal/delete-modal.component';
 import { RouterLink } from '@angular/router';
+import { FiltersComponent } from '../../components/filters/filters.component';
 
 @Component({
   selector: 'app-storage',
@@ -15,7 +16,8 @@ import { RouterLink } from '@angular/router';
     NgFor,
     DeleteModalComponent,
     NgIf,
-    RouterLink
+    RouterLink,
+    FiltersComponent
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.css'

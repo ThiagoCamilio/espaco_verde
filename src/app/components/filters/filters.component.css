@@ -1,0 +1,28 @@
+.filters {
+  border-radius: 8px;
+}
+
+.filters h3 {
+  margin-bottom: 1rem;
+  color: #4caf50;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-options button {
+  background-color: #e8f5e9;
+  border: 1px solid #4caf50;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--verde-principal);
+}
+
+.filter-options button:hover, .filter-options button.active {
+  background-color: #4caf50;
+}

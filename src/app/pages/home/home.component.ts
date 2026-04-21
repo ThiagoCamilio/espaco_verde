@@ -6,6 +6,7 @@ import { Product } from '../../models/product';
 import { ProductCardComponent } from '../../components/produto-card/produto-card.component';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { LayoutService } from '../../services/layout.service';
+import { FiltersComponent } from '../../components/filters/filters.component';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,8 @@ import { LayoutService } from '../../services/layout.service';
     NgFor, 
     RouterLink, 
     ProductCardComponent,
-    BannerComponent
+    BannerComponent,
+    FiltersComponent
   ]
 })
 export class HomeComponent implements OnInit{
