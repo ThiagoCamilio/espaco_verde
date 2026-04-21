@@ -87,7 +87,7 @@ public class ControlProdutos {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestPart("produto") ProductDTO p, @RequestPart("imagem") MultipartFile imagem){
+    public ResponseEntity<?> update(@RequestPart("produto") ProductDTO p, @RequestPart(value = "imagem", required = false) MultipartFile imagem){
         try {
             return serviceProduto.update(p, imagem);
         } catch (IIOException e){

@@ -44,8 +44,6 @@ public class ServiceImage {
 
     public String updateImage(Produto product, MultipartFile image) throws IOException {
 
-        Path directory = this.getDirectory();
-        Path currentImagePath = directory.resolve(product.getImagem());
         String newImagePath = saveImage(image);
         this.deleteImage(product);
 

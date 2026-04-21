@@ -47,14 +47,13 @@ public class ServiceProduto{
         System.out.println(productDTO.id());
         Produto product = productDTO.toEntity();
 
-        String currentImage = repositoryProduto.findById(product.getId()).getImagem();
-        product.setImagem(currentImage);
+        if (image == null){
+            String currentImage = repositoryProduto.findById(product.getId()).getImagem();
+            product.setImagem(currentImage);
 
-        if (!image.isEmpty()){
+        }else {
             String newImageName = serviceImage.updateImage(product, image);
             product.setImagem(newImageName);
-        }else{
-            product.setImagem(repositoryProduto.findById(product.getId()).getImagem());
         }
 
         return new ResponseEntity<>(repositoryProduto.save(product), HttpStatus.CREATED);
