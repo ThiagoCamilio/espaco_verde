@@ -37,8 +37,9 @@
 
             <div class="product-quantity">
                 <strong *ngIf="!editToggle">{{product.quantidade}} unidades</strong> 
-            <input *ngIf="editToggle" type="number" [(ngModel)]="editedProduct.quantidade" class="input-product-quantity" placeholder="Quantidade">
-        </div>
+            <input *ngIf="editToggle" type="number" [(ngModel)]="editedProduct.quantidade" class="input-product-quantity" placeholder="Quantidade"> 
+            <strong *ngIf="editToggle"> Unidades</strong>
+            </div>
         </div>
         
         <span *ngIf="!editToggle" class="product-type">{{product.tipo}}</span>

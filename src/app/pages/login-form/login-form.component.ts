@@ -31,8 +31,8 @@ export class LoginFormComponent{
   onSubmit():void{
     
     this.loginService.login(this.user.login, this.user.password).subscribe({
-      next: () => console.log("logou"),
-      error: () => console.log("nao logou")
+      next: () => alert("logou"),
+      error: () => alert("nao logou")
     })
   }
 

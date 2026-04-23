@@ -27,6 +27,8 @@ public class ServiceToken {
             String token = JWT.create()
                     .withIssuer("espaco-verde")
                     .withSubject(user.getLogin())
+                    .withClaim("role", user.getRole().getRole())
+                    .withClaim("name", user.getName())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
             return token;

@@ -84,8 +84,9 @@ export class StorageProductDetailsComponent implements OnInit{
       next: (res) => {
       this.product = res  
       alert('Produto salvo!');
+      this.onEditToggle();
     },
-    error: (err) => alert('Erro ao salvar produto.')
+    error: (err) => alert('Erro ao salvar produto.'+ err)
     });
   }
 

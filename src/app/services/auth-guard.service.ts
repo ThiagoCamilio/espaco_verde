@@ -1,24 +1,34 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivateChild {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  canActivate(
+  canActivateChild(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const authToken = sessionStorage.getItem('auth-token');
-
-    if (authToken) {
-      return true;
-    } else {
+    const authToken = this.authService.getToken();
+    if (!authToken) {
       this.router.navigate(['/login']);
-      return false; 
+      return false;
+    } 
+
+    const expectedRole = next.data['expectedRole'] || next.parent?.data['expectedRole']
+
+    const userRole = this.authService.getRole();
+
+    if(expectedRole && userRole !== expectedRole ){
+      this.router.navigate(['/home']);
+      return false;
     }
+
+    return true; 
+    
   }
 }

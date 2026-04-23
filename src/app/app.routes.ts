@@ -8,6 +8,7 @@ import { UserLayoutComponent } from './layouts/user-layout/user-layout.component
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { StorageComponent } from './pages/storage/storage.component';
 import { StorageProductDetailsComponent } from './pages/storage-product-details/storage-product-details.component';
+import { AuthGuard } from './services/auth-guard.service';
 
 export const routes: Routes = [
   {
@@ -22,13 +23,15 @@ export const routes: Routes = [
 
   { path: 'admin',
     component: AdminLayoutComponent,
+    canActivateChild:[AuthGuard],
+    data: { expectedRole: 'admin' },
     children:[
-      { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
+      { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full'},
       { path: 'dashboard', component: DashboardComponent},
-      { path: 'cadastro', component: ProdutoFormComponent },
+      { path: 'cadastro', component: ProdutoFormComponent},
       { path: 'estoque', component: StorageComponent},
       { path: 'estoque/produto/:id', component: StorageProductDetailsComponent}
-    ]
+    ],   
   }
 
 ];

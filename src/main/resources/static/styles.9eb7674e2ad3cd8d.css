@@ -1,0 +1,1 @@
+:root{--sidebar-width: 0px;--header-height: 101px}.header-container{height:var(--header-height)}.admin-layout{padding-top:var(--header-height)}footer{margin-left:var(--sidebar-width);transition:margin-left .3s ease}
