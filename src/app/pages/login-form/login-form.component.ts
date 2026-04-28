@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import {FormsModule, NgForm} from '@angular/forms';
-import { LoginService } from '../../services/login.service';
 import { User } from '../../models/user';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -13,9 +13,7 @@ import { User } from '../../models/user';
   ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css',
-  providers:[
-    LoginService
-  ]
+
 })
 export class LoginFormComponent{
 
@@ -24,15 +22,15 @@ export class LoginFormComponent{
     password: ""
   }
 
-  constructor(private loginService: LoginService){
+  constructor(private authService: AuthService){
   }
   
 
   onSubmit():void{
     
-    this.loginService.login(this.user.login, this.user.password).subscribe({
-      next: () => alert("logou"),
-      error: () => alert("nao logou")
+    this.authService.login(this.user.login, this.user.password).subscribe({
+      next: () => console.log("logou"),
+      error: () => console.log("nao logou")
     })
   }
 

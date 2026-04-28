@@ -15,9 +15,16 @@
     </nav>
 
     <div class="header-actions">
-      <button><i class="fas fa-search"></i></button>
-      <button><i class="fas fa-shopping-cart"></i></button>
-      <button class="login-btn" (click)="navigateTo('login')">Entrar</button>
+      <div class="user-area">
+        <ng-container *ngIf="(isLoggedIn$ | async) === false">
+          <button routerLink="/login" class="login-btn">Entrar</button>
+          <button routerLink="/register" class="register-btn">Cadastre-se</button>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn$ | async">
+          <button routerLink="/perfil" class="progile-btn">Meu Perfil</button>
+        </ng-container>
+      </div>
     </div>
   </div>
 </header>

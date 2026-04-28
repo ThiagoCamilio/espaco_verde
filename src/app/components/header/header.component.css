@@ -76,7 +76,6 @@ nav a:hover {
 }
 
 .login-btn {
-  background-color: black;
   padding: 0.5rem 1.5rem;
   border-radius: 25px;
   font-weight: 600;
@@ -84,8 +83,30 @@ nav a:hover {
 }
 
 .login-btn:hover {
-  background-color: black;
   transform: translateY(-3px);
+  color: #2e7d32;
+}
 
+.register-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.register-btn:hover {
+  transform: translateY(-3px);
+  color: #2e7d32;
+}
+
+.profile-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.profile-btn:hover {
+  transform: translateY(-3px);
   color: #2e7d32;
 }
