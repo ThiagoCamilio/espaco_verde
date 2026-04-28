@@ -1,0 +1,35 @@
+<div class="register-container">
+
+    <div class="form">
+        <h2>Crie sua conta !</h2>
+
+        <form [formGroup] = "registerForm" (ngSubmit)="onSubmit()">
+            <div class="input-group">
+                <label>Nome Completo</label>
+                <input type="text" formControlName="name" placeholder="Seu nome completo">
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <label>E-mail</label>
+                    <input type="email" formControlName="login" placeholder="E-mail para login">
+                </div>
+                <div class="input-group">
+                    <label>Telefone</label>
+                    <input type="text" formControlName="phone" placeholder="Telefone para contato">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Endereço</label>
+                <input type="text" formControlName="adress" placeholder="Endereço para entregas">
+            </div>
+            <div class="input-group">
+                <label>Senha</label>
+                <input type="text" formControlName="password" placeholder="Senha">
+            </div>
+            <button type="submit" class="register-btn" [disabled]="registerForm.invalid">
+                Finalizar Cadastro
+            </button>
+        </form>
+    </div>
+
+</div>

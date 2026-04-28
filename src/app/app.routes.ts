@@ -9,6 +9,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { StorageComponent } from './pages/storage/storage.component';
 import { StorageProductDetailsComponent } from './pages/storage-product-details/storage-product-details.component';
 import { AuthGuard } from './services/auth-guard.service';
+import { RegisterFormComponent } from './pages/register-form/register-form.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,8 @@ export const routes: Routes = [
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'login', component: LoginFormComponent },
+      { path: 'register', component: RegisterFormComponent },
+
     ]
   },
 

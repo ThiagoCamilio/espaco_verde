@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class ServiceAuthentication implements UserDetailsService {
 
@@ -46,13 +48,13 @@ public class ServiceAuthentication implements UserDetailsService {
 
     public ResponseEntity<?> userRegister(RegisterUserDTO userData){
         if (repositoryUser.findByLogin(userData.login()) != null){
-            return ResponseEntity.status(409).body("Dados já cadastrados!");
+            return ResponseEntity.status(409).body(Map.of("message", "Email já cadastrados!"));
         }else{
             String encryptedPassword = new BCryptPasswordEncoder().encode(userData.password());
             User newUser = new User(userData.name(), userData.login(), encryptedPassword, userData.role(), userData.phone(), userData.adress());
 
             repositoryUser.save(newUser);
-            return ResponseEntity.status(201).body("Usuario "+userData.name()+" cadastrado com sucesso!");
+            return ResponseEntity.status(201).body(Map.of("message", "Usuario " +userData.name() + " cadastrado com sucesso!"));
         }
     }
 }
