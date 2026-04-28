@@ -28,14 +28,20 @@ public class User implements UserDetails {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public User(String name, String login, String password, UserRole role) {
+    private String phone;
 
+    private String adress;
+
+    public User(String name, String login, String password, UserRole role, String phone, String adress) {
         this.name = name;
         this.login = login;
         this.password = password;
         this.role = role;
+        this.phone = phone;
+        this.adress = adress;
     }
 
     @Override

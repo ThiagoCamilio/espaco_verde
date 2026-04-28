@@ -5,15 +5,14 @@ import br.com.espaco_verde.DTO.LoginResponseDTO;
 import br.com.espaco_verde.DTO.RegisterUserDTO;
 import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.repository.RepositoryUser;
+import br.com.espaco_verde.service.ServiceAuthentication;
 import br.com.espaco_verde.service.ServiceToken;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("auth")
 
-//mudar a lógica para um service
 public class ControllerAuthentication {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Autowired
     private RepositoryUser repositoryUser;
@@ -33,28 +28,19 @@ public class ControllerAuthentication {
     @Autowired
     private ServiceToken serviceToken;
 
+    @Autowired
+    private ServiceAuthentication serviceAuthentication;
+
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var auth = authenticationManager.authenticate(usernamePassword);
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO userData){
 
-        var token = serviceToken.generateToken((User) auth.getPrincipal());
-
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return serviceAuthentication.login(userData);
 
     }
 
-    @GetMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterUserDTO data){
+    @PostMapping("/register")
+    public ResponseEntity register(@RequestBody @Valid RegisterUserDTO userData){
 
-        if (repositoryUser.findByLogin(data.login()) != null){
-            return ResponseEntity.badRequest().build();
-        }else{
-            String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-            User newUser = new User(data.name(), data.login(), encryptedPassword, data.role());
-
-            repositoryUser.save(newUser);
-            return ResponseEntity.ok().build();
-        }
+        return serviceAuthentication.userRegister(userData);
     }
 }
