@@ -1,12 +1,3 @@
-:root {
-  --verde-principal:#2e7d32;
-  --verde-secundario: #4caf50;
-  --verde-claro: #e8f5e9;
-  --preto: #000000;
-  --branco: #ffffff;
-  --cinza: #f5f5f5;
-}
-
 header {
   background-color: white;
   color: black;
@@ -73,6 +64,13 @@ nav a:hover {
   border-bottom: 2px solid black;
 }
 
+.user-area {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px; 
+}
+
 .login-btn {
   background-color: transparent;
   color: black;
@@ -117,4 +115,42 @@ nav a:hover {
 .logout-btn:hover{
   background-color: #fdf0ed;
   border-color: #e74c3c;
+}
+
+.cart-container {
+  position: relative;
+  display: flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  margin: 0px;
+  cursor: pointer;
+  padding: 0px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.icone-cart {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -2px;
+  right: -6px; 
+  background-color: #e74c3c;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 12px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #ffffff;
+  box-sizing: content-box;
 }

@@ -19,7 +19,7 @@ export class AuthService {
 
   constructor(private http:HttpClient) { }
 
-  private hasToken(): boolean{
+  hasToken(): boolean{
     return !!sessionStorage.getItem('auth-token');
   }
 

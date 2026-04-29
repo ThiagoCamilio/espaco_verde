@@ -1,6 +1,7 @@
-<div class="product-grid">
-    <app-base-product-card
-        *ngFor="let p of products"
-        [product]="p">  
-    </app-base-product-card>
-</div>
+<app-base-product-card
+    [product]="product"
+    [route]="'/product/'+product.id!">  
+    <div class="action-btns">
+        <button class="add-cart-btn" (click)="addToCart($event)"><i class="fa-solid fa-cart-plus"></i></button>
+    </div>
+</app-base-product-card>

@@ -1,0 +1,59 @@
+<div class="cart-container">
+  <h1>O Seu Carrinho</h1>
+
+  <div *ngIf="(items$ | async)?.length === 0; else cartContent" class="empty-cart">
+    <div class="empty-icon">🛒</div>
+    <h2>O seu carrinho está vazio</h2>
+    <p>Parece que ainda não adicionou nenhum produto ao seu carrinho.</p>
+    <button routerLink="/home" class="products-btn">Explorar Produtos</button>
+  </div>
+
+  <ng-template #cartContent>
+    <div class="cart-grid">
+      <div class="cart-items">
+        <div class="cart-item" *ngFor="let item of items$ | async">
+          <div class="item-img">
+            <img [src]="baseImageUrl + item.imageUrl" [alt]="item.name">
+          </div>
+          
+          <div class="item-info">
+            <h3>{{ item.name }}</h3>
+            <p class="unit-price">Preço unitário: {{ item.price | currency:'BRL' }}</p>
+          </div>
+
+          <div class="item-quantity">
+            <div class="quantity-controls">
+              <button (click)="removeItem(item.produtcId)">-</button>
+              <span>{{ item.quantity }}</span>
+              <button (click)="addItem(item)">+</button>
+            </div>
+          </div>
+
+          <div class="item-total">
+            <p>{{ (item.price * item.quantity) | currency:'BRL' }}</p>
+          </div>
+        </div>
+
+        <button class="btn-clear" (click)="cleanCart()">Esvaziar Carrinho</button>
+      </div>
+
+      <div class="cart-summary">
+        <h2>Resumo</h2>
+        <div class="summary-row">
+          <span>Itens ({{ totalItems }}):</span>
+          <span>{{ totalPrice | currency:'BRL' }}</span>
+        </div>
+        <div class="divider"></div>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span>{{ totalPrice | currency:'BRL' }}</span>
+        </div>
+
+        <button class="btn-checkout" routerLink="/checkout">
+          Finalizar Pedido
+        </button>
+        <a routerLink="/home" class="link-back">Continuar a comprar</a>
+      </div>
+    </div>
+  </ng-template>
+</div>

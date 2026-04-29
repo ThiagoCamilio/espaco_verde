@@ -1,0 +1,35 @@
+<div class="container-details" *ngIf="product">
+  <div class="product-grid">
+    
+    <div class="image-wraper">
+      <img [src]="baseImageUrl + product.imagem" [alt]="product.nome" class="image">
+    </div>
+
+    <div class="info-section">
+      <span class="product-type">{{ product.tipo }}</span>
+      <h1>{{ product.nome }}</h1>
+      
+      <p class="price">{{ product.preco | currency:'BRL' }}</p>
+      
+      <div class="desc">
+        <h3>Descrição</h3>
+        <p>{{ product.descricao }}</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="action-cart">
+        <div class="quantity-selector">
+          <button (click)="modifyQuantity(-1)">-</button>
+          <span>{{ quantity }}</span>
+          <button (click)="modifyQuantity(1)">+</button>
+        </div>
+
+        <button class="cart-btn" (click)="addToCart()">
+          <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

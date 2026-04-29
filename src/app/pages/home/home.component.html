@@ -6,7 +6,10 @@
 
 <section class="products">
   <h2>Nossos Produtos</h2>
-    <app-produto-card
-      [products]="products">
-    </app-produto-card>
+  <div class="product-grid">
+      <app-produto-card
+        *ngFor="let p of products"
+        [product] = "p">
+      </app-produto-card>
+  </div>
 </section>

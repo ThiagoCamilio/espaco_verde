@@ -11,6 +11,9 @@ import { StorageProductDetailsComponent } from './pages/storage-product-details/
 import { AuthGuard } from './services/auth-guard.service';
 import { RegisterFormComponent } from './pages/register-form/register-form.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { ProductDetailsComponent } from './pages/product-details/product-details.component';
+import { CartComponent } from './pages/cart/cart.component';
+import { CheckoutDeliveryComponent } from './pages/checkout-delivery/checkout-delivery.component';
 
 export const routes: Routes = [
   {
@@ -21,6 +24,7 @@ export const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'login', component: LoginFormComponent },
       { path: 'register', component: RegisterFormComponent },
+      { path: 'product/:id', component: ProductDetailsComponent}
 
     ]
   },
@@ -45,7 +49,10 @@ export const routes: Routes = [
     data: {expectedRole: 'user'},
     children:[
       { path: '', redirectTo: '/user/profile', pathMatch:'full'},
-      { path: 'profile', component: UserProfileComponent}
+      { path: 'profile', component: UserProfileComponent},
+      { path: 'cart', component: CartComponent},
+      { path: 'checkout/delivery', component: CheckoutDeliveryComponent}
+
     ]
   }
 

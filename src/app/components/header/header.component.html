@@ -22,7 +22,14 @@
         </ng-container>
 
         <ng-container *ngIf="isLoggedIn$ | async">
-          <button routerLink="/perfil" class="profile-btn">Meu Perfil</button>
+
+          <div class="cart-container" routerLink="/user/cart", title="Ver meu carrinho de compras">
+              <i class="fa-solid fa-cart-shopping icon-cart"></i>
+            <span class="cart-badge" *ngIf="(totalItens$ | async) as total">
+              {{ total }}
+            </span>
+          </div>
+          <button routerLink="/user/profile" class="profile-btn">Meu Perfil</button>
           <button (click)="logout()" class="logout-btn">Sair</button>
         </ng-container>
       </div>

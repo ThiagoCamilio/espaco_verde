@@ -43,18 +43,10 @@ body {
 .filter-options button:hover, .filter-options button.active {
   background-color: #4caf50;
 }
-
-.products {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-.products h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #2e7d32;
-  font-size: 2rem;
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
 }
 
 .details-btn, .add-to-cart {
