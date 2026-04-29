@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,6 +19,8 @@ export class SidebarComponent {
   @Input() isExpanded : Boolean = false;
   @Output() toggle = new EventEmitter<void>();
 
+  constructor(private authService: AuthService, private router:Router){}
+
   toggleSidebar(){
     this.isExpanded = !this.isExpanded;
     this.toggle.emit();
@@ -26,6 +29,11 @@ export class SidebarComponent {
     }else{
       document.documentElement.style.setProperty('--sidebar-width', '80px');
     }
+  }
+
+  logout():void{
+    this.authService.logout();
+    this.router.navigate(['/home'])
   }
 
 }

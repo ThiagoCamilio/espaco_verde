@@ -23,6 +23,7 @@
 
         <ng-container *ngIf="isLoggedIn$ | async">
           <button routerLink="/perfil" class="profile-btn">Meu Perfil</button>
+          <button (click)="logout()" class="logout-btn">Sair</button>
         </ng-container>
       </div>
     </div>

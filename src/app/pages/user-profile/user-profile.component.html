@@ -1,0 +1,47 @@
+<div class="profile-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>Meu Perfil</h2>
+
+      <button *ngIf="!isEditing" type="button" class="edit-btn" (click)="onEditToggle()">
+        Editar
+      </button>
+    </div>
+    <div class="success-alert" *ngIf="message">
+        Dados atualizados com sucesso!
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      
+      <div class="input-group">
+        <label>E-mail</label>
+        <input type="email" formControlName="login" class="input-email" title="O e-mail não pode ser alterado">
+      </div>
+
+      <div class="input-group">
+        <label>Nome Completo</label>
+        <input type="text" formControlName="name" placeholder="Seu nome">
+      </div>
+
+      <div class="input-group">
+        <label>Telefone (WhatsApp)</label>
+        <input type="text" formControlName="phone" placeholder="Seu número com DDD">
+      </div>
+
+      <div class="input-group">
+        <label>Endereço de Entrega</label>
+        <input type="text" formControlName="adress" placeholder="Endereço completo">
+      </div>
+
+      <div class="action-btns" *ngIf="isEditing">
+        <button type="button" class="cancel-btn" (click)="cancelEdit()">
+            Cancelar
+          </button>
+        <button type="submit" class="save-btn" [disabled]="profileForm.invalid || loading">
+          {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -22,15 +22,14 @@ export class LoginFormComponent{
     password: ""
   }
 
-  constructor(private authService: AuthService){
+  constructor(private authService: AuthService, private router: Router){
   }
   
-
   onSubmit():void{
     
     this.authService.login(this.user.login, this.user.password).subscribe({
-      next: () => console.log("logou"),
-      error: () => console.log("nao logou")
+      next: () => this.router.navigate(['/home']),
+      error: () => this.router.navigate(['/login'])
     })
   }
 

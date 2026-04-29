@@ -2,9 +2,11 @@ package br.com.espaco_verde.service;
 
 import br.com.espaco_verde.DTO.AuthenticationDTO;
 import br.com.espaco_verde.DTO.LoginResponseDTO;
-import br.com.espaco_verde.DTO.RegisterUserDTO;
+import br.com.espaco_verde.DTO.UserDTO;
+import br.com.espaco_verde.DTO.UserUpdateDTO;
 import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.repository.RepositoryUser;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class ServiceAuthentication implements UserDetailsService {
+public class ServiceUser implements UserDetailsService {
 
     @Autowired
     private RepositoryUser repositoryUser;
@@ -46,7 +48,7 @@ public class ServiceAuthentication implements UserDetailsService {
         return ResponseEntity.status(200).body(new LoginResponseDTO(token));
     }
 
-    public ResponseEntity<?> userRegister(RegisterUserDTO userData){
+    public ResponseEntity<?> userRegister(UserDTO userData){
         if (repositoryUser.findByLogin(userData.login()) != null){
             return ResponseEntity.status(409).body(Map.of("message", "Email já cadastrados!"));
         }else{
@@ -56,5 +58,16 @@ public class ServiceAuthentication implements UserDetailsService {
             repositoryUser.save(newUser);
             return ResponseEntity.status(201).body(Map.of("message", "Usuario " +userData.name() + " cadastrado com sucesso!"));
         }
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateUser(User user, UserUpdateDTO updateData){
+
+        User updateUser = repositoryUser.getReferenceById(user.getId());
+        updateUser.setName(updateData.name());
+        updateUser.setAdress(updateData.adress());
+        updateUser.setPhone(updateData.phone());
+
+        return ResponseEntity.status(201).build();
     }
 }

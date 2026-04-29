@@ -99,12 +99,22 @@ nav a:hover {
 
 .profile-btn {
   background-color: transparent;
-  color: #2c3e50; /* Cor escura neutra */
-  border: 2px solid #ced4da; /* Borda cinza clara */
+  color: #2c3e50; 
+  border: 2px solid #ced4da; 
 }
 
 .profile-btn:hover {
   border-color: #27ae60;
-  color: #27ae60;
-  background-color: #f4fdf8; /* Fundo verde super clarinho */
+  background-color: #b1fcd0;;
+}
+
+.logout-btn{
+  background-color: transparent;
+  color: #e74c3c; 
+  border: 2px solid transparent;
+}
+
+.logout-btn:hover{
+  background-color: #fdf0ed;
+  border-color: #e74c3c;
 }

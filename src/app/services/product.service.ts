@@ -33,9 +33,7 @@ export class ProductService {
   }
 
   listAll(): Observable<Product[]>{
-
     return this.http.get<Product[]>(this.URL);
-
   }
 
   listById(id:string): Observable<Product>{
