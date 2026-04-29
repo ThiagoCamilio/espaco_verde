@@ -1,7 +1,7 @@
 package br.com.espaco_verde.repository;
 
 import br.com.espaco_verde.entity.Colaborador;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RepositoryColaborador extends CrudRepository<Colaborador, Integer> {
+public interface RepositoryColaborador extends JpaRepository<Colaborador, Integer> {
 }

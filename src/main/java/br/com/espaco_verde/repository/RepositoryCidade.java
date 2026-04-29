@@ -1,8 +1,7 @@
 package br.com.espaco_verde.repository;
 
 import br.com.espaco_verde.entity.Cidade;
-import br.com.espaco_verde.entity.Estado;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RepositoryCidade extends CrudRepository<Cidade, Integer> {
+public interface RepositoryCidade extends JpaRepository<Cidade, Integer> {
 }

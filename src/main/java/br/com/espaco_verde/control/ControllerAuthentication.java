@@ -1,17 +1,13 @@
 package br.com.espaco_verde.control;
 
 import br.com.espaco_verde.DTO.AuthenticationDTO;
-import br.com.espaco_verde.DTO.LoginResponseDTO;
-import br.com.espaco_verde.DTO.RegisterUserDTO;
-import br.com.espaco_verde.entity.User;
+import br.com.espaco_verde.DTO.UserDTO;
 import br.com.espaco_verde.repository.RepositoryUser;
-import br.com.espaco_verde.service.ServiceAuthentication;
+import br.com.espaco_verde.service.ServiceUser;
 import br.com.espaco_verde.service.ServiceToken;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,18 +25,18 @@ public class ControllerAuthentication {
     private ServiceToken serviceToken;
 
     @Autowired
-    private ServiceAuthentication serviceAuthentication;
+    private ServiceUser serviceUser;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO userData){
 
-        return serviceAuthentication.login(userData);
+        return serviceUser.login(userData);
 
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterUserDTO userData){
+    public ResponseEntity register(@RequestBody @Valid UserDTO userData){
 
-        return serviceAuthentication.userRegister(userData);
+        return serviceUser.userRegister(userData);
     }
 }

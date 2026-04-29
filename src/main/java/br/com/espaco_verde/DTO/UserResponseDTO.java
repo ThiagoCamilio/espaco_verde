@@ -1,24 +1,21 @@
 package br.com.espaco_verde.DTO;
 
-import br.com.espaco_verde.entity.Produto;
 import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.entity.UserRole;
 
-public record UserDTO(
+public record UserResponseDTO(
         String name,
         String login,
         String password,
-        UserRole role,
         String phone,
         String adress
 ) {
-    public UserDTO(User u){
+    public  UserResponseDTO(User u){
 
         this(
                 u.getName(),
                 u.getLogin(),
                 u.getPassword(),
-                u.getRole(),
                 u.getPhone(),
                 u.getAdress()
         );
@@ -31,7 +28,6 @@ public record UserDTO(
         u.setName(this.name);
         u.setLogin(this.login);
         u.setPassword(this.password);
-        u.setRole(this.role);
         u.setPhone(this.phone);
         u.setAdress(this.adress);
         return u;
