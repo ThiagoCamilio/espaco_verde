@@ -1,0 +1,139 @@
+.checkout-container { 
+    max-width: 1000px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+}
+
+.checkout-steps { 
+    display: flex; 
+    justify-content: center; 
+    gap: 30px; 
+    margin-bottom: 40px; 
+}
+.step { 
+    color: #94a3b8; 
+    font-weight: bold; 
+    position: relative; 
+}
+.step.active { 
+    color: #27ae60; 
+}
+.step.active::after { 
+    content: ''; 
+    position: absolute; 
+    bottom: -8px; 
+    left: 0; 
+    width: 100%; 
+    height: 2px; 
+    background: #27ae60; 
+}
+
+.checkout-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 300px; 
+    gap: 30px; 
+}
+
+.card-checkout { 
+    background: white; 
+    padding: 25px; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+    margin-bottom: 20px; 
+}
+.card-checkout h3 { 
+    margin-bottom: 15px; 
+    color: #2c3e50; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.option-card { 
+    display: flex; 
+    align-items: center; 
+    padding: 15px; 
+    border: 2px solid #f1f5f9; 
+    border-radius: 10px; 
+    margin-bottom: 10px; 
+    cursor: pointer; 
+    transition: 0.2s;
+ }
+
+.option-card:has(input:checked) { 
+    border-color: #27ae60; 
+    background: #f0fdf4; 
+}
+.option-card input { 
+    margin-right: 15px; 
+    accent-color: #27ae60; 
+}
+
+.option-info { 
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column; 
+}
+.option-info .title { 
+    font-weight: bold; 
+    color: #334155; 
+}
+.option-info .desc { 
+    font-size: 0.85rem; 
+    color: #64748b; 
+}
+.price { 
+    font-weight: bold; 
+    color: #27ae60; 
+}
+
+.btn-prosseguir { 
+    width: 100%;
+    background: #27ae60; 
+    color: white; 
+    padding: 18px; 
+    border: none; 
+    border-radius: 8px; 
+    font-size: 1.1rem; 
+    font-weight: bold; 
+    cursor: pointer; 
+}
+.btn-prosseguir:hover { 
+    background: #219150; 
+}
+
+.resumo-fixo { 
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    height: fit-content;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 20px;
+}
+
+.input-group textarea {
+  width: 95%;               
+  height: 100px;             
+  resize: none;              
+  padding: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-family: inherit;      
+  font-size: 1rem;
+  color: #2c3e50;
+  background-color: #f8fafc; 
+  line-height: 1.5;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.input-group textarea:focus {
+  outline: none;
+  background-color: #ffffff; 
+  border-color: #27ae60;     
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2); 
+}
+
+.input-group textarea::placeholder {
+  color: #94a3b8;
+}

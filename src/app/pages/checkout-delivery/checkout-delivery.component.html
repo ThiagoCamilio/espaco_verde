@@ -1,0 +1,59 @@
+<div class="checkout-container">
+  <div class="checkout-steps">
+    <span class="step active">1. Entrega</span>
+    <span class="step">2. Pagamento</span>
+    <span class="step">3. Confirmação</span>
+  </div>
+
+  <div class="checkout-grid">
+    <form [formGroup]="deliveryForm" (ngSubmit)="proceedToPayment()">
+      
+      <div class="card-checkout">
+        <h3><i class="fa-solid fa-location-dot"></i> Endereço de Entrega</h3>
+        <p class="instrucao">Confirme onde deseja receber os seus produtos do Espaço Verde.</p>
+        
+        <div class="input-group">
+          <textarea formControlName="adress" rows="3" placeholder="Endereço completo para entrega"></textarea>
+        </div>
+      </div>
+
+      <div class="card-checkout">
+        <h3><i class="fa-solid fa-truck"></i> Método de Entrega</h3>
+        
+        <div class="options-group">
+          <label class="option-card">
+            <input type="radio" formControlName="deliveryMethod" value="Entrega">
+            <div class="option-info">
+              <span class="title">Entrega</span>
+            </div>
+            <span class="price">Grátis</span>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" formControlName="deliveryMethod" value="Retirada">
+            <div class="option-info">
+              <span class="title">Retirada na Loja</span>
+            </div>
+            <span class="price">Grátis</span>
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-prosseguir" [disabled]="deliveryForm.invalid">
+        Ir para o Pagamento
+      </button>
+    </form>
+
+    <div class="resumo-fixo">
+      <h4>Resumo do Pedido</h4>
+      <div class="linha-resumo">
+        <span>Subtotal:</span>
+        <span>{{ totalValue | currency:'BRL' }}</span>
+      </div>
+      <div class="linha-resumo total">
+        <span>Total:</span>
+        <span>{{ totalValue | currency:'BRL' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
