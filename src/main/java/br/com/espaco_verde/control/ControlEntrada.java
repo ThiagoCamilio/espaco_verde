@@ -44,11 +44,12 @@ public class ControlEntrada {
     return mv;
   }
 
- // @GetMapping("/editarEntrada/{id}")
- // public ModelAndView editarEntrada(@PathVariable Integer id) {
- //   Optional<Entrada> entrada = repositoryEntrada.findById(id);
- //   return cadastroEntrada(entrada.get());
- // }
+ @GetMapping("/editarEntrada/{id}")
+  public ModelAndView editarEntrada(@PathVariable Integer id) {
+   Optional<Entrada> entrada = repositoryEntrada.findById(id);
+   this.listaItemEntrada = repositoryItemEntrada.findByEntrada(entrada.get().getId());
+   return cadastrar(entrada.get(), new ItemEntrada());
+  }
 
  // @GetMapping("/deletarEntrada/{id}")
  // public ModelAndView deletEntrada(@PathVariable Integer id) {
@@ -79,7 +80,7 @@ public class ControlEntrada {
 
       for (ItemEntrada it : listaItemEntrada) {
         it.setEntrada(entrada);
-        repositoryItemEntrada.save(itemEntrada);
+        repositoryItemEntrada.save(it);
 
         Produto produto = repositoryProduto.findById(it.getProduto().getId());
         produto.setQuantidade((int) (produto.getQuantidade() + it.getQuantidade()));
