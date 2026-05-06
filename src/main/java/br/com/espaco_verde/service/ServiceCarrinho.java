@@ -1,8 +1,8 @@
 package br.com.espaco_verde.service;
 
 import br.com.espaco_verde.entity.Carrinho;
-import br.com.espaco_verde.entity.Produto;
-import br.com.espaco_verde.entity.ProdutoCarrinho;
+import br.com.espaco_verde.entity.Product;
+import br.com.espaco_verde.entity.ProductCart;
 import br.com.espaco_verde.repository.RepositoryProduto;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +14,20 @@ import java.util.List;
 @Service
 public class ServiceCarrinho {
 
-    private List<ProdutoCarrinho> produtos = new ArrayList<ProdutoCarrinho>();
+    private List<ProductCart> produtos = new ArrayList<ProductCart>();
 
     @Autowired
     private RepositoryProduto produtoRepository;
 
     public Carrinho addProduto(int id, HttpSession session){
 
-        //é preciso adicionar logica para aumento de quantidade no caso de add um produto que ja existe
+        //é preciso adicionar logica para aumento de stockQuantity no caso de add um product que ja existe
 
-        Produto produto = produtoRepository.findById(id);
+        Product product = produtoRepository.findById(id).orElseThrow(() -> new RuntimeException("Product não encontrado"));
 
-        ProdutoCarrinho produtoCarrinho = new ProdutoCarrinho(produto, produto.getPreco(), 1);
+        ProductCart productCart = new ProductCart(product, product.getPreco(), 1);
 
-        produtos.add(produtoCarrinho);
+        produtos.add(productCart);
 
         Carrinho carrinho = new Carrinho(produtos);
 

@@ -1,6 +1,6 @@
 package br.com.espaco_verde.DTO;
 
-import br.com.espaco_verde.entity.Produto;
+import br.com.espaco_verde.entity.Product;
 import br.com.espaco_verde.entity.TiposProdutos;
 
 public record RegisterProductDTO(
@@ -13,12 +13,12 @@ public record RegisterProductDTO(
         String descricao
 ){
 
-    public Produto toEntity(){
+    public Product toEntity(){
 
-        Produto p = new Produto();
+        Product p = new Product();
         p.setNome(this.nome);
         p.setTipo(this.tipo);
-        p.setQuantidade(this.quantidade);
+        p.setStockQuantity(this.quantidade);
         p.setDataDeEntrada(this.dataDeEntrada);
         p.setPrecoCusto(this.precoCusto);
         p.setPreco(this.preco);

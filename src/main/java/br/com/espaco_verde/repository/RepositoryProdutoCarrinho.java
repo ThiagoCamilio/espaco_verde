@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.espaco_verde.entity.ProdutoCarrinho;
+import br.com.espaco_verde.entity.ProductCart;
 
 @Repository
-public interface RepositoryProdutoCarrinho extends JpaRepository<ProdutoCarrinho, Integer> {
+public interface RepositoryProdutoCarrinho extends JpaRepository<ProductCart, Integer> {
 
-    List<ProdutoCarrinho> findAll();
+    List<ProductCart> findAll();
 
-    ProdutoCarrinho findById(int id);
+    ProductCart findById(int id);
     
 } 

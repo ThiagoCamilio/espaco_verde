@@ -4,7 +4,7 @@
   <div *ngIf="(items$ | async)?.length === 0; else cartContent" class="empty-cart">
     <div class="empty-icon">🛒</div>
     <h2>O seu carrinho está vazio</h2>
-    <p>Parece que ainda não adicionou nenhum produto ao seu carrinho.</p>
+    <p>Parece que ainda não adicionou nenhum product ao seu carrinho.</p>
     <button routerLink="/home" class="products-btn">Explorar Produtos</button>
   </div>
 
@@ -23,7 +23,7 @@
 
           <div class="item-quantity">
             <div class="quantity-controls">
-              <button (click)="removeItem(item.produtcId)">-</button>
+              <button (click)="removeItem(item.productId)">-</button>
               <span>{{ item.quantity }}</span>
               <button (click)="addItem(item)">+</button>
             </div>
@@ -37,23 +37,12 @@
         <button class="btn-clear" (click)="cleanCart()">Esvaziar Carrinho</button>
       </div>
 
-      <div class="cart-summary">
-        <h2>Resumo</h2>
-        <div class="summary-row">
-          <span>Itens ({{ totalItems }}):</span>
-          <span>{{ totalPrice | currency:'BRL' }}</span>
-        </div>
-        <div class="divider"></div>
-        <div class="summary-row total">
-          <span>Total:</span>
-          <span>{{ totalPrice | currency:'BRL' }}</span>
-        </div>
-
-        <button class="btn-checkout" routerLink="/user/checkout/delivery">
-          Finalizar Pedido
-        </button>
-        <a routerLink="/home" class="link-back">Continuar a comprar</a>
-      </div>
+    <app-order-summary 
+      [totalPrice]="totalPrice" 
+      [itemCount]="totalItems"
+      buttonText="Definir Endereço de Entrega"
+      (actionClick)="goToDelivery()">
+    </app-order-summary>
     </div>
   </ng-template>
 </div>

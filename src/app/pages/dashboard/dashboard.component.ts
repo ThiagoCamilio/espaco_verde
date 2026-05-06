@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { RouterLink } from '@angular/router';
-import { ProductCardComponent } from '../../components/produto-card/produto-card.component';
+import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { NgFor } from '@angular/common';
-import { Product } from '../../models/product';
-import { BannerComponent } from '../../components/banner/banner.component';
 import { LayoutService } from '../../services/layout.service';
 import { DashboardCardComponent } from '../../components/dashboard-card/dashboard-card.component';
 

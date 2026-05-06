@@ -1,6 +1,5 @@
 package br.com.espaco_verde.DTO;
 
-import br.com.espaco_verde.entity.Produto;
 import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.entity.UserRole;
 

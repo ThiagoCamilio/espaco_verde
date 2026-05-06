@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProdutoFormComponent } from './produto-form.component';
+import { CheckoutSuccessComponent } from './checkout-success.component';
 
-describe('ProdutoFormComponent', () => {
-  let component: ProdutoFormComponent;
-  let fixture: ComponentFixture<ProdutoFormComponent>;
+describe('CheckoutSuccessComponent', () => {
+  let component: CheckoutSuccessComponent;
+  let fixture: ComponentFixture<CheckoutSuccessComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProdutoFormComponent]
+      imports: [CheckoutSuccessComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ProdutoFormComponent);
+    fixture = TestBed.createComponent(CheckoutSuccessComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

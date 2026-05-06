@@ -23,7 +23,7 @@
 
         <ng-container *ngIf="isLoggedIn$ | async">
 
-          <div class="cart-container" routerLink="/user/cart", title="Ver meu carrinho de compras">
+          <div class="cart-container"  *ngIf="userRole != 'admin'" routerLink="/user/cart", title="Ver meu carrinho de compras">
               <i class="fa-solid fa-cart-shopping icon-cart"></i>
             <span class="cart-badge" *ngIf="(totalItens$ | async) as total">
               {{ total }}

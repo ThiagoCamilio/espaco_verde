@@ -1,0 +1,31 @@
+<div class="success-container">
+  <div class="success-card">
+    
+    <div class="icon-wrapper">
+      <i class="fa-solid fa-clipboard-check"></i>
+    </div>
+    
+    <h2>Pedido Recebido!</h2>
+    <p class="order-number">Seu pedido é o numero: <strong>#{{ orderId }}</strong></p>    
+    
+    <div class="info-box">
+      <p class="info-title"><strong>O que acontece agora?</strong></p>
+      <p>
+        Sua lista de produtos foi encaminhada para a nossa equipe técnica. Faremos uma rápida <strong>análise de viabilidade logística</strong> para garantir a melhor forma de entregar o seu order.
+      </p>
+      <p>
+        Assim que seu order for aprovado, você receberá um aviso com as instruções para realizar o pagamento.
+      </p>
+    </div>
+
+    <div class="action-buttons">
+      <button class="primary-btn" (click)="goToMyOrders()">
+        Acompanhar meu Pedido
+      </button>
+      <button class="secondary-btn" (click)="goToHome()">
+        Voltar à Página Inicial
+      </button>
+    </div>
+
+  </div>
+</div>

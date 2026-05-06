@@ -1,0 +1,60 @@
+<div class="admin-kanban-wrapper">
+    <div class="header-actions">
+        <h2>Quadro de Pedidos</h2>
+    </div>
+
+    <div class="kanban-board">
+
+        <div class="kanban-column" *ngFor="let col of kanbanColumns">
+
+            <div class="column-header">
+                <h3>{{ col.title }}</h3>
+                <span class="badge">{{ ordersMap[col.id].length }}</span>
+            </div>
+
+            <div class="column-body">
+
+                <div class="kanban-card" [ngClass]="col.cssClass" *ngFor="let order of ordersMap[col.id]">
+
+                    <div class="card-header">
+                        <span class="order-id">#{{ order.id }}</span>
+                        <span class="order-total">{{ order.totalPrice | currency:'BRL' }}</span>
+                    </div>
+
+                    <div class="card-body">
+                        <p class="customer-name"><i class="fa-solid fa-user"></i> {{ order.customer.name || 'Cliente' }}
+                        </p>
+
+                        <div class="items-list">
+                            <p *ngFor="let item of order.items">
+                                <strong>{{ item.quantity }}x</strong> {{ item.productName }}
+                            </p>
+                        </div>
+
+                        <div class="delivery-info">
+                            <p class="method">
+                                <i class="fa-solid"
+                                    [ngClass]="order.deliveryMethod === 'DELIVERY' ? 'fa-truck' : 'fa-store'"></i>
+                                {{ order.deliveryMethod === 'DELIVERY' ? 'Entrega' : 'Retirada' }}
+                            </p>
+                            <p class="address" *ngIf="order.deliveryMethod === 'DELIVERY'">
+                                {{ order.deliveryAdress }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card-actions" *ngIf="col.next !== null && col.id !== 'CANCELED'">
+
+                        <button class="btn-cancel" (click)="cancelOrder(order)" title="Cancelar Pedido">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+
+                        <button class="btn-next" (click)="promoteOrder(order, col.next)">
+                            Avançar <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

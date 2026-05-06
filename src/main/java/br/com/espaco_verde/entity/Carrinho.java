@@ -24,7 +24,7 @@ public class Carrinho implements Serializable {
     @OneToMany
     @JoinColumn(name = "carrinho_id")
     @Getter @Setter
-    private List<ProdutoCarrinho> produtosCarrinho;
+    private List<ProductCart> produtosCarrinho;
 
     @Getter @Setter
     private double preco;
@@ -34,20 +34,20 @@ public class Carrinho implements Serializable {
     @Getter @Setter
     private CupomDesconto cupomDesconto;
 
-    public Carrinho(List<ProdutoCarrinho> produtosCarrinho, CupomDesconto cupomDesconto){
+    public Carrinho(List<ProductCart> produtosCarrinho, CupomDesconto cupomDesconto){
 
         this.produtosCarrinho = produtosCarrinho;
-        for (ProdutoCarrinho produto : produtosCarrinho){
+        for (ProductCart produto : produtosCarrinho){
             this.preco = produto.getPrecoVenda() * produto.getQuantidade();
         }
         this.cupomDesconto = cupomDesconto;
 
     }
 
-    public Carrinho(List<ProdutoCarrinho> produtosCarrinho){
+    public Carrinho(List<ProductCart> produtosCarrinho){
 
         this.produtosCarrinho = produtosCarrinho;
-        for (ProdutoCarrinho produto : produtosCarrinho){
+        for (ProductCart produto : produtosCarrinho){
             this.preco = produto.getPrecoVenda() * produto.getQuantidade();
         }
 

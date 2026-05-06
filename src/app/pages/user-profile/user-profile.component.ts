@@ -2,90 +2,38 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { NgIf } from '@angular/common';
+import { UserProfileInfoComponent } from '../../components/user-profile-info/user-profile-info.component';
+import { UserOrderListComponent } from '../../components/user-order-list/user-order-list.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    UserProfileInfoComponent,
+    UserOrderListComponent
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
-export class UserProfileComponent implements OnInit{
+export class UserProfileComponent implements OnInit {
 
-  profileForm!: FormGroup
-  loading = false;
-  message = false;
-  isEditing: boolean = false;
-  originalUser: any;
+  activeTab: 'info' | 'orders' = 'info';
 
-
-  constructor (private formBuild:FormBuilder, private userService:UserService){}
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    
-    this.profileForm = this.formBuild.group({
-      name:['', Validators.required],
-      login:[''],
-      phone:['', [Validators.required, Validators.minLength(10)]],
-      adress:['', Validators.required]
-    })
 
-    this.profileForm.disable();
-    this.loadData()
+    this.route.queryParams.subscribe(params => {
 
-  }
-
-  loadData():void {
-    this.userService.getProfile().subscribe({
-      next:(res)=>{
-        this.profileForm.patchValue(res);
-        this.originalUser = this.profileForm.getRawValue();
-      },
-      error:(err)=>{
-        console.log("erro ao carregar dados" , err)
+      if (params['tab'] === 'orders') {
+        this.activeTab = 'orders';
+      } else if (params['tab'] === 'info') {
+        this.activeTab = 'info';
       }
-    })
+    });
   }
 
-  onSubmit():void{
-    if(this.profileForm.invalid){
-      return
-    }
-
-    this.loading = true;
-    this.message = false;
-
-    const updateData = this.profileForm.getRawValue();
-
-    this.userService.updateProfile(updateData).subscribe({
-      next:(res) =>{
-        this.loading = false;
-        this.message = true;
-        this.isEditing = false
-        this.profileForm.disable();
-        this.originalUser = updateData;
-        setTimeout(() => this.message = false, 100);
-      },
-      error: (err) => {
-        this.loading = false;
-        alert('Erro ao atualizar o perfil. Tente novamente.');
-        console.error(err);
-      }
-    })
-  }
-
-  onEditToggle():void{
-    this.isEditing = true;
-    this.profileForm.enable();
-    this.profileForm.get('login')?.disable();
-  }
-
-  cancelEdit():void{
-    this.isEditing = false;
-    this.profileForm.patchValue(this.originalUser);
-    this.profileForm.disable();
-  }
 }

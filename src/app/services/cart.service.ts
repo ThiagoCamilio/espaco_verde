@@ -15,7 +15,7 @@ export class CartService {
   addItem(itemCart : CartItem){
 
     const presentCart = this.cartItems.value;
-    const existentItem = presentCart.find(item => item.produtcId === itemCart.produtcId)
+    const existentItem = presentCart.find(item => item.productId === itemCart.productId)
 
     if(existentItem){
       existentItem.quantity += 1;
@@ -28,12 +28,12 @@ export class CartService {
 
   removeItem(produtcId: string){
     let presentCart = this.cartItems.value;
-    const item = presentCart.find(i => i.produtcId === produtcId);
+    const item = presentCart.find(i => i.productId === produtcId);
 
     if(item && item.quantity > 1){
       item.quantity -= 1;
     }else{
-      presentCart = presentCart.filter(i=> i.produtcId !== produtcId);
+      presentCart = presentCart.filter(i=> i.productId !== produtcId);
     }
 
     this.updateState(presentCart);

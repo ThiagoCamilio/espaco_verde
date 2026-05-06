@@ -1,47 +1,31 @@
 <div class="profile-container">
-  <div class="form-card">
-    <div class="form-header">
-      <h2>Meu Perfil</h2>
 
-      <button *ngIf="!isEditing" type="button" class="edit-btn" (click)="onEditToggle()">
-        Editar
+  <header class="profile-header">
+    <h2>Minha Conta</h2>
+
+    <nav class="profile-tabs">
+      <button [class.active]="activeTab === 'info'" (click)="activeTab = 'info'">
+        <i class="fa-solid fa-address-card"></i> Meus Dados
       </button>
+
+      <button [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'">
+        <i class="fa-solid fa-box"></i> Meus Pedidos
+      </button>
+
+      <div class="spacer"></div>
+
+    </nav>
+  </header>
+
+
+  <main class="profile-content">
+    <div *ngIf="activeTab === 'info'" class="fade-in">
+      <app-user-profile-info></app-user-profile-info>
     </div>
-    <div class="success-alert" *ngIf="message">
-        Dados atualizados com sucesso!
+
+    <div *ngIf="activeTab === 'orders'" class="fade-in">
+      <app-user-order-list></app-user-order-list>
     </div>
+  </main>
 
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-      
-      <div class="input-group">
-        <label>E-mail</label>
-        <input type="email" formControlName="login" class="input-email" title="O e-mail não pode ser alterado">
-      </div>
-
-      <div class="input-group">
-        <label>Nome Completo</label>
-        <input type="text" formControlName="name" placeholder="Seu nome">
-      </div>
-
-      <div class="input-group">
-        <label>Telefone (WhatsApp)</label>
-        <input type="text" formControlName="phone" placeholder="Seu número com DDD">
-      </div>
-
-      <div class="input-group">
-        <label>Endereço de Entrega</label>
-        <input type="text" formControlName="adress" placeholder="Endereço completo">
-      </div>
-
-      <div class="action-btns" *ngIf="isEditing">
-        <button type="button" class="cancel-btn" (click)="cancelEdit()">
-            Cancelar
-          </button>
-        <button type="submit" class="save-btn" [disabled]="profileForm.invalid || loading">
-          {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
-        </button>
-      </div>
-
-    </form>
-  </div>
 </div>

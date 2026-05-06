@@ -3,7 +3,7 @@ import { CurrencyPipe, NgFor } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
-import { ProductCardComponent } from '../../components/produto-card/produto-card.component';
+import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { LayoutService } from '../../services/layout.service';
 import { FiltersComponent } from '../../components/filters/filters.component';
@@ -38,9 +38,10 @@ export class HomeComponent implements OnInit{
   }
 
   loadProducts(){
-    this.productService.listAll().subscribe({
+    this.productService.listAllActive().subscribe({
       next: (data) =>{
         this.products = data;
+        console.log(this.products)
       },
       error(err) {
         console.log("Houve um erro", err)

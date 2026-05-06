@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { ProdutoFormComponent } from './pages/produto-form/produto-form.component';
+import { ProductFormComponent } from './pages/product-form/product-form.component';
 import { LoginFormComponent } from './pages/login-form/login-form.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
@@ -14,6 +14,9 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { CheckoutDeliveryComponent } from './pages/checkout-delivery/checkout-delivery.component';
+import { CheckoutConfirmationComponent } from './pages/checkout-confirmation/checkout-confirmation.component';
+import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-success.component';
+import { AdminOrdersListComponent } from './pages/admin-orders-list/admin-orders-list.component';
 
 export const routes: Routes = [
   {
@@ -36,9 +39,11 @@ export const routes: Routes = [
     children:[
       { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full'},
       { path: 'dashboard', component: DashboardComponent},
-      { path: 'cadastro', component: ProdutoFormComponent},
+      { path: 'cadastro', component: ProductFormComponent},
       { path: 'estoque', component: StorageComponent},
-      { path: 'estoque/produto/:id', component: StorageProductDetailsComponent}
+      { path: 'estoque/product/:id', component: StorageProductDetailsComponent},
+      { path: 'orders', component: AdminOrdersListComponent}
+
     ],   
   },
 
@@ -51,7 +56,10 @@ export const routes: Routes = [
       { path: '', redirectTo: '/user/profile', pathMatch:'full'},
       { path: 'profile', component: UserProfileComponent},
       { path: 'cart', component: CartComponent},
-      { path: 'checkout/delivery', component: CheckoutDeliveryComponent}
+      { path: 'checkout/delivery', component: CheckoutDeliveryComponent},
+      { path: 'checkout/confirmation', component: CheckoutConfirmationComponent},
+      { path: 'checkout/success', component: CheckoutSuccessComponent}
+
 
     ]
   }

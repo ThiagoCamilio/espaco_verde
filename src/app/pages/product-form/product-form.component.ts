@@ -9,7 +9,7 @@ import { LayoutService } from '../../services/layout.service';
 
 
 @Component({
-  selector: 'app-produto-form',
+  selector: 'app-product-form',
   standalone: true,
   imports: [
     FormsModule,
@@ -18,15 +18,15 @@ import { LayoutService } from '../../services/layout.service';
     CommonModule,
     RouterLink
   ],
-  templateUrl: './produto-form.component.html',
-  styleUrl: './produto-form.component.css'
+  templateUrl: './product-form.component.html',
+  styleUrl: './product-form.component.css'
 })
-export class ProdutoFormComponent implements OnInit {
+export class ProductFormComponent implements OnInit {
 
-  produto: Product = {
+  product: Product = {
     nome: '',
     tipo: '',
-    quantidade: 0,
+    stockQuantity: 0,
     dataDeEntrada: '',
     precoCusto: 0,
     preco: 0,
@@ -60,12 +60,12 @@ export class ProdutoFormComponent implements OnInit {
       return;
     }
 
-    this.produtoService.save(this.produto, this.arquivoSelecionado).subscribe({
+    this.produtoService.save(this.product, this.arquivoSelecionado).subscribe({
       next: (res) => {
       alert('Produto salvo!');
 
     },
-    error: (err) => alert('Erro ao salvar produto.')
+    error: (err) => alert('Erro ao salvar product.')
     });
 
     this.successMessage = 'Produto cadastrado com sucesso!';
@@ -74,15 +74,15 @@ export class ProdutoFormComponent implements OnInit {
   }
 
   private validateProduct(): boolean {
-    if (this.produto.preco < this.produto.precoCusto) {
+    if (this.product.preco < this.product.precoCusto) {
       this.errorMessage = 'Preço de venda não pode ser menor que o preço de custo!';
       return false;
     }
-    if (this.produto.quantidade < 0) {
+    if (this.product.stockQuantity< 0) {
       this.errorMessage = 'Quantidade não pode ser negativa!';
       return false;
     }
-    if (this.produto.dataDeEntrada > this.today) {
+    if (this.product.dataDeEntrada > this.today) {
       this.errorMessage = 'Data de entrada não pode ser futura!';
       return false;
     }
@@ -91,10 +91,10 @@ export class ProdutoFormComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.produto = {
+    this.product = {
       nome: '',
       tipo: '',
-      quantidade: 0,
+      stockQuantity: 0,
       dataDeEntrada: '',
       precoCusto: 0,
       preco: 0,
@@ -110,32 +110,32 @@ export class ProdutoFormComponent implements OnInit {
   }
 
   isFormValid(): false | "" | boolean {
-    return this.produto.nome?.trim().length >= 3 &&
-      this.produto.tipo &&
-      this.produto.quantidade >= 0 &&
-      this.produto.dataDeEntrada &&
-      this.produto.dataDeEntrada <= this.today &&
-      this.produto.precoCusto >= 0 &&
-      this.produto.preco >= 0 &&
-      this.produto.preco >= this.produto.precoCusto;
+    return this.product.nome?.trim().length >= 3 &&
+      this.product.tipo &&
+      this.product.stockQuantity >= 0 &&
+      this.product.dataDeEntrada &&
+      this.product.dataDeEntrada <= this.today &&
+      this.product.precoCusto >= 0 &&
+      this.product.preco >= 0 &&
+      this.product.preco >= this.product.precoCusto;
   }
 
   calculateProfit(): number {
-    if (this.produto.preco > 0 && this.produto.precoCusto > 0) {
-      return this.produto.preco - this.produto.precoCusto;
+    if (this.product.preco > 0 && this.product.precoCusto > 0) {
+      return this.product.preco - this.product.precoCusto;
     }
     return 0;
   }
 
   calculateProfitMargin(): number {
-    if (this.produto.precoCusto > 0 && this.produto.preco > 0) {
-      return (this.produto.preco - this.produto.precoCusto) / this.produto.precoCusto;
+    if (this.product.precoCusto > 0 && this.product.preco > 0) {
+      return (this.product.preco - this.product.precoCusto) / this.product.precoCusto;
     }
     return 0;
   }
 
   calculateTotalStockValue(): number {
-    return this.produto.preco * this.produto.quantidade;
+    return this.product.preco * this.product.stockQuantity;
   }
 
   getTipoIcon(tipo: string): string {
@@ -192,8 +192,7 @@ export class ProdutoFormComponent implements OnInit {
 
 
   private loadCartCount(): void {
-    // Implementar lógica para carregar itens do carrinho
-    this.cartItemsCount = 0; // Exemplo
+    this.cartItemsCount = 0;
   }
 
   private showLoading(show: boolean): void {

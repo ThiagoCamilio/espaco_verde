@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { CartService } from '../../services/cart.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { OrderSummaryComponent } from '../../components/order-summary/order-summary.component';
 
 @Component({
   selector: 'app-checkout-delivery',
@@ -11,41 +12,46 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    OrderSummaryComponent
   ],
   templateUrl: './checkout-delivery.component.html',
   styleUrl: './checkout-delivery.component.css'
 })
-export class CheckoutDeliveryComponent implements OnInit{
+export class CheckoutDeliveryComponent implements OnInit {
 
   deliveryForm!: FormGroup;
-  totalValue: number = 0; 
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private cartService:CartService, private router:Router){}
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private cartService: CartService, private router: Router) { }
 
   ngOnInit(): void {
-    this.totalValue = this.cartService.totalPrice;
 
     this.deliveryForm = this.formBuilder.group({
-      adress:['', Validators.required],
-      deliveryMethod:['Retirada', Validators.required],
-      obs:['']
+      adress: ['', Validators.required],
+      deliveryMethod: ['PICKUP', Validators.required],
+      obs: ['']
     })
 
-    this.userService.getProfile().subscribe(data =>{
+    this.userService.getProfile().subscribe(data => {
       this.deliveryForm.patchValue({
         adress: data.adress
       })
     })
   }
 
-  proceedToPayment(){
-    if(this.deliveryForm.invalid){
+  proceedToConfirmation() {
+    if (this.deliveryForm.invalid) {
       return;
     }
     const deliveryData = this.deliveryForm.value;
-    console.log(deliveryData);
-    this.router.navigate(['/checkout/payment'])
+    this.router.navigate(['user/checkout/confirmation'], { state: { delivery: deliveryData } })
 
   }
 
+  goBack(): void {
+    this.router.navigate(['user/cart']);
+  }
+
+  get totalPrice() {
+    return this.cartService.totalPrice
+  }
 }

@@ -10,18 +10,18 @@ export class ProductService {
   private readonly URL = `${environment.apiUrl}/produtos`
   constructor(private http: HttpClient) {}
 
-  save(produto:any, imagem:File){
+  save(product:any, imagem:File){
 
     const formData = new FormData();
 
-    const blob = new Blob([JSON.stringify(produto)], {type: 'application/json'});
+    const blob = new Blob([JSON.stringify(product)], {type: 'application/json'});
 
-    formData.append('produto', blob);
+    formData.append('product', blob);
     formData.append('imagem', imagem);
 
-    if(produto.id){
+    if(product.id){
       
-      console.log(produto.id)
+      console.log(product.id)
       return this.http.put(`${this.URL}/update `, formData);
     
     }else{
@@ -36,8 +36,12 @@ export class ProductService {
     return this.http.get<Product[]>(this.URL);
   }
 
+  listAllActive(): Observable<Product[]>{
+    return this.http.get<Product[]>(`${this.URL}/active`);
+  }
+
   listById(id:string): Observable<Product>{
-    return this.http.get<Product>(`${this.URL}/produto/`+id)
+    return this.http.get<Product>(`${this.URL}/`+id)
   }
 
   delete(id:string){

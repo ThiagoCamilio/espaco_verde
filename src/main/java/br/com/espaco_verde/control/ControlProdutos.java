@@ -2,6 +2,7 @@ package br.com.espaco_verde.control;
 
 import br.com.espaco_verde.DTO.RegisterProductDTO;
 import br.com.espaco_verde.DTO.ProductDTO;
+import br.com.espaco_verde.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -36,14 +37,24 @@ public class ControlProdutos {
     @Value("${dir.uploads}")
     private  String diretorioUpload;
 
-    @GetMapping("")
-    public List<ProductDTO> listAll() throws Exception {
+    @GetMapping("/active")
+    public ResponseEntity<List<ProductDTO>> listAllActive() throws Exception {
 
-        return serviceProduto.listAll();
+        List<ProductDTO> products = serviceProduto.listActive();
+        return ResponseEntity.status(200).body(products);
 
     }
 
-    @GetMapping("/produto/{id}")
+    @GetMapping("")
+    public ResponseEntity<List<ProductDTO>> listAll() throws Exception {
+
+        List<ProductDTO> products = serviceProduto.listAll();
+        return ResponseEntity.status(200).body(products);
+
+    }
+
+
+    @GetMapping("/{id}")
     public ProductDTO listById(@PathVariable int id) throws Exception {
 
         return serviceProduto.listById(id);
@@ -51,7 +62,7 @@ public class ControlProdutos {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestPart("produto") RegisterProductDTO p, @RequestPart("imagem") MultipartFile imagem) {
+    public ResponseEntity<?> register(@RequestPart("product") RegisterProductDTO p, @RequestPart("imagem") MultipartFile imagem) {
 
         try {
             return serviceProduto.register(p, imagem);
@@ -87,7 +98,7 @@ public class ControlProdutos {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestPart("produto") ProductDTO p, @RequestPart(value = "imagem", required = false) MultipartFile imagem){
+    public ResponseEntity<?> update(@RequestPart("product") ProductDTO p, @RequestPart(value = "imagem", required = false) MultipartFile imagem){
         try {
             return serviceProduto.update(p, imagem);
         } catch (IIOException e){

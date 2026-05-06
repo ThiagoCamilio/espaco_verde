@@ -36,4 +36,8 @@ export class HeaderComponent implements OnInit{
     this.authService.logout();
     this.router.navigate(['/home'])
   }
+
+  get userRole(): string | null{
+    return this.authService.getRole();
+  }
 }

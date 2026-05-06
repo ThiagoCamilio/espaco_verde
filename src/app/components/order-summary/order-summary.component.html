@@ -1,0 +1,28 @@
+<div class="fixed-summary">
+  <h4>Resumo do Pedido</h4>
+  
+  <p class="analysis-warning" *ngIf="showAnalysisWarning">
+    <i class="fa-solid fa-circle-info"></i> 
+    Seu order passará por uma rápida análise de viabilidade logística. O pagamento só será solicitado após a aprovação.
+  </p>
+  
+  <div class="divider" *ngIf="showAnalysisWarning"></div>
+  
+  <div class="summary-line" *ngIf="itemCount > 0">
+    <span>Itens ({{ itemCount }}):</span>
+    <span>{{ totalPrice | currency:'BRL' }}</span>
+  </div>
+
+  <div class="summary-line total">
+    <span>Total:</span>
+    <span>{{ totalPrice | currency:'BRL' }}</span>
+  </div>
+
+  <button class="primary-btn" (click)="handleClick()" [disabled]="isButtonDisabled">
+    <i *ngIf="buttonIcon" [class]="'fa-solid ' + buttonIcon"></i>
+    {{ buttonText }}
+  </button>
+  <button class="secondary-btn" *ngIf="showBackButton" (click)="handleBackClick()" [disabled]="isButtonDisabled">
+    {{ backButtonText }}
+  </button>
+</div>

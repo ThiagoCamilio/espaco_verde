@@ -41,6 +41,7 @@ export class StorageProductDetailsComponent implements OnInit{
     this.productService.listById(this.productId!).subscribe({
       next: (data) =>{
         this.product = data;
+        console.log(this.product)
         this.editedProduct = JSON.parse(JSON.stringify(this.product))
       },
       error(err){
@@ -83,10 +84,11 @@ export class StorageProductDetailsComponent implements OnInit{
     this.productService.save(this.editedProduct, this.selectedFile).subscribe({
       next: (res) => {
       this.product = res  
+      console.log(this.product)
       alert('Produto salvo!');
       this.onEditToggle();
     },
-    error: (err) => alert('Erro ao salvar produto.'+ err)
+    error: (err) => alert('Erro ao salvar product.'+ err)
     });
   }
 

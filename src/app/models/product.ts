@@ -4,7 +4,7 @@ export interface Product {
       id?: string;
       nome: string;
       tipo: TiposProdutos | string;
-      quantidade: number;
+      stockQuantity: number;
       dataDeEntrada: string;
       precoCusto: number;
       preco: number;

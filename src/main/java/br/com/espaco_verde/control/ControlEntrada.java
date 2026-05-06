@@ -1,9 +1,8 @@
 package br.com.espaco_verde.control;
 
-import br.com.espaco_verde.entity.Cidade;
 import br.com.espaco_verde.entity.Entrada;
 import br.com.espaco_verde.entity.ItemEntrada;
-import br.com.espaco_verde.entity.Produto;
+import br.com.espaco_verde.entity.Product;
 import br.com.espaco_verde.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,11 +81,11 @@ public class ControlEntrada {
         it.setEntrada(entrada);
         repositoryItemEntrada.save(it);
 
-        Produto produto = repositoryProduto.findById(it.getProduto().getId());
-        produto.setQuantidade((int) (produto.getQuantidade() + it.getQuantidade()));
-        produto.setPreco(it.getValor());
-        produto.setPrecoCusto(it.getValorCusto());
-        repositoryProduto.save(produto);
+        Product product = repositoryProduto.findById(it.getProduto().getId()).orElseThrow(() -> new RuntimeException("Product não encontrado"));
+        product.setStockQuantity((int) (product.getStockQuantity() + it.getQuantidade()));
+        product.setPreco(it.getValor());
+        product.setPrecoCusto(it.getValorCusto());
+        repositoryProduto.save(product);
 
         this.listaItemEntrada = new ArrayList<>();
 

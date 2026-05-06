@@ -36,7 +36,7 @@ public class ControlConversa {
 
         MensagemCliente m = new MensagemCliente("Oi", "42991057267", "Mensagem");
 
-        List<Produto> produtos = repositoryProduto.findAll();
+        List<Product> produtos = repositoryProduto.findAll();
 
         Map<String, Object> map = serviceMensagens.sendCarouselMessage(m , produtos);
 

@@ -21,7 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class ProdutoCarrinho implements Serializable {
+public class ProductCart implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -35,7 +35,7 @@ public class ProdutoCarrinho implements Serializable {
     @ManyToOne
     @JoinColumn(name = "produto_id")
     @Getter @Setter
-    private Produto produto;
+    private Product product;
 
     @Getter @Setter
     private double precoVenda;
@@ -43,8 +43,8 @@ public class ProdutoCarrinho implements Serializable {
     @Getter @Setter
     private int quantidade;
 
-    public ProdutoCarrinho(Produto produto, double precoVenda, int quantidade){
-        this.produto = produto;
+    public ProductCart(Product product, double precoVenda, int quantidade){
+        this.product = product;
         this.precoVenda = precoVenda;
         this.quantidade = quantidade;
     }

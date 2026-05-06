@@ -1,7 +1,7 @@
 <div class="form-container" id="form-container">
   <div class="form-header">
     <h2><i class="fas fa-leaf"></i> Cadastro de Produtos</h2>
-    <p>Preencha os dados abaixo para cadastrar um novo produto no sistema</p>
+    <p>Preencha os dados abaixo para cadastrar um novo product no sistema</p>
   </div>
 
   <div *ngIf="successMessage" class="success-message">
@@ -21,12 +21,12 @@
         type="text"
         id="nome"
         name="nome"
-        [(ngModel)]="produto.nome"
+        [(ngModel)]="product.nome"
         #nome="ngModel"
         required
         minlength="3"
         maxlength="100"
-        placeholder="Digite o nome do produto"
+        placeholder="Digite o nome do product"
         [class.is-invalid]="nome.invalid && nome.touched">
       <div *ngIf="nome.invalid && nome.touched" class="error-message">
       <span *ngIf="nome.errors?.['required']">Nome é obrigatório</span>
@@ -42,7 +42,7 @@
       <select
         id="tipo"
         name="tipo"
-        [(ngModel)]="produto.tipo"
+        [(ngModel)]="product.tipo"
         #tipo="ngModel"
         required
         [class.is-invalid]="tipo.invalid && tipo.touched">
@@ -52,30 +52,30 @@
         </option>
       </select>
       <div *ngIf="tipo.invalid && tipo.touched" class="error-message">
-        <span *ngIf="tipo.errors?.['required']">Tipo do produto é obrigatório</span>
+        <span *ngIf="tipo.errors?.['required']">Tipo do product é obrigatório</span>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="quantidade">
-        <i class="fas fa-boxes"></i> Quantidade em Estoque *
+      <label for="stockQuantity">
+        <i class="fas fa-boxes"></i> stockQuantity em Estoque *
       </label>
       <input
         type="number"
-        id="quantidade"
-        name="quantidade"
-        [(ngModel)]="produto.quantidade"
-        #quantidade="ngModel"
+        id="stockQuantity"
+        name="stockQuantity"
+        [(ngModel)]="product.stockQuantity"
+        #stockQuantity="ngModel"
         required
         min="0"
         max="99999"
         step="1"
-        placeholder="Digite a quantidade"
-        [class.is-invalid]="quantidade.invalid && quantidade.touched">
-      <div *ngIf="quantidade.invalid && quantidade.touched" class="error-message">
-        <span *ngIf="quantidade.errors?.['required']">Quantidade é obrigatória</span>
-        <span *ngIf="quantidade.errors?.['min']">Quantidade não pode ser negativa</span>
-        <span *ngIf="quantidade.errors?.['max']">Quantidade máxima é 99999</span>
+        placeholder="Digite a Quantidade"
+        [class.is-invalid]="stockQuantity.invalid && stockQuantity.touched">
+      <div *ngIf="stockQuantity.invalid && stockQuantity.touched" class="error-message">
+        <span *ngIf="stockQuantity.errors?.['required']">stockQuantity é obrigatória</span>
+        <span *ngIf="stockQuantity.errors?.['min']">stockQuantity não pode ser negativa</span>
+        <span *ngIf="stockQuantity.errors?.['max']">stockQuantity máxima é 99999</span>
       </div>
     </div>
 
@@ -87,7 +87,7 @@
         type="date"
         id="dataDeEntrada"
         name="dataDeEntrada"
-        [(ngModel)]="produto.dataDeEntrada"
+        [(ngModel)]="product.dataDeEntrada"
         #dataDeEntrada="ngModel"
         required
         [max]="today"
@@ -105,7 +105,7 @@
         type="number"
         id="precoCusto"
         name="precoCusto"
-        [(ngModel)]="produto.precoCusto"
+        [(ngModel)]="product.precoCusto"
         #precoCusto="ngModel"
         required
         min="0"
@@ -126,18 +126,18 @@
         type="number"
         id="preco"
         name="preco"
-        [(ngModel)]="produto.preco"
+        [(ngModel)]="product.preco"
         #preco="ngModel"
         required
         min="0"
         step="0.01"
         placeholder="Digite o preço de venda"
-        [class.is-invalid]="(preco.invalid && preco.touched) || (produto.preco < produto.precoCusto && produto.preco > 0)">
+        [class.is-invalid]="(preco.invalid && preco.touched) || (product.preco < product.precoCusto && product.preco > 0)">
       <div *ngIf="preco.invalid && preco.touched" class="error-message">
         <span *ngIf="preco.errors?.['required']">Preço de venda é obrigatório</span>
         <span *ngIf="preco.errors?.['min']">Preço de venda não pode ser negativo</span>
       </div>
-      <div *ngIf="produto.preco < produto.precoCusto && produto.preco > 0" class="error-message">
+      <div *ngIf="product.preco < product.precoCusto && product.preco > 0" class="error-message">
         <i class="fas fa-exclamation-triangle"></i> Preço de venda menor que o preço de custo!
       </div>
     </div>

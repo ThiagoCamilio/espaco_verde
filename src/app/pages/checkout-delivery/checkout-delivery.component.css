@@ -4,30 +4,6 @@
     padding: 0 20px; 
 }
 
-.checkout-steps { 
-    display: flex; 
-    justify-content: center; 
-    gap: 30px; 
-    margin-bottom: 40px; 
-}
-.step { 
-    color: #94a3b8; 
-    font-weight: bold; 
-    position: relative; 
-}
-.step.active { 
-    color: #27ae60; 
-}
-.step.active::after { 
-    content: ''; 
-    position: absolute; 
-    bottom: -8px; 
-    left: 0; 
-    width: 100%; 
-    height: 2px; 
-    background: #27ae60; 
-}
-
 .checkout-grid { 
     display: grid; 
     grid-template-columns: 1fr 300px; 
@@ -100,16 +76,6 @@
 }
 .btn-prosseguir:hover { 
     background: #219150; 
-}
-
-.resumo-fixo { 
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
-    height: fit-content;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    position: sticky;
-    top: 20px;
 }
 
 .input-group textarea {

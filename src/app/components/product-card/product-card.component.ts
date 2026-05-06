@@ -8,15 +8,15 @@ import { CartItem } from '../../models/cart-item';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 @Component({
-  selector: 'app-produto-card',
+  selector: 'app-product-card',
   standalone: true,
   imports: [
     CommonModule,
     BaseProductCardComponent,
     RouterLink
   ],
-  templateUrl: './produto-card.component.html',
-  styleUrl: './produto-card.component.css'
+  templateUrl: './product-card.component.html',
+  styleUrl: './product-card.component.css'
 })
 export class ProductCardComponent {
 
@@ -34,7 +34,7 @@ export class ProductCardComponent {
     }
     
     const item: CartItem = {
-      produtcId : this.product.id!,
+      productId : this.product.id!,
       name: this.product.nome,
       quantity: 1,
       price: this.product.preco,

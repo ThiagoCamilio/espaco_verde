@@ -1,13 +1,13 @@
 package br.com.espaco_verde.DTO;
 
-import br.com.espaco_verde.entity.Produto;
+import br.com.espaco_verde.entity.Product;
 import br.com.espaco_verde.entity.TiposProdutos;
 
 public record ProductDTO(
         int id,
         String nome,
         TiposProdutos tipo,
-        int quantidade,
+        int stockQuantity,
         String dataDeEntrada,
         double precoCusto,
         double preco,
@@ -15,13 +15,13 @@ public record ProductDTO(
         String descricao
 ) {
 
-    public ProductDTO(Produto p){
+    public ProductDTO(Product p){
 
         this(
             p.getId(),
             p.getNome(),
             p.getTipo(),
-            p.getQuantidade(),
+            p.getStockQuantity(),
             p.getDataDeEntrada(),
             p.getPrecoCusto(),
             p.getPreco(),
@@ -31,13 +31,13 @@ public record ProductDTO(
 
     }
 
-    public Produto toEntity(){
+    public Product toEntity(){
 
-        Produto p = new Produto();
+        Product p = new Product();
         p.setId(this.id);
         p.setNome(this.nome);
         p.setTipo(this.tipo);
-        p.setQuantidade(this.quantidade);
+        p.setStockQuantity(this.stockQuantity);
         p.setDataDeEntrada(this.dataDeEntrada);
         p.setPrecoCusto(this.precoCusto);
         p.setPreco(this.preco);

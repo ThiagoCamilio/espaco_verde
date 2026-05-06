@@ -35,7 +35,7 @@ export class ProductDetailsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-        this.productId = this.route.snapshot.paramMap.get('id');
+    this.productId = this.route.snapshot.paramMap.get('id');
     this.productService.listById(this.productId!).subscribe({
       next: (data) =>{
         this.product = data;
@@ -61,7 +61,7 @@ export class ProductDetailsComponent implements OnInit{
     }
 
     const item: CartItem = {
-      produtcId : this.product.id!,
+      productId : this.product.id!,
       name: this.product.nome,
       quantity: 1,
       price: this.product.preco,

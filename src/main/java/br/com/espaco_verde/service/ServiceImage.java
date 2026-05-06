@@ -1,6 +1,6 @@
 package br.com.espaco_verde.service;
 
-import br.com.espaco_verde.entity.Produto;
+import br.com.espaco_verde.entity.Product;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,7 +42,7 @@ public class ServiceImage {
 
     }
 
-    public String updateImage(Produto product, MultipartFile image) throws IOException {
+    public String updateImage(Product product, MultipartFile image) throws IOException {
 
         String newImagePath = saveImage(image);
         this.deleteImage(product);
@@ -51,7 +51,7 @@ public class ServiceImage {
 
     }
 
-    public void deleteImage(Produto product) throws IOException{
+    public void deleteImage(Product product) throws IOException{
 
         Path directory = this.getDirectory();
         Path imagePath = directory.resolve(product.getImagem());

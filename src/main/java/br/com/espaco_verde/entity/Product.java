@@ -23,7 +23,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(of = "id")
 @SQLDelete(sql = "UPDATE produtos SET excluido = true WHERE id = ?")
 @SQLRestriction("excluido = false")
-public class Produto implements Serializable {
+public class Product implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -36,7 +36,9 @@ public class Produto implements Serializable {
     @Enumerated(EnumType.STRING)
     private TiposProdutos tipo;
 
-    private int quantidade;
+    private int stockQuantity;
+
+    private int reservedQuantity;
 
     private String dataDeEntrada;
 
@@ -50,14 +52,20 @@ public class Produto implements Serializable {
 
     private boolean excluido = false;
 
-    public Produto (String nome, TiposProdutos tipo, int quantidade, String dataDeEntrada, double precoCusto, double preco, String descricao){
+    private boolean active = true;
+
+    public Product(String nome, TiposProdutos tipo, int stockQuantity, String dataDeEntrada, double precoCusto, double preco, String descricao){
         this.nome = nome;
         this.tipo = tipo;
-        this.quantidade = quantidade;
+        this.stockQuantity = stockQuantity;
         this.dataDeEntrada = dataDeEntrada;
         this.precoCusto = precoCusto;
         this.preco = preco;
         this.descricao = descricao;
+    }
+
+    public int getAvaliableQuantity(){
+        return this.stockQuantity - this.reservedQuantity;
     }
 }
 

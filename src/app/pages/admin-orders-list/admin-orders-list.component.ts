@@ -1,0 +1,84 @@
+import { Component, OnInit } from '@angular/core';
+import { OrderService } from '../../services/order.service';
+import { CommonModule, NgClass, NgFor } from '@angular/common';
+
+@Component({
+  selector: 'app-admin-orders-list',
+  standalone: true,
+  imports: [
+    CommonModule,
+    NgClass,
+    NgFor
+  ],
+  templateUrl: './admin-orders-list.component.html',
+  styleUrl: './admin-orders-list.component.css'
+})
+export class AdminOrdersListComponent implements OnInit {
+
+  orders: any[] = [];
+  ordersMap: Record<string, any[]> = {};
+
+  kanbanColumns = [
+    { id: 'AWAITING_ANALYSIS', title: 'Sob Análise', next: 'AWAITING_PAYMENT', cssClass: 'bg-analysis' },
+    { id: 'AWAITING_PAYMENT', title: 'Aguardando Pgto', next: 'PAID', cssClass: 'bg-payment' },
+    { id: 'PAID', title: 'Pago (Preparar)', next: 'IN_DELIVERY', cssClass: 'bg-paid' },
+    { id: 'IN_DELIVERY', title: 'Enviado', next: 'DELIVERED', cssClass: 'bg-shipped' },
+    { id: 'DELIVERED', title: 'Entregue', next: null, cssClass: 'bg-delivered' },
+    { id: 'CANCELED', title: 'Cancelado', next: null, cssClass: 'bg-canceled' }
+  ];
+
+  constructor(private orderService: OrderService) { }
+
+  ngOnInit(): void {
+    this.loadOrders();
+  }
+
+  loadOrders(): void {
+    this.orderService.getAllAdminOrders().subscribe({
+      next: (data) => {
+        this.orders = data;
+        this.organizeKanbanBoard();
+      },
+      error: (err) => {
+        console.error('Erro ao buscar pedidos', err);
+      }
+    });
+  }
+
+  organizeKanbanBoard(): void {
+    this.kanbanColumns.forEach(col => {
+      this.ordersMap[col.id] = [];
+    });
+
+    this.orders.forEach(order => {
+      if (this.ordersMap[order.orderStatus]) {
+        this.ordersMap[order.orderStatus].push(order);
+      }
+    });
+  }
+
+  promoteOrder(order: any, nextStatus: string): void {
+    if (confirm(`Avançar pedido #${order.id} para a próxima etapa?`)) {
+      this.updateStatus(order, nextStatus);
+    }
+  }
+
+  cancelOrder(order: any): void {
+    if (confirm(`Tem certeza que deseja CANCELAR o pedido #${order.id}? Essa ação devolverá o estoque.`)) {
+      this.updateStatus(order, 'CANCELED');
+    }
+  }
+
+  private updateStatus(order: any, newStatus: string): void {
+    this.orderService.updateOrderStatus(order.id, newStatus).subscribe({
+      next: (updatedOrder) => {
+        const oldStatus = order.orderStatus;
+        order.orderStatus = newStatus;
+        this.ordersMap[oldStatus] = this.ordersMap[oldStatus].filter(o => o.id !== order.id);
+        this.ordersMap[newStatus].push(order);
+      },
+      error: (err) => alert('Erro ao alterar o status do pedido.')
+    });
+  }
+
+}

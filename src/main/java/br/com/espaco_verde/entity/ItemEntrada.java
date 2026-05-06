@@ -3,7 +3,6 @@ package br.com.espaco_verde.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 public class ItemEntrada implements Serializable {
@@ -19,7 +18,7 @@ public class ItemEntrada implements Serializable {
   @ManyToOne
   private Entrada entrada;
   @ManyToOne
-  private Produto produto;
+  private Product product;
 
   public Long getId() {
     return id;
@@ -53,12 +52,12 @@ public class ItemEntrada implements Serializable {
     this.entrada = entrada;
   }
 
-  public Produto getProduto() {
-    return produto;
+  public Product getProduto() {
+    return product;
   }
 
-  public void setProduto(Produto produto) {
-    this.produto = produto;
+  public void setProduto(Product product) {
+    this.product = product;
   }
 
   public double getValorCusto() {

@@ -1,7 +1,7 @@
 package br.com.espaco_verde.control;
 
 import br.com.espaco_verde.entity.Carrinho;
-import br.com.espaco_verde.entity.ProdutoCarrinho;
+import br.com.espaco_verde.entity.ProductCart;
 import br.com.espaco_verde.service.ServiceCarrinho;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ public class ControlCarrinho {
     public void addProduto(@PathVariable int id, HttpSession session){
         //comportamento provisorio apenas para teste
         session.setAttribute("carrinho", serviceCarrinho.addProduto(id, session));
-        Carrinho carrinho =(Carrinho) session.getAttribute("carrinho");
-        for (ProdutoCarrinho produto : carrinho.getProdutosCarrinho()){
-            System.out.println(produto.getProduto().getNome());
+        Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
+        for (ProductCart produto : carrinho.getProdutosCarrinho()){
+            System.out.println(produto.getProduct().getNome());
         }
 
     }
