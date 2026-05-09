@@ -72,7 +72,7 @@
     transition: all 0.3s ease;
 }
 
-.sidebar.expanded .hamburger-icon span:nth-child(1) {
+.expanded .hamburger-icon span:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
 }
 
@@ -101,10 +101,22 @@
     color: #2e7d32;
     text-decoration: none;
     transition: transform 0.3s ease;
+    justify-content: space-between;
 }
 
 .menu-item:hover {
     background-color: rgba(76, 175, 80, 0.5);
+}
+
+.icon-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-container i {
+  font-size: 1.2rem;
 }
 
 .logout-btn {
@@ -123,4 +135,20 @@
     color: red;
     background-color: rgba(238, 109, 109, 0.5);
 
+}
+
+.notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -15px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 5px;
+    min-width: 9px;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #e8f4eb;
+    z-index: 10;
 }

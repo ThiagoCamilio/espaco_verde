@@ -38,6 +38,11 @@ public class ControlOrder {
         return ResponseEntity.status(200).body(orders);
     }
 
+    @GetMapping("/admin/orders/pending-count")
+    public ResponseEntity<Integer> getPendingOrdersCont(){
+        return ResponseEntity.ok(serviceOrder.getPendingOrdersCount());
+    }
+
     @GetMapping("/user/orders")
     public ResponseEntity<List<OrderResponseDTO>> getMyOrders(@AuthenticationPrincipal User user){
         int userId = user.getId();

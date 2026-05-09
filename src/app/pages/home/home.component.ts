@@ -41,7 +41,6 @@ export class HomeComponent implements OnInit{
     this.productService.listAllActive().subscribe({
       next: (data) =>{
         this.products = data;
-        console.log(this.products)
       },
       error(err) {
         console.log("Houve um erro", err)

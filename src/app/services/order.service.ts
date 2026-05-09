@@ -7,13 +7,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
-  
+
   private readonly URL = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) { }
 
-  createOrder(orderRequest: any): Observable<any>{
-  
+  createOrder(orderRequest: any): Observable<any> {
+
     return this.http.post(`${this.URL}/orders`, orderRequest);
 
   }
@@ -22,12 +22,12 @@ export class OrderService {
     return this.http.get<any[]>(`${this.URL}/user/orders`);
   }
 
-  getAllAdminOrders(): Observable<any[]>{
+  getAllAdminOrders(): Observable<any[]> {
     return this.http.get<any[]>(`${this.URL}/admin/orders`);
   }
 
-  updateOrderStatus(orderId: number, newStatus: string): Observable<any>{
-    return this.http.patch<any[]>(`${this.URL}/admin/orders/${orderId}/status`, { status: newStatus});
+  updateOrderStatus(orderId: number, newStatus: string): Observable<any> {
+    return this.http.patch<any[]>(`${this.URL}/admin/orders/${orderId}/status`, { status: newStatus });
   }
 
 }

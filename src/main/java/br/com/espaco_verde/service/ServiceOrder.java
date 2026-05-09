@@ -7,6 +7,7 @@ import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.repository.RepositoryUser;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class ServiceOrder {
 
     @Autowired
     private RepositoryProduto repositoryProduct;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Transactional
     public OrderResponseDTO createOrder(OrderRequestDTO orderRequest, int userId){
@@ -58,6 +62,9 @@ public class ServiceOrder {
         order.setTotalPrice(totalPrice);
 
         Order persistOrder = repositoryOrder.save(order);
+        int pendingOrders = repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
+        simpMessagingTemplate.convertAndSend("/topic/pending-orders", pendingOrders);
+
         return toOrderResponseDTO(persistOrder);
 
     }
@@ -93,6 +100,8 @@ public class ServiceOrder {
         }
 
         order.setOrderStatus(OrderStatus.valueOf(newStatus));
+        int pendingOrders = repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
+        simpMessagingTemplate.convertAndSend("/topic/pending-orders", pendingOrders);
         return toOrderResponseDTO(order);
     }
 
@@ -112,6 +121,10 @@ public class ServiceOrder {
         return orders.stream()
                 .map(this::toOrderResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Integer getPendingOrdersCount(){
+        return repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
     }
 
     private OrderResponseDTO toOrderResponseDTO(Order order) {

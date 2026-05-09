@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { CommonModule, NgClass, NgFor } from '@angular/common';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-admin-orders-list',
@@ -27,9 +28,12 @@ export class AdminOrdersListComponent implements OnInit {
     { id: 'CANCELED', title: 'Cancelado', next: null, cssClass: 'bg-canceled' }
   ];
 
-  constructor(private orderService: OrderService) { }
+  constructor(private orderService: OrderService, private layoutService:LayoutService) { }
 
   ngOnInit(): void {
+    setTimeout(() =>{
+      this.layoutService.updateBannerText("Bem-vindo à Central de Pedidos!", "Aceite, atualize e cancele pedidos", "Comece agora");
+    });
     this.loadOrders();
   }
 

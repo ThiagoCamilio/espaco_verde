@@ -38,6 +38,7 @@ public class SecurityConfigurations {
                         .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/assets/**", "/favicon.ico").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/whatsapp/webhook").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
                         .requestMatchers("/produtos/**").hasRole("ADMIN")
                         .requestMatchers("/{path:[^\\.]*}").permitAll()
@@ -63,6 +64,7 @@ public class SecurityConfigurations {
         config.setAllowedOriginPatterns(List.of("http://localhost:4200", "https://cat-big-cobra.ngrok-free.app"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;

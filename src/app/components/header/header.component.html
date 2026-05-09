@@ -1,6 +1,6 @@
 <header>
   <div class="header-container">
-    <div class="logo">
+    <div routerLink="/"  class="logo">
       <i class="fas fa-leaf"></i>
       <h1>Espaço Verde</h1>
     </div>
@@ -8,9 +8,6 @@
     <nav>
       <ul>
         <li><a routerLink="/home">Início</a></li>
-        <li><a routerLink="/admin">Admin</a></li>
-        <li><a routerLink="/cadastro">Contato</a></li>
-        <li><a routerLink="/cadastro">Promoções</a></li>
       </ul>
     </nav>
 
@@ -29,7 +26,8 @@
               {{ total }}
             </span>
           </div>
-          <button routerLink="/user/profile" class="profile-btn">Meu Perfil</button>
+          <button class="profile-btn" *ngIf="userRole != 'admin'" routerLink="/user/profile" >Meu Perfil</button>
+          <button class="profile-btn" *ngIf="userRole == 'admin'" routerLink="/admin" >Dashboard</button>
           <button (click)="logout()" class="logout-btn">Sair</button>
         </ng-container>
       </div>

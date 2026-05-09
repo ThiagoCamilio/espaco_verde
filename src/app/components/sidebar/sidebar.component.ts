@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,12 +16,24 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit{
 
   @Input() isExpanded : Boolean = false;
   @Output() toggle = new EventEmitter<void>();
 
-  constructor(private authService: AuthService, private router:Router){}
+  orderCount: number = 0;
+  private sub!: Subscription;
+
+  constructor(private authService: AuthService, private router:Router, private notificationService: NotificationService){}
+
+  ngOnInit(): void {
+      this.sub = this.notificationService.badgeOrderCounter$.subscribe({
+        next:(count) =>{
+          console.log("contagem ", count)
+          this.orderCount = count;
+        }
+      })
+  }
 
   toggleSidebar(){
     this.isExpanded = !this.isExpanded;

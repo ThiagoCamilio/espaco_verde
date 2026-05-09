@@ -16,4 +16,6 @@ public interface RepositoryOrder extends JpaRepository<Order, Integer> {
     List<Order> findByCustumerId(int userId);
 
     List<Order> findByOrderStatus(OrderStatus orderStatus);
+
+    public int countByOrderStatus(OrderStatus orderStatus);
 }
