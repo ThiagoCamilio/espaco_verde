@@ -29,7 +29,6 @@ export class SidebarComponent implements OnInit{
   ngOnInit(): void {
       this.sub = this.notificationService.badgeOrderCounter$.subscribe({
         next:(count) =>{
-          console.log("contagem ", count)
           this.orderCount = count;
         }
       })

@@ -4,6 +4,7 @@ import { Client, Message } from '@stomp/stompjs'
 import { AuthService } from './auth.service';
 import SockJS from 'sockjs-client';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class NotificationService {
 
   private stompClient!: Client;
 
-  constructor(private authService: AuthService, private http: HttpClient) {
+  constructor(private authService: AuthService, private http: HttpClient, private toastrService: ToastrService) {
     if (authService.isLoggedIn$) {
       this.loadBadgeCount();
       this.conect();
@@ -43,22 +44,24 @@ export class NotificationService {
       reconnectDelay: 5000,
       connectHeaders: {
         Authorization: `Bearer ${token}`
-      },
-      debug: (msg) => console.log(msg)
+      }
     });
 
     this.stompClient.onConnect = (frame) => {
-      this.stompClient.subscribe('/topic/pending-orders', (message: Message) => {
-        if (message.body) {
-          const newCount = parseInt(message.body, 10);
-          const oldCount = this.badgeOrderCounter.value;
-          if (newCount > oldCount) {
-            console.log("NOVO PEDIDO, esse log vai virar um toastr depois")
-          }
+      if (this.authService.getRole() === 'admin') {
+        this.stompClient.subscribe('/topic/pending-orders', (message: Message) => {
+          if (message.body) {
+            const newCount = parseInt(message.body, 10);
+            const oldCount = this.badgeOrderCounter.value;
+            if (newCount > oldCount) {
+              this.playSound();
+              this.toastrService.warning("Um novo pedido esta aguardando sua análise", "Novo pedido!")
+            }
 
-          this.badgeOrderCounter.next(newCount);
-        }
-      });
+            this.badgeOrderCounter.next(newCount);
+          }
+        });
+      }
     };
     this.stompClient.activate();
   }
@@ -67,5 +70,12 @@ export class NotificationService {
     if (this.stompClient && this.stompClient.active) {
       this.stompClient.deactivate();
     }
+  }
+
+  private playSound(){
+    const audio = new Audio('sounds/notification-bell-01.mp3')
+    audio.play().catch(erro =>{
+      console.warn("O navegador bloqueou o audio de notificação")
+    })
   }
 }

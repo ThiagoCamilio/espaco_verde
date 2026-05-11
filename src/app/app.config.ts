@@ -6,6 +6,8 @@ import { LOCALE_ID } from '@angular/core';
 import localePt from '@angular/common/locales/pt';
 import { routes } from './app.routes';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
 
 registerLocaleData(localePt);
 
@@ -16,6 +18,12 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideHttpClient(withInterceptorsFromDi()),
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi:true},
-    {provide: LOCALE_ID, useValue: 'pt-BR'}
+    {provide: LOCALE_ID, useValue: 'pt-BR'},
+    provideAnimations(),
+    provideToastr({
+      timeOut:10000,
+      progressBar: true,
+      preventDuplicates: true,
+    })
   ]
 };
