@@ -102,6 +102,15 @@ public class ServiceOrder {
         order.setOrderStatus(OrderStatus.valueOf(newStatus));
         int pendingOrders = repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
         simpMessagingTemplate.convertAndSend("/topic/pending-orders", pendingOrders);
+
+        int userId = order.getCustumer().getId();
+        System.out.println(userId);
+        simpMessagingTemplate.convertAndSendToUser(
+                "1",
+                "/queue/order-updates",
+                "Seu pedido #"+order.getId()+" agora esta: "+order.getOrderStatus().getType()
+        );
+
         return toOrderResponseDTO(order);
     }
 

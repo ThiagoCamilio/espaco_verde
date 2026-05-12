@@ -29,6 +29,7 @@ public class ServiceToken {
                     .withSubject(user.getLogin())
                     .withClaim("role", user.getRole().getRole())
                     .withClaim("name", user.getName())
+                    .withClaim("id", user.getId())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
             return token;
@@ -45,6 +46,19 @@ public class ServiceToken {
                     .build()
                     .verify(token)
                     .getSubject();
+        }catch (JWTVerificationException exception){
+            return null;
+        }
+    }
+
+    public String extractUserId(String token){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(apiTokenSecret);
+            return String.valueOf(JWT.require(algorithm)
+                    .withIssuer("espaco-verde")
+                    .build()
+                    .verify(token)
+                    .getClaim("id").asInt());
         }catch (JWTVerificationException exception){
             return null;
         }

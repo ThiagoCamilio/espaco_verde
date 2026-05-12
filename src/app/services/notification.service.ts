@@ -19,7 +19,6 @@ export class NotificationService {
   constructor(private authService: AuthService, private http: HttpClient, private toastrService: ToastrService) {
     if (authService.isLoggedIn$) {
       this.loadBadgeCount();
-      this.conect();
     }
   }
 
@@ -35,8 +34,10 @@ export class NotificationService {
     }
   }
 
-  private conect() {
+  public conect() {
+    console.log('🚀 ANGULAR: Tentando iniciar conexão com o WebSocket...');
     const token = this.authService.getToken();
+    
 
     const socket = new SockJS('http://localhost:8080/ws');
     this.stompClient = new Client({
@@ -49,6 +50,7 @@ export class NotificationService {
 
     this.stompClient.onConnect = (frame) => {
       if (this.authService.getRole() === 'admin') {
+        console.log("ADMIN")
         this.stompClient.subscribe('/topic/pending-orders', (message: Message) => {
           if (message.body) {
             const newCount = parseInt(message.body, 10);
@@ -62,6 +64,15 @@ export class NotificationService {
           }
         });
       }
+
+      this.stompClient.subscribe('/user/queue/order-updates', (message: Message)=>{
+        console.log("<<<<<<<<<USER>>>>>>>>>>>>")
+        if(message.body){
+          this.playSound();
+          this.toastrService.info(message.body, "Atualização do Pedido")
+        }
+      })
+
     };
     this.stompClient.activate();
   }
