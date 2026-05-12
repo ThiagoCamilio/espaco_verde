@@ -72,7 +72,6 @@ export class ProductDetailsComponent implements OnInit{
       this.cartService.addItem({...item, quantity:1});
     }
     
-    console.log('Produto adicionado:', item.name);
   }
 
 

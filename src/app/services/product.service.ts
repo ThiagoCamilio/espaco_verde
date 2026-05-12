@@ -21,7 +21,6 @@ export class ProductService {
 
     if(product.id){
       
-      console.log(product.id)
       return this.http.put(`${this.URL}/update `, formData);
     
     }else{

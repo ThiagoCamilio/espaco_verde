@@ -36,7 +36,6 @@ export class RegisterFormComponent implements OnInit{
 
     const userData = this.registerForm.value;
     const userToRegister = {...userData, role:"USER"} as UserRegisterDTO;
-    console.log(userToRegister);
 
     this.authService.registerUser(userToRegister).subscribe({
       next:(res)=> {

@@ -42,7 +42,6 @@ export class ProductCardComponent {
     };
 
     this.cartService.addItem(item);
-    console.log('Produto adicionado:', item.name);
   }
 
 }

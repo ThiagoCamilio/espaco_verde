@@ -49,7 +49,6 @@ export class AuthService {
         if(value.token){
           sessionStorage.setItem('auth-token', value.token)
           this.loggedIn.next(true)
-          console.log(this.loggedIn)
         }
       })
     )

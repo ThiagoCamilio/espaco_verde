@@ -5,8 +5,6 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class BannerService {
-
-
   showBanner = new BehaviorSubject<boolean>(true);
   constructor() { }
 }

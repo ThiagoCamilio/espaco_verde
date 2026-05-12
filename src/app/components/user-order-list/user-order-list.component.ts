@@ -47,7 +47,6 @@ export class UserOrderListComponent implements OnInit {
   }
 
   loadOrders(): void {
-    console.log("orders")
     this.orderService.getMyOrders().subscribe({
       next: (data: OrderResponse[]) => {
         this.orders = data.sort((a, b) =>

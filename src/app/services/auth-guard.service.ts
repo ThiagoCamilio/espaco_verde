@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 })
 export class AuthGuard implements CanActivateChild {
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   canActivateChild(
     next: ActivatedRouteSnapshot,
@@ -17,18 +17,18 @@ export class AuthGuard implements CanActivateChild {
     if (!authToken) {
       this.router.navigate(['/login']);
       return false;
-    } 
+    }
 
     const expectedRole = next.data['expectedRole'] || next.parent?.data['expectedRole']
 
     const userRole = this.authService.getRole();
 
-    if(expectedRole && userRole !== expectedRole ){
+    if (expectedRole && userRole !== expectedRole) {
       this.router.navigate(['/home']);
       return false;
     }
 
-    return true; 
-    
+    return true;
+
   }
 }
