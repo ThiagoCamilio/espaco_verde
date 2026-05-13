@@ -3,12 +3,14 @@ package br.com.espaco_verde.DTO;
 import br.com.espaco_verde.entity.Product;
 import br.com.espaco_verde.entity.TiposProdutos;
 
+import java.math.BigDecimal;
+
 public record RegisterProductDTO(
         String nome,
         TiposProdutos tipo,
         int quantidade,
         String dataDeEntrada,
-        double precoCusto,
+        BigDecimal precoCusto,
         double preco,
         String descricao
 ){

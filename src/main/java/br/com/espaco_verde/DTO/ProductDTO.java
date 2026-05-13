@@ -3,13 +3,15 @@ package br.com.espaco_verde.DTO;
 import br.com.espaco_verde.entity.Product;
 import br.com.espaco_verde.entity.TiposProdutos;
 
+import java.math.BigDecimal;
+
 public record ProductDTO(
         int id,
         String nome,
         TiposProdutos tipo,
         int stockQuantity,
         String dataDeEntrada,
-        double precoCusto,
+        BigDecimal precoCusto,
         double preco,
         String imagem,
         String descricao

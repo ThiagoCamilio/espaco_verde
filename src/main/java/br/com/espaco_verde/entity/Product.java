@@ -1,18 +1,13 @@
 package br.com.espaco_verde.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity(name = "produtos")
 @Table(name = "Produtos")
@@ -42,19 +37,25 @@ public class Product implements Serializable {
 
     private String dataDeEntrada;
 
-    private double precoCusto;
+    private BigDecimal precoCusto;
 
     private double preco;
+
+    private BigDecimal suggestedPrice;
 
     private String imagem;
 
     private String descricao;
 
+    @ManyToOne
+    @JoinColumn(name = "pricing_category_id")
+    private PricingCategory pricingCategory;
+
     private boolean excluido = false;
 
     private boolean active = true;
 
-    public Product(String nome, TiposProdutos tipo, int stockQuantity, String dataDeEntrada, double precoCusto, double preco, String descricao){
+    public Product(String nome, TiposProdutos tipo, int stockQuantity, String dataDeEntrada, BigDecimal precoCusto, double preco, String descricao){
         this.nome = nome;
         this.tipo = tipo;
         this.stockQuantity = stockQuantity;

@@ -3,6 +3,7 @@ package br.com.espaco_verde.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 public class ItemEntrada implements Serializable {
@@ -60,7 +61,7 @@ public class ItemEntrada implements Serializable {
     this.product = product;
   }
 
-  public double getValorCusto() {
+  public BigDecimal getValorCusto() {
     return valorCusto;
   }
 

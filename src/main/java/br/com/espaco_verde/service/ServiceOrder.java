@@ -104,9 +104,8 @@ public class ServiceOrder {
         simpMessagingTemplate.convertAndSend("/topic/pending-orders", pendingOrders);
 
         int userId = order.getCustumer().getId();
-        System.out.println(userId);
         simpMessagingTemplate.convertAndSendToUser(
-                "1",
+                String.valueOf(userId),
                 "/queue/order-updates",
                 "Seu pedido #"+order.getId()+" agora esta: "+order.getOrderStatus().getType()
         );
