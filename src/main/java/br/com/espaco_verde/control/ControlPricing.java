@@ -29,20 +29,20 @@ public class ControlPricing {
         return ResponseEntity.ok(classes);
     }
 
-    @PutMapping
+    @PutMapping("/config")
     public ResponseEntity<?> updatePricingConfiguration(@RequestBody PricingConfigDTO pricingConfigDTO){
         servicePricing.updatePricingConfig(pricingConfigDTO);
         return ResponseEntity.ok().build();
 
     }
 
-    @PutMapping
+    @PutMapping("/categories")
     public ResponseEntity<?> updatePricingCategory(@RequestBody PricingConfigDTO pricingConfigDTO){
         servicePricing.updatePricingCategories(pricingConfigDTO);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping
+    @PostMapping("/calc")
     public ResponseEntity<?> calculatePrices(@RequestParam PricingMethod pricingMethod){
         servicePricing.recalculateAllProducts(pricingMethod);
         return ResponseEntity.ok("Preços recalculados com sucesso");
