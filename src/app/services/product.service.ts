@@ -46,4 +46,13 @@ export class ProductService {
   delete(id:string){
     return this.http.delete<Product>(`${this.URL}/delete/`+id)
   }
+
+  updateSyncStatus(productId: string, status:boolean):Observable<void>{
+    return this.http.patch<void>(`${this.URL}/${productId}/sync-status?status=${status}`, {});
+  }
+
+  updatePricingCategory(productId: string, newCategoryId:number) {
+    return this.http.patch<void>(`${this.URL}/${productId}/category?categoryId=${newCategoryId}`, {});
+  }
+
 }

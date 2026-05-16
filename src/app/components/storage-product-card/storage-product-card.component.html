@@ -1,12 +1,34 @@
-<app-base-product-card
-    [product]="product"
-    [route]="'product/'+product.id!"
->  
+<app-base-product-card [product]="product" [route]="'product/'+product.id!">
+    <div class="pricing-container">
+        <div class="cost-price">
+            <label>Preço de custo</label>
+            <span class="value">{{ product.precoCusto | currency:'BRL' }}</span>
+        </div>
+        <div class="suggested-price" [class.active]="product.useSuggestedPrice">
+            <label>Preço Sugerido</label>
+            <span class="value">{{ product.suggestedPrice | currency:'BRL' }}</span>
+        </div>
+        <hr class="card-divider">
+
+        <div class="pricing-controls">
+            <div class="control-group toggle-group">
+                <label>Precificar</label>
+                <label class="switch" (click)="$event.stopPropagation()">
+                    <input type="checkbox" [(ngModel)]="product.useSuggestedPrice" (change)="onToggleSync()"
+                        [disabled]="!product.suggestedPrice || product.suggestedPrice <= 0 ">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
     <div class="storage-info">
         <strong> Qnt: {{product.stockQuantity}}</strong>
     </div>
     <div class="action-btns">
-        <button class="btn-edit" [routerLink]="['product/'+product.id]" [queryParams]="{edit :true}"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-        <button class="btn-delete" (click)="onModalClick($event)"><i class="fa-solid fa-trash-can"></i> Excluir</button>
+        <button class="btn-edit" [routerLink]="['product/'+product.id]" [queryParams]="{edit :true}"><i
+                class="fa-solid fa-pen-to-square"></i> Editar</button>
+        <button class="btn-delete" (click)="onModalClick($event)"><i class="fa-solid fa-trash-can"></i>
+            Excluir</button>
     </div>
 </app-base-product-card>

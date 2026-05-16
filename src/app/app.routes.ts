@@ -17,6 +17,7 @@ import { CheckoutDeliveryComponent } from './pages/checkout-delivery/checkout-de
 import { CheckoutConfirmationComponent } from './pages/checkout-confirmation/checkout-confirmation.component';
 import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-success.component';
 import { AdminOrdersListComponent } from './pages/admin-orders-list/admin-orders-list.component';
+import { PricingDashboardComponent } from './pages/pricing-dashboard/pricing-dashboard.component';
 
 export const routes: Routes = [
   {
@@ -42,7 +43,8 @@ export const routes: Routes = [
       { path: 'cadastro', component: ProductFormComponent},
       { path: 'estoque', component: StorageComponent},
       { path: 'estoque/product/:id', component: StorageProductDetailsComponent},
-      { path: 'orders', component: AdminOrdersListComponent}
+      { path: 'orders', component: AdminOrdersListComponent},
+      { path: 'pricing', component: PricingDashboardComponent}
 
     ],   
   },

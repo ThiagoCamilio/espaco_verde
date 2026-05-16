@@ -15,7 +15,7 @@
 }
 
 .sidebar.expanded {
-    width: 150px;
+    width: 160px;
 }
 
 .top {
@@ -116,7 +116,7 @@
 }
 
 .icon-container i {
-  font-size: 1.2rem;
+    font-size: 1.2rem;
 }
 
 .logout-btn {

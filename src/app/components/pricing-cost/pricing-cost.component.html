@@ -1,0 +1,43 @@
+<div class="costs-container">
+
+    <div class="ev-card cost-card">
+        <div class="ev-card-header flex-header">
+            <h3 class="ev-card-title">Custos Operacionais Editáveis</h3>
+        </div>
+
+        <div class="costs-grid">
+            <div class="input-group">
+                <label>Faturamento Mensal Estimado (R$)</label>
+                <input type="number" class="ev-input" [(ngModel)]="revenue" (blur)="onInputBlur()"
+                    placeholder="Ex: 100000">
+            </div>
+
+            <div class="input-group">
+                <label>Gastos Fixos Mensais (R$)</label>
+                <input type="number" class="ev-input" [(ngModel)]="fixExpenses" (blur)="onInputBlur()"
+                    placeholder="Ex: 25000">
+            </div>
+        </div>
+
+        <div class="result-banner mt-3">
+            Resultado (Custos Fixos): <strong>{{ fixExpensesPercent | number:'1.1-2' }}%</strong> do Faturamento
+        </div>
+    </div>
+
+    <div class="ev-card cost-card">
+        <div class="ev-card-header">
+            <h3 class="ev-card-title">Detalhamento de Gastos Variáveis</h3>
+        </div>
+
+        <div class="input-group single-input">
+            <label>Total Gasto Variável Estimado (%)</label>
+            <div class="input-with-suffix">
+                <input type="number" class="ev-input" [(ngModel)]="variableExpenses" (blur)="onInputBlur()"
+                    placeholder="Ex: 10">
+                <span class="suffix">%</span>
+            </div>
+            <small class="hint-text">Impostos, comissões de cartão, frete, etc.</small>
+        </div>
+    </div>
+
+</div>

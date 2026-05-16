@@ -33,3 +33,102 @@
 .action-btns button:hover{
   filter: brightness(0.9);
 }
+
+.price-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+}
+
+.current-price label, .suggested-price label, .cost-price label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.current-price .value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.suggested-price .value, .cost-price .value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.suggested-price.active .value {
+  color: var(--cor-primaria, #10b981);
+}
+
+.pricing-controls {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.control-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.ev-input-sm {
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--cor-primaria, #10b981);
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

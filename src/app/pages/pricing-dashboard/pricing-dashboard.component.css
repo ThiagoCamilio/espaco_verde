@@ -1,0 +1,95 @@
+:host {
+    display: block;
+    padding: 24px;
+    background-color: var(--cor-fundo-app, #f8fafc);
+    color: var(--cor-texto-principal, #1e293b);
+    box-sizing: border-box;
+}
+
+.pricing-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: var(--cor-titulo, #0f172a);
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.pricing-main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.pricing-side-column {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+::ng-deep .ev-card {
+  background-color: var(--cor-fundo-card, #ffffff);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--cor-borda, #e2e8f0);
+}
+
+::ng-deep .ev-card-header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--cor-borda-leve, #f1f5f9);
+  padding-bottom: 12px;
+}
+
+::ng-deep .ev-card-title {
+  color: var(--cor-titulo-card, #334155);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Estilização padrão de Inputs do sistema */
+::ng-deep .ev-input {
+  width: 100%;
+  border: 1px solid var(--cor-borda, #cbd5e1);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: var(--cor-texto-principal, #334155);
+  background-color: #fff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+::ng-deep .ev-input:focus {
+  outline: none;
+  border-color: var(--cor-primaria, #10b981); /* O Verde do Espaço Verde */
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+/* Botões baseados na paleta do projeto */
+::ng-deep .ev-btn-primary {
+  background-color: var(--cor-primaria, #10b981);
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+::ng-deep .ev-btn-primary:hover {
+  background-color: var(--cor-primaria-hover, #059669);
+}
+
+::ng-deep .ev-btn-primary:active {
+  transform: translateY(1px);
+}

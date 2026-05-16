@@ -38,7 +38,7 @@ export class SidebarComponent implements OnInit{
     this.isExpanded = !this.isExpanded;
     this.toggle.emit();
     if(this.isExpanded == true){
-      document.documentElement.style.setProperty('--sidebar-width', '160px');
+      document.documentElement.style.setProperty('--sidebar-width', '170px');
     }else{
       document.documentElement.style.setProperty('--sidebar-width', '80px');
     }

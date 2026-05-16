@@ -26,7 +26,7 @@
         required
         minlength="3"
         maxlength="100"
-        placeholder="Digite o nome do product"
+        placeholder="Digite o nome do produto"
         [class.is-invalid]="nome.invalid && nome.touched">
       <div *ngIf="nome.invalid && nome.touched" class="error-message">
       <span *ngIf="nome.errors?.['required']">Nome é obrigatório</span>
@@ -52,13 +52,13 @@
         </option>
       </select>
       <div *ngIf="tipo.invalid && tipo.touched" class="error-message">
-        <span *ngIf="tipo.errors?.['required']">Tipo do product é obrigatório</span>
+        <span *ngIf="tipo.errors?.['required']">Tipo do produto é obrigatório</span>
       </div>
     </div>
 
     <div class="form-group">
       <label for="stockQuantity">
-        <i class="fas fa-boxes"></i> stockQuantity em Estoque *
+        <i class="fas fa-boxes"></i> Quantidade *
       </label>
       <input
         type="number"

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class ServiceOrder {
         order.setCustumer(customer);
         order.setDeliveryMethod(orderRequest.deliveryMethod());
         order.setDeliveryAdress(orderRequest.deliveryAdress());
-        double totalPrice = 0;
+        BigDecimal totalPrice = BigDecimal.ZERO;
 
         for(OrderItemRequestDTO itemRequestDTO : orderRequest.items()){
             Product product = repositoryProduct.findById(itemRequestDTO.productId())
@@ -56,8 +57,8 @@ public class ServiceOrder {
             orderItem.setUnitPrice(product.getPreco());
 
             order.getItems().add(orderItem);
-            double subtotal = product.getPreco() * itemRequestDTO.quantity();
-            totalPrice = totalPrice + subtotal;
+            BigDecimal subtotal = product.getPreco().multiply(BigDecimal.valueOf(itemRequestDTO.quantity()));
+            totalPrice = subtotal.multiply(totalPrice);
         }
         order.setTotalPrice(totalPrice);
 

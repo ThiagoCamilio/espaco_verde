@@ -3,7 +3,7 @@ package br.com.espaco_verde.entity;
 public enum PricingMethod {
 
     MARKUP_DIVISOR("Markup Divisor"),
-    MARKUP_MIXED("Markup Misto");
+    LUCRO_SOBRE_O_CUSTO_COM_REPASSE("Lucro sobre o custom com repasse");
 
     private String type;
 

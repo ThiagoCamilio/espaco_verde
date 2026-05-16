@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity(name = "ProodutosVendas")
 @Table(name = "ProdutosVendas")
@@ -38,12 +39,12 @@ public class ProductCart implements Serializable {
     private Product product;
 
     @Getter @Setter
-    private double precoVenda;
+    private BigDecimal precoVenda;
 
     @Getter @Setter
     private int quantidade;
 
-    public ProductCart(Product product, double precoVenda, int quantidade){
+    public ProductCart(Product product, BigDecimal precoVenda, int quantidade){
         this.product = product;
         this.precoVenda = precoVenda;
         this.quantidade = quantidade;

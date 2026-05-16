@@ -30,6 +30,8 @@ export class ProductFormComponent implements OnInit {
     dataDeEntrada: '',
     precoCusto: 0,
     preco: 0,
+    suggestedPrice:0,
+    useSuggestedPrice:false,
     imagem: '',
     descricao:''
   };
@@ -98,6 +100,8 @@ export class ProductFormComponent implements OnInit {
       dataDeEntrada: '',
       precoCusto: 0,
       preco: 0,
+      suggestedPrice:0,
+      useSuggestedPrice:false,
       imagem: '',
       descricao: ''
     };
@@ -174,10 +178,6 @@ export class ProductFormComponent implements OnInit {
 
   }
 
-  toggleCart(): void {
-    console.log('Abrir carrinho');
-  }
-
   onFileSelected(event:any){
     const file = event.target.files[0];
     if(file){
@@ -190,22 +190,10 @@ export class ProductFormComponent implements OnInit {
     }
   }
 
-
   private loadCartCount(): void {
     this.cartItemsCount = 0;
   }
 
-  private showLoading(show: boolean): void {
-    const submitBtn = document.querySelector('.btn-submit');
-    if (submitBtn) {
-      if (show) {
-        submitBtn.classList.add('loading');
-        submitBtn.setAttribute('disabled', 'true');
-      } else {
-        submitBtn.classList.remove('loading');
-        submitBtn.removeAttribute('disabled');
-      }
-    }
-  }
+
 
 }

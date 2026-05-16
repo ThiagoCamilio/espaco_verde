@@ -18,6 +18,7 @@
     <app-storage-product-card
       *ngFor="let p of products"
       [product] = "p"
+      [pricingCategories] = "pricingCategories"
       (selectedProduct) = "selectProduct($event)">
     </app-storage-product-card>
   </div>

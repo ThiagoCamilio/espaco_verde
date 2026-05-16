@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("admin/pricing")
@@ -37,15 +39,14 @@ public class ControlPricing {
     }
 
     @PutMapping("/categories")
-    public ResponseEntity<?> updatePricingCategory(@RequestBody PricingConfigDTO pricingConfigDTO){
-        servicePricing.updatePricingCategories(pricingConfigDTO);
+    public ResponseEntity<?> updatePricingCategory(@RequestBody Map<Integer, BigDecimal> categories){
+        servicePricing.updatePricingCategories(categories);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/calc")
-    public ResponseEntity<?> calculatePrices(@RequestParam PricingMethod pricingMethod){
-        servicePricing.recalculateAllProducts(pricingMethod);
-        return ResponseEntity.ok("Preços recalculados com sucesso");
+    public ResponseEntity<?> calculatePrices(@RequestParam PricingMethod method){
+        servicePricing.recalculateAllProducts(method);
+        return ResponseEntity.ok(Map.of("message", "Preços calculados com sucesso!"));
     }
-
 }

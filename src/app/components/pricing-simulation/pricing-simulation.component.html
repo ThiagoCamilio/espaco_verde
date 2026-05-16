@@ -1,0 +1,52 @@
+<div class="ev-card simulation-card">
+  
+  <div class="simulation-header">
+    <div class="method-selector">
+      <label>Método de Precificação</label>
+      <select class="ev-input" [(ngModel)]="selectedMethod">
+        <option *ngFor="let m of methods" [value]="m.value">{{ m.label }}</option>
+      </select>
+    </div>
+    
+    <button class="ev-btn-primary" (click)="onApply()">
+      <span class="btn-icon">⚡</span> Aplicar Método
+    </button>
+  </div>
+
+  <hr class="divider">
+
+  <!--
+  <div class="preview-section">
+    <h4 class="section-title">Prévia da Precificação (Simulação)</h4>
+    <div class="table-container">
+      <table class="ev-table">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Custo (R$)</th>
+            <th>Preço Base</th>
+            <th>Preço Final</th>
+            <th>Margem Real</th>
+          </tr>
+        </thead>
+       
+        <tbody>
+          <tr *ngFor="let p of mockProducts">
+            <td class="font-bold">{{ p.nome }}</td>
+            <td>{{ p.custo | currency:'BRL' }}</td>
+            <td class="text-muted">{{ p.precoBase | currency:'BRL' }}</td>
+            <td class="text-success font-bold">{{ p.precoFinal | currency:'BRL' }}</td>
+            <td>
+              <span class="margin-badge">
+                {{ p.margem }}%
+              </span>
+            </td>
+          </tr>
+        </tbody>
+        
+      </table>
+    </div>
+  </div>
+  -->
+
+</div>

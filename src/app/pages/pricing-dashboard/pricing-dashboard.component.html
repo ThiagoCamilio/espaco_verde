@@ -1,0 +1,32 @@
+<div class="pricing-container">
+
+    <header class="pricing-header">
+        <h2>Modulo de precificação</h2>
+    </header>
+
+    <div class="pricing-grid">
+        <div class="pricing-main-column">
+            
+            <app-pricing-cost 
+            *ngIf="pricingConfig"
+            [configData]="pricingConfig"
+            (newConfig)="onConfigChange($event)">                
+            </app-pricing-cost>
+
+            <app-pricing-simulation
+            class="simulation-wraper"
+            (applyMethod)="onCalculate($event)">
+            </app-pricing-simulation>
+
+        </div>
+        <div class="pricing-side-column">
+
+            <app-pricing-categories
+            *ngIf="pricingCategories.length > 0"
+            [pricingCategories]="pricingCategories"
+            (updatedMargins)="onCategoryChange($event)">
+            </app-pricing-categories>
+
+        </div>
+    </div>
+</div>

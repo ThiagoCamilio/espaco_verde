@@ -111,5 +111,18 @@ public class ControlProdutos {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable int id){
         return serviceProduto.delete(id);
+
+    }
+
+    @PatchMapping("/{id}/sync-status")
+    public ResponseEntity<?> updateSyncStatus(@PathVariable int id, @RequestParam boolean status){
+        serviceProduto.updateSyncStatus(id, status);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}/category")
+    public ResponseEntity<?> updatePricingCategory(@PathVariable int id, @RequestParam int categoryId){
+        serviceProduto.updatePricingCategory(id, categoryId);
+        return ResponseEntity.ok().build();
     }
 }

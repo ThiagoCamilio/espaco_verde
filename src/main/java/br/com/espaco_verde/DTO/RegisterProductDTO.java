@@ -11,7 +11,7 @@ public record RegisterProductDTO(
         int quantidade,
         String dataDeEntrada,
         BigDecimal precoCusto,
-        double preco,
+        BigDecimal preco,
         String descricao
 ){
 

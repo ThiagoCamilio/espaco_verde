@@ -10,12 +10,12 @@ import br.com.espaco_verde.repository.RepositoryPricingConfig;
 import br.com.espaco_verde.repository.RepositoryProduto;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ServicePricing {
@@ -42,9 +42,9 @@ public class ServicePricing {
     }
 
     @Transactional
-    public void updatePricingCategories(PricingConfigDTO pricingConfigDTO){
+    public void updatePricingCategories(Map<Integer, BigDecimal> categories ){
 
-        pricingConfigDTO.pricingCategories().forEach((categoryId, margin) -> {
+        categories.forEach((categoryId, margin) -> {
             repositoryPricingCategory.findById(categoryId).ifPresent(category ->{
                 category.setMargin(margin);
                 repositoryPricingCategory.save(category);
@@ -71,7 +71,11 @@ public class ServicePricing {
             BigDecimal margin = product.getPricingCategory().getMargin();
 
             BigDecimal suggestedPrice = calculatePrice(method, costPrice, fixedExpenses, variableExpenses, margin);
+            if(product.isUseSuggestedPrice()){
+                product.setPreco(suggestedPrice);
+            }
             product.setSuggestedPrice(suggestedPrice);
+
         }
 
         repositoryProduto.saveAll(products);
@@ -86,16 +90,13 @@ public class ServicePricing {
                 if(discountsPlusMargin.compareTo(BigDecimal.ONE) >= 0){
                     throw new IllegalArgumentException("A soma dos custos e margem ultrapassa 100%");
                 }
-
                 BigDecimal divisor = BigDecimal.ONE.subtract(discountsPlusMargin);
                 return costPrice.divide(divisor, 2, RoundingMode.HALF_UP);
 
-            case MARKUP_MIXED:
-                BigDecimal discounts = fixedExpenses.add(variableExpenses).subtract(BigDecimal.ONE);
-
-                BigDecimal profitMargin = BigDecimal.ONE.subtract(margin);
+            case LUCRO_SOBRE_O_CUSTO_COM_REPASSE:
+                BigDecimal discounts = BigDecimal.ONE.subtract(variableExpenses.add(fixedExpenses));
+                BigDecimal profitMargin = BigDecimal.ONE.add(margin);
                 BigDecimal profitPlusCost = profitMargin.multiply(costPrice);
-
                 return profitPlusCost.divide(discounts, 2, RoundingMode.HALF_UP);
 
             default:

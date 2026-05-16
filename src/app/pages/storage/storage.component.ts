@@ -7,6 +7,8 @@ import { StorageProductCardComponent } from '../../components/storage-product-ca
 import { DeleteModalComponent } from '../../components/delete-modal/delete-modal.component';
 import { RouterLink } from '@angular/router';
 import { FiltersComponent } from '../../components/filters/filters.component';
+import { PricingCategory } from '../../models/pricing-category';
+import { PricingService } from '../../services/pricing.service';
 
 @Component({
   selector: 'app-storage',
@@ -23,14 +25,18 @@ import { FiltersComponent } from '../../components/filters/filters.component';
   styleUrl: './storage.component.css'
 })
 export class StorageComponent implements OnInit{
-  constructor(private layoutService: LayoutService, private productService: ProductService){}
+  constructor(private layoutService: LayoutService, private productService: ProductService, private pricingService: PricingService){}
 
   products : Product[] = [];
+  pricingCategories: PricingCategory[] = [];
   selectedProduct:any;
   modalToggle: boolean = false;
 
   ngOnInit(): void {
     this.loadProducts();
+    this.pricingService.getCategories().subscribe(
+      res=> this.pricingCategories = res
+    );
     setTimeout(() =>{
       this.layoutService.updateBannerText("Bem-vindo ao Estoque!", "Cadastre ou altere seus produtos", "Comece agora");
     });
@@ -40,6 +46,7 @@ export class StorageComponent implements OnInit{
     this.productService.listAll().subscribe({
       next: (data) =>{
         this.products = data;
+        console.log(data)
       },
       error(err) {
         console.log("Houve um erro", err)

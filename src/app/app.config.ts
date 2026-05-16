@@ -21,9 +21,11 @@ export const appConfig: ApplicationConfig = {
     {provide: LOCALE_ID, useValue: 'pt-BR'},
     provideAnimations(),
     provideToastr({
-      timeOut:10000,
+      timeOut:5000,
       progressBar: true,
       preventDuplicates: true,
+      resetTimeoutOnDuplicate: true,
+      countDuplicates: true
     })
   ]
 };

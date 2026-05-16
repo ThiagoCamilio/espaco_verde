@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity(name = "Carrinho")
@@ -27,7 +28,7 @@ public class Carrinho implements Serializable {
     private List<ProductCart> produtosCarrinho;
 
     @Getter @Setter
-    private double preco;
+    private BigDecimal preco;
 
     @ManyToOne
     @JoinColumn(name = "cupom_desconto_id")
@@ -38,7 +39,7 @@ public class Carrinho implements Serializable {
 
         this.produtosCarrinho = produtosCarrinho;
         for (ProductCart produto : produtosCarrinho){
-            this.preco = produto.getPrecoVenda() * produto.getQuantidade();
+            this.preco = produto.getPrecoVenda().multiply(BigDecimal.valueOf(produto.getQuantidade()));
         }
         this.cupomDesconto = cupomDesconto;
 
@@ -48,7 +49,7 @@ public class Carrinho implements Serializable {
 
         this.produtosCarrinho = produtosCarrinho;
         for (ProductCart produto : produtosCarrinho){
-            this.preco = produto.getPrecoVenda() * produto.getQuantidade();
+            this.preco = produto.getPrecoVenda().multiply(BigDecimal.valueOf(produto.getQuantidade()));
         }
 
     }

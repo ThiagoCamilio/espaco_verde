@@ -39,7 +39,7 @@ public class Product implements Serializable {
 
     private BigDecimal precoCusto;
 
-    private double preco;
+    private BigDecimal preco;
 
     private BigDecimal suggestedPrice;
 
@@ -55,7 +55,9 @@ public class Product implements Serializable {
 
     private boolean active = true;
 
-    public Product(String nome, TiposProdutos tipo, int stockQuantity, String dataDeEntrada, BigDecimal precoCusto, double preco, String descricao){
+    private boolean useSuggestedPrice = false;
+
+    public Product(String nome, TiposProdutos tipo, int stockQuantity, String dataDeEntrada, BigDecimal precoCusto, BigDecimal preco, String descricao){
         this.nome = nome;
         this.tipo = tipo;
         this.stockQuantity = stockQuantity;

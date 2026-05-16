@@ -2,13 +2,16 @@ package br.com.espaco_verde.service;
 
 import br.com.espaco_verde.DTO.RegisterProductDTO;
 import br.com.espaco_verde.DTO.ProductDTO;
+import br.com.espaco_verde.entity.PricingCategory;
 import br.com.espaco_verde.entity.Product;
+import br.com.espaco_verde.repository.RepositoryPricingCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import br.com.espaco_verde.repository.RepositoryProduto;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,6 +30,9 @@ public class ServiceProduto{
     @Autowired
     private ServiceImage serviceImage;
 
+    @Autowired
+    RepositoryPricingCategory repositoryPricingCategory;
+
     public ResponseEntity<?> register(RegisterProductDTO productDTO, MultipartFile image) throws IOException {
 
         Product product = productDTO.toEntity();
@@ -44,9 +50,8 @@ public class ServiceProduto{
 
     public ResponseEntity<?> update(ProductDTO productDTO, MultipartFile image) throws IOException{
 
-        System.out.println(productDTO.id());
         Product product = productDTO.toEntity();
-
+        product.setUseSuggestedPrice(false);
         if (image == null){
             String currentImage = repositoryProduto.findById(product.getId()).orElseThrow(() -> new RuntimeException("Product não encontrado")).getImagem();
             product.setImagem(currentImage);
@@ -93,5 +98,30 @@ public class ServiceProduto{
     public ResponseEntity<?> delete(int id) {
         repositoryProduto.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    public void updateSyncStatus(int id, boolean status) {
+
+        Product product = repositoryProduto.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        product.setUseSuggestedPrice(status);
+
+        if(status && product.getSuggestedPrice() != null){
+            product.setPreco(product.getSuggestedPrice());
+        }
+
+        repositoryProduto.save(product);
+
+    }
+
+    @Transactional
+    public void updatePricingCategory(int id, int categoryId) {
+
+        Product product = repositoryProduto.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        PricingCategory pc = repositoryPricingCategory.findById(categoryId).orElseThrow(()-> new RuntimeException("Categoria de precificação não encontrada"));
+        product.setPricingCategory(pc);
+        repositoryProduto.save(product);
+
     }
 }
