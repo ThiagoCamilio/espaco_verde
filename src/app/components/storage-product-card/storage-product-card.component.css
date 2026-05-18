@@ -132,3 +132,16 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.product-quantities {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.85rem;
+    color: #334155;
+}
+
+.reserved-quantity {
+    color: #64748b;
+    font-weight: 600;
+}

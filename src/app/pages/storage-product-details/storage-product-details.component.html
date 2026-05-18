@@ -36,10 +36,10 @@
             <input *ngIf="editToggle" [(ngModel)]="editedProduct.nome" class="input-product-name" placeholder="Nome">
 
             <div class="product-quantity">
-                <strong *ngIf="!editToggle">{{product.stockQuantity}} unidades</strong>
-                <input *ngIf="editToggle" type="number" [(ngModel)]="editedProduct.stockQuantity"
-                    class="input-product-quantity" placeholder="stockQuantity">
-                <strong *ngIf="editToggle"> Unidades</strong>
+                <strong *ngIf="!editToggle">{{product.stockQuantity}} UNIDADES EM ESTOQUE</strong>
+                <strong *ngIf="!editToggle" class="reserved-quantity">{{product.reservedQuantity}} UNIDADES
+                    RESERVADAS</strong>
+
             </div>
         </div>
 

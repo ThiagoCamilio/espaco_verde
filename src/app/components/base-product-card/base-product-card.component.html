@@ -6,7 +6,7 @@
     <div class="card-body">
         <div class="header">
             <h3>{{product.nome}}</h3>
-            <ng-content select=".storage-info"></ng-content>
+            <ng-content select=".product-quantities"></ng-content>
         </div>
         <p class="product-category">{{product.tipo}}</p>
         <p class="product-price">{{product.preco | currency:'BRL'}}</p>

@@ -6,6 +6,7 @@ export interface Product {
       nome: string;
       tipo: TiposProdutos | string;
       stockQuantity: number;
+      reservedQuantity: number;
       dataDeEntrada: string;
       precoCusto: number;
       preco: number;

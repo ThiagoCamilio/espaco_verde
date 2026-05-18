@@ -1,4 +1,9 @@
 <app-base-product-card [product]="product" [route]="'product/'+product.id!">
+    <div class="product-quantities">
+        <strong>{{ product.stockQuantity }} em estoque</strong>
+        <strong class="reserved-quantity">{{ product.reservedQuantity }} reservadas</strong>
+    </div>
+
     <div class="pricing-container">
         <div class="cost-price">
             <label>Preço de custo</label>
@@ -20,10 +25,6 @@
                 </label>
             </div>
         </div>
-    </div>
-
-    <div class="storage-info">
-        <strong> Qnt: {{product.stockQuantity}}</strong>
     </div>
     <div class="action-btns">
         <button class="btn-edit" [routerLink]="['product/'+product.id]" [queryParams]="{edit :true}"><i
