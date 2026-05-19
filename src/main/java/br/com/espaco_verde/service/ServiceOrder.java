@@ -5,6 +5,7 @@ import br.com.espaco_verde.entity.*;
 import br.com.espaco_verde.repository.RepositoryOrder;
 import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.repository.RepositoryUser;
+import br.com.espaco_verde.repository.specification.OrderSpecification;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -136,6 +137,16 @@ public class ServiceOrder {
         return repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
     }
 
+    @Transactional
+    public List<OrderResponseDTO> getOrdersReport (ReportFilterDTO reportFilterDTO){
+
+        List<Order> reportOrders = repositoryOrder.findAll(OrderSpecification.withFilter(reportFilterDTO));
+
+        return reportOrders.stream()
+                .map(this::toOrderResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     private OrderResponseDTO toOrderResponseDTO(Order order) {
         List<OrderItemResponseDTO> itemsDTO = order.getItems().stream()
                 .map(item -> new OrderItemResponseDTO(
@@ -160,6 +171,5 @@ public class ServiceOrder {
                 )
         );
     }
-
 
 }

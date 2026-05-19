@@ -2,6 +2,7 @@ package br.com.espaco_verde.control;
 
 import br.com.espaco_verde.DTO.OrderRequestDTO;
 import br.com.espaco_verde.DTO.OrderResponseDTO;
+import br.com.espaco_verde.DTO.ReportFilterDTO;
 import br.com.espaco_verde.DTO.UpdateOrderDTO;
 import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.service.ServiceOrder;
@@ -48,5 +49,10 @@ public class ControlOrder {
         int userId = user.getId();
         List<OrderResponseDTO> myOrders = serviceOrder.getUserOrders(userId);
         return ResponseEntity.status(200).body(myOrders);
+    }
+
+    @GetMapping("/admin/orders/report")
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersReport(@RequestBody ReportFilterDTO filterDTO){
+        return ResponseEntity.ok(serviceOrder.getOrdersReport(filterDTO));
     }
 }
