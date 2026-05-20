@@ -36,7 +36,7 @@ build/
 uploads/
 
 ### reports ###
-reports/
+pdfReports/
 
 ### compiled output ###
 /dist

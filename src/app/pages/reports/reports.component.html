@@ -1,0 +1,133 @@
+<div class="page-container">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Relatórios Gerenciais</h1>
+            <p class="page-subtitle">Geração de documentos e histórico de auditoria do Espaço Verde.</p>
+        </div>
+    </div>
+
+    <div class="card generate-card">
+        <div class="card-header">
+            <h2><i class="fa-solid fa-wand-magic-sparkles"></i> Gerar Novo Relatório</h2>
+        </div>
+
+        <div class="card-body">
+
+            <div class="filters-grid">
+
+                <div class="filter-group">
+                    <label>Data de Início <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" [(ngModel)]="filterForm.initalDate">
+                </div>
+
+                <div class="filter-group">
+                    <label>Data de Fim <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" [(ngModel)]="filterForm.finalDate">
+                </div>
+
+                <div class="filter-group">
+                    <label>Status do Pedido</label>
+                    <select class="form-control" [(ngModel)]="filterForm.status">
+                        <option value="">Todos os status</option>
+                        <option *ngFor="let opt of statusOptions" [value]="opt.value">{{ opt.label }}</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Método de Entrega</label>
+                    <select class="form-control" [(ngModel)]="filterForm.deliveryMethod">
+                        <option value="">Todos os métodos</option>
+                        <option *ngFor="let opt of deliveryOptions" [value]="opt.value">{{ opt.label }}</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Categoria do Produto</label>
+                    <select class="form-control" [(ngModel)]="filterForm.productType">
+                        <option value="">Todas as categorias</option>
+                        <option *ngFor="let opt of productTypeOptions" [value]="opt.value">{{ opt.label }}</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Nome do Cliente</label>
+                    <input type="text" class="form-control" placeholder="Ex: João da Silva"
+                        [(ngModel)]="filterForm.custumerName">
+                </div>
+
+                <div class="filter-group">
+                    <label>Nome do Produto</label>
+                    <input type="text" class="form-control" placeholder="Ex: Orquídea"
+                        [(ngModel)]="filterForm.productName">
+                </div>
+
+            </div>
+
+            <div class="filter-actions-bar">
+                <button class="btn btn-outline" (click)="cleanFilters()">Limpar Filtros</button>
+                <button class="btn btn-primary" (click)="generateReport()">
+                    <span><i class="fa-solid fa-file-invoice"></i> Gerar e Salvar</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card history-card">
+        <div class="card-header">
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> Histórico de Relatórios</h2>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="ev-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data da Geração</th>
+                            <th>Período Analisado</th>
+                            <th class="text-center">Qtd. Pedidos</th>
+                            <th class="text-right">Faturamento</th>
+                            <th class="text-center">Ação</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let report of reportHistory">
+                            <td class="fw-bold">#{{ report.id }}</td>
+
+                            <td>{{ report.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+
+                            <td class="period-cell">
+                                <i class="fa-regular fa-calendar"></i>
+                                {{ report.filters?.initalDate | date:'dd/MM/yyyy' }} a {{ report.filters?.finalDate |
+                                date:'dd/MM/yyyy' }}
+                            </td>
+
+                            <td class="text-center fw-bold">{{ report.ordersQuantity }}</td>
+                            <td class="text-right text-success fw-bold">
+                                {{ report.totalOrdersValue | currency:'BRL':'symbol':'1.2-2' }}
+                            </td>
+
+                            <td class="text-center">
+                                <button class="btn btn-icon btn-pdf" (click)="downloadPdf(report.id)"
+                                    title="Baixar PDF">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="reportHistory.length === 0">
+                            <td colspan="6" class="empty-state">
+                                <i class="fa-solid fa-folder-open mb-2"></i>
+                                <p>Nenhum relatório foi gerado ainda.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
