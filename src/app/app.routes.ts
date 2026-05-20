@@ -18,6 +18,7 @@ import { CheckoutConfirmationComponent } from './pages/checkout-confirmation/che
 import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-success.component';
 import { AdminOrdersListComponent } from './pages/admin-orders-list/admin-orders-list.component';
 import { PricingDashboardComponent } from './pages/pricing-dashboard/pricing-dashboard.component';
+import { ReportsComponent } from './pages/reports/reports.component';
 
 export const routes: Routes = [
   {
@@ -44,7 +45,8 @@ export const routes: Routes = [
       { path: 'estoque', component: StorageComponent},
       { path: 'estoque/product/:id', component: StorageProductDetailsComponent},
       { path: 'orders', component: AdminOrdersListComponent},
-      { path: 'pricing', component: PricingDashboardComponent}
+      { path: 'pricing', component: PricingDashboardComponent},
+      { path: 'reports', component: ReportsComponent}
 
     ],   
   },

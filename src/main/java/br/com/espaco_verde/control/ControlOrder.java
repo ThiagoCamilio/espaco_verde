@@ -4,8 +4,10 @@ import br.com.espaco_verde.DTO.OrderRequestDTO;
 import br.com.espaco_verde.DTO.OrderResponseDTO;
 import br.com.espaco_verde.DTO.ReportFilterDTO;
 import br.com.espaco_verde.DTO.UpdateOrderDTO;
+import br.com.espaco_verde.entity.Report;
 import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.service.ServiceOrder;
+import br.com.espaco_verde.service.ServiceReport;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,13 @@ public class ControlOrder {
     @Autowired
     private ServiceOrder serviceOrder;
 
+    @Autowired
+    private ServiceReport serviceReport;
+
     @PostMapping("/orders")
     public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO orderResquest, @AuthenticationPrincipal User user){
         int userId = user.getId();
+        System.out.println(orderResquest);
         OrderResponseDTO responseDTO = serviceOrder.createOrder(orderResquest, userId);
         return ResponseEntity.status(201).body(responseDTO);
     }
@@ -49,10 +55,5 @@ public class ControlOrder {
         int userId = user.getId();
         List<OrderResponseDTO> myOrders = serviceOrder.getUserOrders(userId);
         return ResponseEntity.status(200).body(myOrders);
-    }
-
-    @GetMapping("/admin/orders/report")
-    public ResponseEntity<List<OrderResponseDTO>> getOrdersReport(@RequestBody ReportFilterDTO filterDTO){
-        return ResponseEntity.ok(serviceOrder.getOrdersReport(filterDTO));
     }
 }

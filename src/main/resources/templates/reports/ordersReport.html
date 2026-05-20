@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Relatório - Espaço Verde</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap"
+          rel="stylesheet" />
+
+    <style>
+        @page {
+            margin: 1.5cm;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            font-size: 12px;
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #10b981;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1e293b;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header .store {
+            color: #2e7d32;
+            font-weight: 800;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 11px;
+            margin: 0;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .kpi-container {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .kpi-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+        }
+
+        .kpi-title {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-metrics {
+            display: table;
+            width: 100%;
+        }
+
+        .kpi-item {
+            display: table-cell;
+            width: 50%;
+        }
+
+        .kpi-label {
+            font-size: 10px;
+            color: #475569;
+            text-transform: uppercase;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .kpi-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        .kpi-value.dark {
+            color: #1e293b;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: #1e293b;
+            font-weight: 800;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #10b981;
+            padding-left: 10px;
+            text-transform: uppercase;
+        }
+
+        .ev-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .ev-table th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 700;
+            font-size: 10px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #cbd5e1;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .ev-table td {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px;
+            color: #334155;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .ev-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .ev-table .detail-row {
+            background-color: #f8fafc;
+        }
+
+        .detail-cell {
+            padding: 15px 20px !important;
+            border-bottom: 2px solid #cbd5e1 !important;
+        }
+
+        .detail-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .detail-header {
+            display: table;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .detail-address {
+            font-size: 10px;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        .detail-address strong {
+            color: #1e293b;
+            text-transform: uppercase;
+        }
+
+        .inner-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .inner-table th {
+            background-color: #f1f5f9;
+            color: #64748b;
+            font-size: 9px;
+            padding: 6px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        .inner-table td {
+            font-size: 10px;
+            color: #334155;
+            padding: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            background-color: #e2e8f0;
+            color: #334155;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Relatório de Vendas <span class="store">- Espaço Verde</span></h1>
+    <p>Gerado em: <span
+            th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy HH:mm')}"></span></p>
+</div>
+
+<div class="kpi-container">
+    <div class="kpi-box">
+        <h3 class="kpi-title">Resumo do Período</h3>
+        <div class="kpi-metrics">
+            <div class="kpi-item">
+                <span class="kpi-label">Faturamento Total</span>
+                <span class="kpi-value">R$ <span th:text="${totalOrdersValue}">0,00</span></span>
+            </div>
+            <div class="kpi-item">
+                <span class="kpi-label">Qtd de pedidos</span>
+                <span class="kpi-value dark"><span th:text="${ordersQuantity}">0</span> Pedidos</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="section-title">Produtos Mais Vendidos</h2>
+<table class="ev-table">
+    <thead>
+    <tr>
+        <th style="width: 50%;">Produto</th>
+        <th class="text-center" style="width: 20%;">Qtd Vendida</th>
+        <th class="text-right" style="width: 30%;">Total Faturado</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="topProduct : ${topProducts}">
+        <td th:text="${topProduct.productName}">Nome do Produto</td>
+        <td class="text-center" th:text="${topProduct.soldQuantity}">0</td>
+        <td class="text-right">R$ <span th:text="${topProduct.totalValue}">0,00</span></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2 class="section-title">Pedidos</h2>
+<table class="ev-table">
+    <thead>
+    <tr>
+        <th style="width: 10%;">ID</th>
+        <th style="width: 25%;">Cliente</th>
+        <th style="width: 25%;">Status / Entrega</th>
+        <th style="width: 20%;">Data do Pedido</th>
+        <th class="text-right" style="width: 20%;">Valor Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="order : ${reportOrders}">
+
+        <tr>
+            <td style="font-weight: 700;">#<span th:text="${order.id}">1</span></td>
+            <td style="font-weight: 600; color: #1e293b;" th:text="${order.custumer.name}">Nome do Cliente</td>
+
+            <td>
+                <span class="status-badge" th:text="${order.orderStatus.getType}">STATUS</span>
+                <br />
+                <span style="font-size: 9px; color: #64748b;" th:text="${order.deliveryMethod.getType}">MÉTODO</span>
+            </td>
+
+            <td th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2026 10:00</td>
+            <td class="text-right" style="color: #2e7d32; font-weight: 800;">R$ <span
+                    th:text="${order.totalPrice}">0,00</span></td>
+        </tr>
+
+        <tr class="detail-row">
+            <td colspan="5" class="detail-cell">
+                <div class="detail-box">
+
+                    <div class="detail-header">
+                        <div class="detail-address">
+                            <strong>Endereço de Entrega:</strong>
+                            <span
+                                    th:text="${order.deliveryAdress != null and !order.deliveryAdress.isEmpty() ? order.deliveryAdress : 'Retirada no local ou não informado'}">Rua
+                                        Exemplo, 123</span>
+                        </div>
+                    </div>
+
+                    <table class="inner-table">
+                        <thead>
+                        <tr>
+                            <th style="width: 60%;">Produto</th>
+                            <th class="text-center" style="width: 15%;">Quantidade</th>
+                            <th class="text-right" style="width: 25%;">Preço Unitário</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${order.items}">
+                            <td th:text="${item.product.nome}">Produto</td>
+                            <td class="text-center" th:text="${item.quantity}">1</td>
+                            <td class="text-right">R$ <span th:text="${item.unitPrice}">0,00</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </td>
+        </tr>
+
+    </th:block>
+    </tbody>
+</table>
+
+</body>
+
+</html>

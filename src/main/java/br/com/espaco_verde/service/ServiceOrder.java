@@ -56,10 +56,9 @@ public class ServiceOrder {
             orderItem.setProduct(product);
             orderItem.setQuantity(itemRequestDTO.quantity());
             orderItem.setUnitPrice(product.getPreco());
-
             order.getItems().add(orderItem);
             BigDecimal subtotal = product.getPreco().multiply(BigDecimal.valueOf(itemRequestDTO.quantity()));
-            totalPrice = subtotal.multiply(totalPrice);
+            totalPrice = subtotal.add(totalPrice);
         }
         order.setTotalPrice(totalPrice);
 
@@ -67,7 +66,7 @@ public class ServiceOrder {
         int pendingOrders = repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
         simpMessagingTemplate.convertAndSend("/topic/pending-orders", pendingOrders);
 
-        return toOrderResponseDTO(persistOrder);
+        return new OrderResponseDTO(persistOrder);
 
     }
 
@@ -79,7 +78,7 @@ public class ServiceOrder {
         String newStatus = updateOrder.status();
 
         if(oldStatus.equals(newStatus)){
-            return toOrderResponseDTO(order);
+            return new OrderResponseDTO(order);
         }
 
         boolean wasPending = oldStatus.equals("AWAITING_ANALYSIS") || oldStatus.equals("AWAITING_PAYMENT");
@@ -112,7 +111,7 @@ public class ServiceOrder {
                 "Seu pedido #"+order.getId()+" agora esta: "+order.getOrderStatus().getType()
         );
 
-        return toOrderResponseDTO(order);
+        return new OrderResponseDTO(order);
     }
 
 
@@ -120,7 +119,7 @@ public class ServiceOrder {
     public List<OrderResponseDTO> getAllOrders(){
         List<Order> orders = repositoryOrder.findAll();
         return orders.stream()
-                .map(this::toOrderResponseDTO)
+                .map(OrderResponseDTO::new)
                 .collect(Collectors.toList());
     }
 
@@ -129,47 +128,12 @@ public class ServiceOrder {
         List<Order> orders = repositoryOrder.findByCustumerId(userId);
 
         return orders.stream()
-                .map(this::toOrderResponseDTO)
+                .map(OrderResponseDTO::new)
                 .collect(Collectors.toList());
     }
 
     public Integer getPendingOrdersCount(){
         return repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
-    }
-
-    @Transactional
-    public List<OrderResponseDTO> getOrdersReport (ReportFilterDTO reportFilterDTO){
-
-        List<Order> reportOrders = repositoryOrder.findAll(OrderSpecification.withFilter(reportFilterDTO));
-
-        return reportOrders.stream()
-                .map(this::toOrderResponseDTO)
-                .collect(Collectors.toList());
-    }
-
-    private OrderResponseDTO toOrderResponseDTO(Order order) {
-        List<OrderItemResponseDTO> itemsDTO = order.getItems().stream()
-                .map(item -> new OrderItemResponseDTO(
-                        item.getProduct().getId(),
-                        item.getProduct().getNome(),
-                        item.getQuantity(),
-                        item.getUnitPrice()
-                ))
-                .collect(Collectors.toList());
-
-        return new OrderResponseDTO(
-                order.getId(),
-                order.getOrderStatus().name(),
-                order.getTotalPrice(),
-                order.getCreatedAt(),
-                itemsDTO,
-                order.getDeliveryMethod().name(),
-                order.getDeliveryAdress(),
-                new OrderUserDTO(
-                        order.getCustumer().getId(),
-                        order.getCustumer().getName()
-                )
-        );
     }
 
 }

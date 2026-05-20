@@ -12,7 +12,7 @@
 	<artifactId>espaco_verde</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>espaco_verde</name>
-	<description>Tcc para o curso de Analise e Desenvolvimento de Sistemas</description>
+	<description>Tcc para o curso de Análise e Desenvolvimento de Sistemas</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -107,6 +107,22 @@
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
       <version>4.5.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.openhtmltopdf</groupId>
+        <artifactId>openhtmltopdf-core</artifactId>
+        <version>1.0.10</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.openhtmltopdf</groupId>
+        <artifactId>openhtmltopdf-pdfbox</artifactId>
+        <version>1.0.10</version>
+        <scope>compile</scope>
     </dependency>
   </dependencies>
 

@@ -35,6 +35,9 @@ build/
 ### uploads ###
 uploads/
 
+### reports ###
+reports/
+
 ### compiled output ###
 /dist
 /tmp
