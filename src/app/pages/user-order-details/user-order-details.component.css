@@ -1,0 +1,182 @@
+.details-container {
+  display: flex;
+  background: white;
+  min-height: 500px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin: 20px auto;
+  max-width: 1100px;
+  overflow: hidden;
+}
+
+.summary-col {
+  flex: 1;
+  padding: 40px;
+  border-right: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.summary-header {
+  margin-bottom: 30px;
+}
+
+.summary-header h2 {
+  margin: 10px 0 5px;
+  color: #333;
+}
+
+.summary-header span {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.items-list {
+  margin-bottom: 30px;
+}
+
+.items-list .item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.items-list .item .qty {
+  font-weight: bold;
+  color: #5ba35b;
+  margin-right: 10px;
+}
+
+.items-list .item .name {
+  color: #555;
+}
+
+.items-list .item .price {
+  color: #333;
+  font-weight: 500;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.order-total strong {
+  color: #5ba35b;
+  font-size: 1.5rem;
+}
+
+.action-col {
+  flex: 1.2;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-box {
+  text-align: center;
+  max-width: 400px;
+}
+
+.status-box h3 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.status-box p {
+  color: #666;
+  line-height: 1.5;
+}
+
+.status-box .status-img {
+  width: 60px;
+  margin-bottom: 15px;
+}
+
+.qr-code-container {
+  margin: 25px 0;
+}
+
+.qr-code-container img {
+  width: 220px;
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.copy-paste {
+  text-align: left;
+}
+
+.copy-paste label {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.copy-paste .input-group {
+  display: flex;
+  margin-top: 5px;
+}
+
+.copy-paste .input-group input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px 0 0 5px;
+  background: #f9f9f9;
+}
+
+.copy-paste .input-group button {
+  background: #5ba35b;
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.copy-paste .input-group button:hover {
+  background: #4a854a;
+}
+
+.status-box .circle-check {
+  width: 80px;
+  height: 80px;
+  background: #5ba35b;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 20px;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.btn-back:hover {
+  color: #5ba35b;
+}
+
+.loader {
+  text-align: center;
+  padding: 50px;
+}
+
+.loader p {
+  color: #666;
+  font-size: 1.1rem;
+}

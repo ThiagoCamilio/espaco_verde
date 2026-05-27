@@ -1,0 +1,41 @@
+import { Component, OnInit } from '@angular/core';
+import { OrderService } from '../../services/order.service';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-user-order-details',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterLink
+  ],
+  templateUrl: './user-order-details.component.html',
+  styleUrl: './user-order-details.component.css'
+})
+export class UserOrderDetailsComponent implements OnInit {
+
+  orderId: string | null = null;
+  order!: any;
+
+  constructor(private orderService: OrderService, private route: ActivatedRoute, private toastr: ToastrService) {
+
+  }
+
+  ngOnInit(): void {
+    this.orderId = this.route.snapshot.paramMap.get('id');
+    this.orderService.getOrderById(this.orderId!).subscribe({
+      next: (data) => this.order = data,
+      error: (err) => this.toastr.error(err, "Erro")
+    });
+  }
+
+  copyPix() {
+    const pix = this.order.payment.copyAndPastCode;
+    navigator.clipboard.writeText(pix).then(() => {
+      this.toastr.success("Pix copia e cola copiado para a Área de Transferencia", "Sucesso")
+    })
+  }
+
+}

@@ -20,9 +20,9 @@ export class ReportService {
     return this.http.get<any[]>(this.URL);
   }
 
-downloadPdf(reportId: number): Observable<Blob> {
+  downloadPdf(reportId: number): Observable<Blob> {
     return this.http.get(`${this.URL}/${reportId}/pdf`, {
-      responseType: 'blob' 
+      responseType: 'blob'
     });
   }
 }

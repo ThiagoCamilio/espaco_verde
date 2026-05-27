@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../services/report.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-reports',
@@ -55,7 +56,7 @@ export class ReportsComponent implements OnInit {
     { value: 'OUTRO', label: 'Outro' },
   ];
 
-  constructor(private reportService: ReportService) { }
+  constructor(private reportService: ReportService, private toastrService : ToastrService) { }
 
   ngOnInit(): void {
     this.loadHistory();
@@ -89,6 +90,7 @@ export class ReportsComponent implements OnInit {
       next: () => {
         this.cleanFilters();
         this.loadHistory();
+        this.toastrService.success("Relatorio gerado com sucesso!", "Sucesso")
       },
       error: (err: HttpErrorResponse) => {
         console.error('Erro ao gerar relatório', err);

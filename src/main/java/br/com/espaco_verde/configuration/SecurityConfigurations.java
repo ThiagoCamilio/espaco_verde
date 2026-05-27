@@ -37,7 +37,7 @@ public class SecurityConfigurations {
                         .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/assets/**", "/favicon.ico").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/whatsapp/webhook").permitAll()
+                        .requestMatchers("/webhook/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
                         .requestMatchers("/produtos/**").hasRole("ADMIN")

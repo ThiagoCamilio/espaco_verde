@@ -1,0 +1,76 @@
+<div class="details-container" *ngIf="order">
+
+    <div class="summary-col">
+        <div class="summary-header">
+            <button class="btn-back" [routerLink]="['/user/profile']" [queryParams]="{tab:'orders'}">← Voltar</button>
+            <h2>Pedido #{{ order.id }}</h2>
+            <span>Realizado em {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+
+        <div class="items-list">
+            <div class="item" *ngFor="let item of order.items">
+                <div class="item-info">
+                    <span class="qty">{{ item.quantity }}x</span>
+                    <span class="name">{{ item.productName }}</span>
+                </div>
+                <span class="price">{{ item.price | currency:'BRL' }}</span>
+            </div>
+        </div>
+
+        <div class="order-total">
+            <span>Total do Pedido</span>
+            <strong>{{ order.totalPrice | currency:'BRL' }}</strong>
+        </div>
+    </div>
+
+    <div class="action-col">
+
+        <div class="status-box" *ngIf="order.orderStatus === 'AWAITING_ANALYSIS'">
+            <h3>Pedido em Análise</h3>
+            <p>Estamos confirmando a disponibilidade das suas plantas em nosso estoque. Você receberá uma notificação
+                assim que o pagamento for liberado.</p>
+        </div>
+
+        <div class="status-box" *ngIf="order.orderStatus === 'AWAITING_PAYMENT'">
+            <h3>Pagamento via Pix</h3>
+            <p>Aponte a câmera do seu celular para o QR Code abaixo:</p>
+
+            <div class="qr-code-container">
+                <img [src]="'data:image/png;base64,' + order.payment.qrCodeBase64" alt="QR Code Pix">
+            </div>
+
+            <div class="copy-paste">
+                <label>Código Copia e Cola:</label>
+                <div class="input-group">
+                    <input type="text" [value]="order.payment.copyAndPastCode" readonly>
+                    <button (click)="copyPix()">Copiar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-box" *ngIf="order.orderStatus === 'PAID'">
+            <div class="circle-check">✓</div>
+            <h3>Pagamento Confirmado!</h3>
+            <p>Obrigado por comprar no Espaço Verde. Seu pedido já está em fase de preparação.</p>
+        </div>
+
+        <div class="status-box" *ngIf="order.orderStatus === 'IN_DELIVERY'">
+            <div class="circle-icon shipping">🚚</div>
+            <h3>Pedido Enviado!</h3>
+            <p>Já estamos a caminho do seu endereço de entrega. Fique atento!</p>
+        </div>
+
+        <div class="status-box" *ngIf="order.orderStatus === 'DELIVERED'">
+            <div class="circle-check">✓</div>
+            <h3>Pedido Entregue</h3>
+            <p>Seu pedido foi entregue com sucesso! Esperamos que goste. Obrigado por comprar no
+                Espaço Verde!</p>
+        </div>
+
+        <div class="status-box" *ngIf="order.orderStatus === 'CANCELED'">
+            <h3 style="color: #d93025;">Pedido Cancelado</h3>
+            <p>Este pedido não pôde ser concluído ou o tempo de pagamento expirou.</p>
+        </div>
+
+    </div>
+</div>

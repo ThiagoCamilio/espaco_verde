@@ -1,23 +1,44 @@
 package br.com.espaco_verde.DTO;
 
 import br.com.espaco_verde.entity.Order;
+import br.com.espaco_verde.entity.Payment;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record OrderResponseDTO(Integer id, String orderStatus, java.math.BigDecimal totalPrice, LocalDateTime createdAt, List<OrderItemResponseDTO> items, String deliveryMethod, String deliveryAdress, OrderUserDTO customer)
+public record OrderResponseDTO(
+        Integer id,
+        String orderStatus,
+        BigDecimal totalPrice,
+        LocalDateTime createdAt,
+        List<OrderItemResponseDTO> items,
+        String deliveryMethod,
+        String deliveryAdress,
+        OrderUserDTO customer,
+        PaymentResponseDTO payment
+)
 {
     public OrderResponseDTO(Order o){
 
         List<OrderItemResponseDTO> itemsDTO = o.getItems().stream()
                 .map(item -> new OrderItemResponseDTO(
-                        item.getProduct().getId(),
-                        item.getProduct().getNome(),
-                        item.getQuantity(),
-                        item.getUnitPrice()
+                    item.getProduct().getId(),
+                    item.getProduct().getNome(),
+                    item.getQuantity(),
+                    item.getUnitPrice()
                 ))
                 .collect(Collectors.toList());
+
+        PaymentResponseDTO payment = null;
+        if(o.getPayment() != null){
+            payment = new PaymentResponseDTO(
+                o.getPayment().getQrCodeBase(),
+                o.getPayment().getCopyAndPastCode(),
+                o.getPayment().getUrl()
+            );
+        }
 
         this(
           o.getId(),
@@ -28,10 +49,10 @@ public record OrderResponseDTO(Integer id, String orderStatus, java.math.BigDeci
           o.getDeliveryMethod().name(),
           o.getDeliveryAdress(),
           new OrderUserDTO(
-                  o.getCustumer().getId(),
-                  o.getCustumer().getName()
-          )
+            o.getCustumer().getId(),
+            o.getCustumer().getName()
+          ),
+          payment
         );
     }
-
 }

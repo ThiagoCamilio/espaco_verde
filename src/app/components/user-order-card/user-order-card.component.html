@@ -1,0 +1,43 @@
+<div class="order-card" [routerLink] = route>
+
+    <div class="order-header">
+        <div class="order-id-date">
+            <span class="order-id">Pedido #{{ order.id }}</span>
+            <span class="order-date">{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+
+        <span class="status-badge" [ngClass]="getStatusInfo(order.orderStatus).cssClass">
+            {{ getStatusInfo(order.orderStatus).label }}
+        </span>
+    </div>
+
+    <div class="order-body">
+        <div class="order-items">
+            <p class="item-line" *ngFor="let item of order.items | slice:0:2">
+                <span class="qtd">{{ item.quantity }}x</span> {{ item.productName || 'Product' }}
+            </p>
+            <p class="more-items" *ngIf="order.items!.length > 2">
+                + {{ order.items.length - 2 }} outro(s) item(ns)
+            </p>
+        </div>
+
+        <div class="order-delivery">
+            <p class="delivery-label">Forma de Entrega:</p>
+
+            <p class="delivery-method">
+                <i class="fa-solid" [ngClass]="order.deliveryMethod === 'DELIVERY' ? 'fa-truck' : 'fa-store'"></i>
+                {{ order.deliveryMethod === 'DELIVERY' ? 'Entrega' : 'Retirarada' }}
+            </p>
+
+            <p class="delivery-address" *ngIf="order.deliveryMethod === 'DELIVERY' && order.deliveryAdress">
+                {{ order.deliveryAdress }}
+            </p>
+        </div>
+
+        <div class="order-total-action">
+            <p class="total-label">Total Pago:</p>
+            <p class="total-value">{{ order.totalPrice | currency:'BRL' }}</p>
+
+        </div>
+    </div>
+</div>

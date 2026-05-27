@@ -33,8 +33,8 @@ public class ControlOrder {
         return ResponseEntity.status(201).body(responseDTO);
     }
 
-    @PatchMapping("/admin/orders/{id}/status")
-    public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable("id") int orderId, @RequestBody UpdateOrderDTO updateOrderDTO){
+    @PatchMapping("/admin/orders/{orderId}/status")
+    public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable("orderId") int orderId, @RequestBody UpdateOrderDTO updateOrderDTO){
         OrderResponseDTO updatedOrder = serviceOrder.updateOrderStatus(orderId, updateOrderDTO);
         return ResponseEntity.status(200).body(updatedOrder);
     }
@@ -48,6 +48,11 @@ public class ControlOrder {
     @GetMapping("/admin/orders/pending-count")
     public ResponseEntity<Integer> getPendingOrdersCont(){
         return ResponseEntity.ok(serviceOrder.getPendingOrdersCount());
+    }
+
+    @GetMapping("/user/orders/{orderId}")
+    public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable("orderId") int orderId){
+        return ResponseEntity.ok(serviceOrder.getOrderById(orderId));
     }
 
     @GetMapping("/user/orders")

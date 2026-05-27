@@ -2,24 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { CommonModule, NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
-
-
-export interface OrderItem {
-  productId: number;
-  productName: string;
-  quantity: number;
-  price: number;
-}
-
-export interface OrderResponse {
-  id: number;
-  createdAt: string;
-  orderStatus: string;
-  totalPrice: number;
-  items: OrderItem[];
-  deliveryMethod: String;
-  deliveryAdress: String;
-}
+import { UserOrderCardComponent } from '../user-order-card/user-order-card.component';
+import { Order } from '../../models/order';
 
 @Component({
   selector: 'app-user-order-list',
@@ -27,7 +11,8 @@ export interface OrderResponse {
   imports: [
     CommonModule,
     NgFor,
-    RouterLink
+    RouterLink,
+    UserOrderCardComponent
   ],
   templateUrl: './user-order-list.component.html',
   styleUrl: './user-order-list.component.css'
@@ -38,7 +23,7 @@ export class UserOrderListComponent implements OnInit {
 
 
 
-  orders: OrderResponse[] = []
+  orders: Order[] = []
 
   constructor(private orderService: OrderService) { }
 
@@ -48,7 +33,7 @@ export class UserOrderListComponent implements OnInit {
 
   loadOrders(): void {
     this.orderService.getMyOrders().subscribe({
-      next: (data: OrderResponse[]) => {
+      next: (data: Order[]) => {
         this.orders = data.sort((a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );

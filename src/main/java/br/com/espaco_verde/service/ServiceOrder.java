@@ -7,11 +7,13 @@ import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.repository.RepositoryUser;
 import br.com.espaco_verde.repository.specification.OrderSpecification;
 import jakarta.transaction.Transactional;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +31,9 @@ public class ServiceOrder {
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+
+    @Autowired
+    private ServicePayment servicePayment;
 
     @Transactional
     public OrderResponseDTO createOrder(OrderRequestDTO orderRequest, int userId){
@@ -101,6 +106,34 @@ public class ServiceOrder {
         }
 
         order.setOrderStatus(OrderStatus.valueOf(newStatus));
+
+        if(order.getOrderStatus().equals(OrderStatus.AWAITING_PAYMENT)){
+
+            PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO(
+                    order.getTotalPrice(),
+                    order.getCustumer().getLogin(),
+                    order.getId()
+            );
+
+            PaymentResponseDTO paymentResponseDTO = servicePayment.createPayment(paymentRequestDTO);
+
+            Payment payment = new Payment(
+                    paymentRequestDTO.amount(),
+                    "PENDING",
+                    paymentResponseDTO.copyAndPastCode(),
+                    paymentResponseDTO.qrCodeBase64(),
+                    paymentResponseDTO.paymentUrl(),
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    order
+            );
+
+            order.setPayment(payment);
+            System.out.println(order.getPayment().getCopyAndPastCode());
+            System.out.println(order.getPayment().getQrCodeBase());
+
+        }
+
         int pendingOrders = repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
         simpMessagingTemplate.convertAndSend("/topic/pending-orders", pendingOrders);
 
@@ -113,7 +146,6 @@ public class ServiceOrder {
 
         return new OrderResponseDTO(order);
     }
-
 
     @Transactional
     public List<OrderResponseDTO> getAllOrders(){
@@ -136,4 +168,8 @@ public class ServiceOrder {
         return repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
     }
 
+    public OrderResponseDTO getOrderById(int orderId) {
+        Order order = repositoryOrder.findById(orderId).orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+        return new OrderResponseDTO(order);
+    }
 }

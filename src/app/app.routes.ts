@@ -19,6 +19,7 @@ import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-succ
 import { AdminOrdersListComponent } from './pages/admin-orders-list/admin-orders-list.component';
 import { PricingDashboardComponent } from './pages/pricing-dashboard/pricing-dashboard.component';
 import { ReportsComponent } from './pages/reports/reports.component';
+import { UserOrderDetailsComponent } from './pages/user-order-details/user-order-details.component';
 
 export const routes: Routes = [
   {
@@ -59,11 +60,11 @@ export const routes: Routes = [
     children:[
       { path: '', redirectTo: '/user/profile', pathMatch:'full'},
       { path: 'profile', component: UserProfileComponent},
+      { path: 'profile/order/:id', component: UserOrderDetailsComponent},
       { path: 'cart', component: CartComponent},
       { path: 'checkout/delivery', component: CheckoutDeliveryComponent},
       { path: 'checkout/confirmation', component: CheckoutConfirmationComponent},
       { path: 'checkout/success', component: CheckoutSuccessComponent}
-
 
     ]
   }

@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@SQLDelete(sql = "UPDATE produtos SET excluido = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE produtos SET excluido = true WHERE orderId = ?")
 @SQLRestriction("excluido = false")
 public class Product implements Serializable {
 
