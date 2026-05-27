@@ -27,7 +27,7 @@ export class OrderService {
   }
 
   getOrderById(orderId: string): Observable<any>{
-    return this.http.get<any>(`${this.URL}/user/orders/${orderId}`);
+    return this.http.get<any>(`${this.URL}/user/orders/${orderId}?t=${new Date().getTime()}`);
   }
 
   updateOrderStatus(orderId: number, newStatus: string): Observable<any> {
