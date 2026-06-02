@@ -3,17 +3,13 @@ package br.com.espaco_verde.control;
 import br.com.espaco_verde.entity.*;
 import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.service.ServiceConversa;
-import br.com.espaco_verde.service.ServiceMensagens;
+import br.com.espaco_verde.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.JsonNode;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 //@RequestMapping("whatsapp")
 @RestController
@@ -23,7 +19,7 @@ public class ControlConversa {
     private String token ="token-verificacao";
 
     @Autowired
-    private ServiceMensagens serviceMensagens;
+    private MessageService messageService;
 
     @Autowired
     private ServiceConversa serviceConversa;
@@ -38,7 +34,7 @@ public class ControlConversa {
 
         List<Product> produtos = repositoryProduto.findAll();
 
-        Map<String, Object> map = serviceMensagens.sendCarouselMessage(m , produtos);
+        Map<String, Object> map = messageService.sendCarouselMessage(m , produtos);
 
         for (String keys : map.keySet())
         {
@@ -48,7 +44,7 @@ public class ControlConversa {
 
 
 
-    @GetMapping("/webhook")
+    @GetMapping("/webhook/whatsapp")
     public ResponseEntity<?> webhook(@RequestParam String hub_mode , @RequestParam String hub_challenge, @RequestParam String hub_verify_token ){
         System.out.println(hub_mode);
         System.out.println(hub_challenge);
@@ -62,38 +58,12 @@ public class ControlConversa {
 
     }
 
-    @PostMapping("/webhook")
+    @PostMapping("/webhook/whatsapp")
     public ResponseEntity<?> webhook(@RequestBody JsonNode json) throws Exception {
+        Message message = messageService.parseJson(json);
 
-        Mensagem mensagem = serviceMensagens.parseJson(json);
-
-
-        /*if (mensagem instanceof MensagemSistema msgSistema && msgSistema.getStatus().equals("sent")){
-
-            System.out.println("Resposta enviada ao cliente");
-            System.out.println(msgSistema.getStatus());
-            return new ResponseEntity<>(HttpStatusCode.valueOf(200));
-        }else if (mensagem instanceof MensagemSistema msgSistema && msgSistema.getStatus().equals("delivered")){
-
-            System.out.println("Resposta recebida pelo cliente");
-            System.out.println(msgSistema.getStatus());
-            return new ResponseEntity<>(HttpStatusCode.valueOf(200));
-
-        }else if (mensagem instanceof MensagemSistema msgSistema && msgSistema.getStatus().equals("read")){
-
-            System.out.println("Resposta lida pelo cliente");
-            System.out.println(msgSistema.getStatus());
-            return new ResponseEntity<>(HttpStatusCode.valueOf(200));
-
-        }else*/
-        if (mensagem instanceof MensagemCliente msgCliente){
-
-            serviceConversa.getConversa(msgCliente);
-
-            serviceMensagens.readMessage(msgCliente);
-
-            serviceConversa.processarMensagem(msgCliente);
-
+        if (message != null && message.getSenderType().equals(SenderType.CLIENT)){
+            serviceConversa.processarMensagem(message);
         }
 
         return new ResponseEntity<>(HttpStatusCode.valueOf(200));
