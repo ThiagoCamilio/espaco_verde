@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import tools.jackson.databind.JsonNode;
 
-import javax.swing.plaf.PanelUI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +70,7 @@ public class MessageService {
                     break;
 
                 case "button":
-                    message.setContent(value.at("/messages/0/button/text").asString());
+                    message.setContent(value.at("/messages/0/button/payload").asString());
                     break;
 
                 default:
@@ -90,23 +89,13 @@ public class MessageService {
 
     public void readMessage(Message message){
 
-        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> request = new HashMap<>();
+        request.put("messaging_product", "whatsapp");
+        request.put("status", "read");
+        request.put("message_id", message.getWamId());
+        request.put("typing_indicator", Map.of("type", "text"));
 
-        String url = waApiUrl + waPhoneNumberId +"/messages";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(waAcessToken);
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("messaging_product", "whatsapp");
-        body.put("status", "read");
-        body.put("message_id", message.getWamId());
-        body.put("typing_indicator", Map.of("type", "text"));
-
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+        sendRequest(request);
     }
 
     public void sendTextMessage(Message message, String messageText){
@@ -133,81 +122,88 @@ public class MessageService {
 
     }
 
-    public void sendButtonMessage(MensagemCliente mensagem, Pagina pagina){
+    public void sendButtonMessage(String phone, String systemResponseText, Map<String, String> opt){
 
-        RestTemplate restTemplate = new RestTemplate();
+        List<Map<String, Object>> buttons = new ArrayList<>();
 
-        String url = waApiUrl + waPhoneNumberId +"/messages";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(waAcessToken);
-
-        List<Map<String, Object>> botoes = new ArrayList<>();
-
-        for(Pagina p : pagina.getProximasPaginas()){
-            botoes.add(Map.of("type", "reply", "reply", Map.of("id", p.getId(), "title", p.getId())));
+        for(Map.Entry<String, String> entry: opt.entrySet()){
+            buttons.add(Map.of("type", "reply", "reply", Map.of("id", entry.getKey(), "title", entry.getValue())));
         }
 
-        Map<String, Object> body = new HashMap<>();
-        body.put("messaging_product", "whatsapp");
-        body.put("to", mensagem.getRemetente());
-        body.put("type", "interactive");
-        body.put("interactive",
+        Map<String, Object> request = new HashMap<>();
+        request.put("messaging_product", "whatsapp");
+        request.put("to", phone);
+        request.put("type", "interactive");
+        request.put("interactive",
                 Map.of("type", "button",
-                        "header", Map.of("type", "text", "text","Menu Principal"),
-                        "body", Map.of("text", "Esse é o Menu Principal, escolha uma das opções abaixo"),
-                        "action", Map.of("buttons", botoes)
+                        "body", Map.of("text", systemResponseText),
+                        "action", Map.of("buttons", buttons)
         ));
 
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+        sendRequest(request);
 
     }
 
-    public void sendCarouselMessage(MensagemCliente mensagem , List<ProductDTO> produtos) {
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        String url = waApiUrl + waPhoneNumberId + "/messages";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(waAcessToken);
+    public void sendCarouselMessage(Chat chat, List<ProductDTO> products, boolean hasNext) {
 
         List<Map<String, Object>> cards = new ArrayList<>();
-        for (ProductDTO p : produtos) {
+
+        int currentIndex = (chat.getCatalogPage() > 0) ? 1 : 0;
+
+        for (ProductDTO p : products) {
 
             List<Map<String, Object>> buttonCard = new ArrayList<>();
-            buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "1", "title", "Add Carrinho")));
+            buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "ADD_"+p.id(), "title", "Adicionar Cart")));
 
-            cards.add(Map.of("card_index", Integer.toString(produtos.indexOf(p)),
+            cards.add(Map.of("card_index", Integer.toString(currentIndex),
                     "type","cta_url",
                     "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/produtos/imagem/"+p.imagem())),
-                    "body", Map.of("text", p.nome()),
+                    "body", Map.of("text", p.nome()+"\n\n"+"R$"+p.preco()),
+                    "action", Map.of("buttons", buttonCard)
+            ));
+            currentIndex++;
+        }
+
+        if(hasNext){
+            List<Map<String, Object>> buttonCard = new ArrayList<>();
+            buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "NEXT_PAGE", "title", "Próxima pagina")));
+
+            cards.add(Map.of("card_index", Integer.toString(currentIndex),
+                    "type","cta_url",
+                    "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/img/right-arrow.png")),
+                    "body", Map.of("text", "Ainda temos mais coisa para te mostrar!"),
                     "action", Map.of("buttons", buttonCard)
             ));
 
         }
 
-        Map<String, Object> body = new HashMap<>();
-        body.put("messaging_product", "whatsapp");
-        body.put("to", mensagem.getRemetente());
-        body.put("type", "interactive");
-        body.put("interactive",
+        if(chat.getCatalogPage() > 0){
+
+            List<Map<String, Object>> buttonCard = new ArrayList<>();
+            buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "PREVIOUS_PAGE", "title", "Pagina anterior")));
+
+            cards.add(Map.of("card_index", 0,
+                    "type", "cta_url",
+                    "header", Map.of("type", "image", "image", Map.of("link", localApiUrl + "/img/right-arrow.png")),
+                    "body", Map.of("text", "Voltar"),
+                    "action", Map.of("buttons", buttonCard)
+            ));
+        }
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("messaging_product", "whatsapp");
+        request.put("to", chat.getWhatsappNumber());
+        request.put("type", "interactive");
+        request.put("interactive",
                 Map.of("type", "carousel",
-                        "body", Map.of("text", "Seguem os produtos disponiveis"),
+                        "body", Map.of("text", "Seguem os produtos disponíveis"),
                         "action", Map.of("cards", cards)
                 ));
 
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
-
+        sendRequest(request);
     }
 
-    public void sendInteractiveList(String phone, String systemResponseText, String buttonText, Map<String, String> opt) {
+    public void sendInteractiveList(String phone, String systemResponseText, Map<String, String> opt) {
 
         List<Map<String, Object>> menu = new ArrayList<>();
         for(Map.Entry<String, String> entry: opt.entrySet()){
@@ -222,7 +218,7 @@ public class MessageService {
         section.put("rows", menu);
 
         Map<String, Object> action = new HashMap<>();
-        action.put("button", buttonText);
+        action.put("button", "Escolha uma opção");
         action.put("sections", List.of(section));
 
         Map<String, Object> header = new HashMap<>();

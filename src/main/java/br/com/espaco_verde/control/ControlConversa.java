@@ -61,6 +61,7 @@ public class ControlConversa {
     @PostMapping("/webhook/whatsapp")
     public ResponseEntity<?> webhook(@RequestBody JsonNode json) throws Exception {
         Message message = messageService.parseJson(json);
+        System.out.println(json);
 
         if (message != null && message.getSenderType().equals(SenderType.CLIENT)){
             serviceConversa.processarMensagem(message);

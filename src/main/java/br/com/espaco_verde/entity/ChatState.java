@@ -7,9 +7,11 @@ public enum ChatState {
     GREETINGS("saudacao"),
     AWAITING_MENU_RESPONSE("esperando resposta do menu"),
     CATALOG("catalogo"),
+    AWAITING_CATALOG_RESPONSE("esperando resposta do catalogo"),
     ORDERS("pedidos"),
     CART("carrinho"),
-    STAFF("atendente");
+    STAFF("atendente"),
+    AWAITING_ADD_CART_RESPONSE("esperando resposta ao adicionar ao carrinho");
 
     private String type;
 

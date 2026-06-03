@@ -1,6 +1,6 @@
 package br.com.espaco_verde.control;
 
-import br.com.espaco_verde.entity.Carrinho;
+import br.com.espaco_verde.entity.Cart;
 import br.com.espaco_verde.entity.ProductCart;
 import br.com.espaco_verde.service.ServiceCarrinho;
 import jakarta.servlet.http.HttpSession;
@@ -20,9 +20,9 @@ public class ControlCarrinho {
     @GetMapping("/addProduto/{id}")
     public void addProduto(@PathVariable int id, HttpSession session){
         //comportamento provisorio apenas para teste
-        session.setAttribute("carrinho", serviceCarrinho.addProduto(id, session));
-        Carrinho carrinho = (Carrinho) session.getAttribute("carrinho");
-        for (ProductCart produto : carrinho.getProdutosCarrinho()){
+        session.setAttribute("cart", serviceCarrinho.addProduto(id, session));
+        Cart cart = (Cart) session.getAttribute("cart");
+        for (ProductCart produto : cart.getProductCarts()){
             System.out.println(produto.getProduct().getNome());
         }
 

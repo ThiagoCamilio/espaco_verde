@@ -23,10 +23,6 @@ public class Chat {
     @Column(unique = true, nullable = false)
     private String whatsappNumber;
 
-    /*@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "pagina_atual_id")
-    private Pagina paginaAtual;*/
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -40,6 +36,9 @@ public class Chat {
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
+
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int catalogPage = 0;
 
     public Chat(String whatsappNumber, ChatState chatState){
         this.whatsappNumber = whatsappNumber;

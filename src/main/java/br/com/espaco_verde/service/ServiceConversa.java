@@ -2,16 +2,17 @@ package br.com.espaco_verde.service;
 
 import br.com.espaco_verde.DTO.ProductDTO;
 import br.com.espaco_verde.entity.*;
-import br.com.espaco_verde.repository.MessageRepository;
-import br.com.espaco_verde.repository.RepositoryConversa;
-import br.com.espaco_verde.repository.RepositoryPagina;
-import br.com.espaco_verde.repository.RepositoryUser;
+import br.com.espaco_verde.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class ServiceConversa {
     private MessageService messageService;
 
     @Autowired
-    private ServiceProduto serviceProduto;
+    private RepositoryProduto repositoryProduct;
 
     @Autowired
     private RepositoryPagina repositoryPagina;
@@ -70,6 +71,13 @@ public class ServiceConversa {
                 handlerAwaitingMenuResponse(chat, message);
                 break;
 
+            case AWAITING_CATALOG_RESPONSE:
+                handlerAwaitingCatalogResponse(chat, message);
+                break;
+
+            case AWAITING_ADD_CART_RESPONSE:
+                handlerAwaitingAddCartResponse(chat, message);
+                break;
             /*case "checkout":
                 retorno = "Ainda não disponivel";
                 messageService.sendTextMessage(mensagem, retorno);
@@ -95,15 +103,15 @@ public class ServiceConversa {
 
     @Transactional
     private void handlerMainMenu(Chat chat, Message message){
-        Map<String, String> var = Map.of("nome", chat.getUser().getName());
+        Map<String, String> var = Map.of("nome", "Liv");
         String systemResponseText = systemMessageService.getMessage("GREETINGS", var);
         Map<String, String> opt = new LinkedHashMap<>();
         opt.put("OPT_CATALOGO", "Ver Catálogo");
         opt.put("OPT_ORDERS", "Meus Pedidos");
-        opt.put("OPT_CART", "Carrinho");
+        opt.put("OPT_CART", "Cart");
         opt.put("OPT_STAFF", "Falar com Atendente");
 
-        messageService.sendInteractiveList(chat.getWhatsappNumber(), systemResponseText, "Escolha uma opção", opt);
+        messageService.sendInteractiveList(chat.getWhatsappNumber(), systemResponseText, opt);
 
         Message systemMessage = new Message();
         systemMessage.setChat(chat);
@@ -126,6 +134,7 @@ public class ServiceConversa {
 
             case "OPT_CATALOGO":
                 chat.setChatState(ChatState.CATALOG);
+                handlerCatalog(chat, message);
                 break;
 
             case "OPT_ORDERS":
@@ -145,4 +154,91 @@ public class ServiceConversa {
         }
 
     }
+
+    private void handlerCatalog(Chat chat, Message message){
+
+        int currentPage = chat.getCatalogPage();
+        int pageSize = 8;
+
+        Pageable pageRequest = PageRequest.of(currentPage, pageSize);
+        Page<Product> pageProducts = repositoryProduct.findActive(pageRequest);
+
+        if(pageProducts.isEmpty() && currentPage > 0){
+            chat.setCatalogPage(0);
+            handlerCatalog(chat, message);
+            return;
+        }
+
+        List<Product> products = pageProducts.getContent();
+        List<ProductDTO> productsDTOS = new ArrayList<>();
+        for(Product p : products){
+            ProductDTO dto = new ProductDTO(p);
+            productsDTOS.add(dto);
+        }
+
+        boolean hasNextPage = pageProducts.hasNext();
+
+        messageService.sendCarouselMessage(chat, productsDTOS, hasNextPage);
+
+        chat.setChatState(ChatState.AWAITING_CATALOG_RESPONSE);
+        repositoryConversa.save(chat);
+
+    }
+
+    private void handlerAwaitingCatalogResponse(Chat chat, Message message) {
+
+        String userResponse = message.getContent();
+
+        if(userResponse.equals("NEXT_PAGE")){
+            chat.setCatalogPage(chat.getCatalogPage() + 1);
+            repositoryConversa.save(chat);
+            handlerCatalog(chat, message);
+        } else if (userResponse.equals("PREVIOUS_PAGE")) {
+            chat.setCatalogPage(chat.getCatalogPage() - 1);
+            repositoryConversa.save(chat);
+            handlerCatalog(chat, message);
+        } else if(userResponse.startsWith("ADD_")){
+            int productId = Integer.parseInt(userResponse.replace("ADD_", ""));
+            //cart service para salvar a planta no carrinho
+            handlerAddCart(chat);
+        }else{
+            messageService.sendTextMessage(message, "Por favor, utilize os botões do menu nos cards");
+            handlerCatalog(chat, message);
+        }
+
+    }
+
+    private void handlerAddCart(Chat chat) {
+
+        String systemResponseText = systemMessageService.getMessage("ADD_PRODUCT_CART", null);
+        Map<String, String> opt = new LinkedHashMap<>();
+        opt.put("BACK_TO_CATALOG", "Voltar ao catalogo");
+        opt.put("CART", "Ver carrinho");
+
+        messageService.sendButtonMessage(chat.getWhatsappNumber(), systemResponseText, opt);
+        chat.setChatState(ChatState.AWAITING_ADD_CART_RESPONSE);
+        repositoryConversa.save(chat);
+
+    }
+
+    private void handlerAwaitingAddCartResponse(Chat chat, Message message){
+
+        String userResponse = message.getContent();
+        System.out.println("______________");
+        System.out.println(userResponse);
+
+        if(userResponse.equals("BACK_TO_CATALOG")){
+            handlerCatalog(chat, message);
+
+        } else if (userResponse.equals("CART")) {
+            handlerCart(chat, message);
+        }else{
+            messageService.sendTextMessage(message, "Por favor, utilize os botões do menu");
+        }
+
+    }
+
+    private void handlerCart(Chat chat, Message message) {
+    }
+
 }

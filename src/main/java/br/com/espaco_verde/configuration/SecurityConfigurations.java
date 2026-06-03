@@ -35,11 +35,12 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/assets/**", "/favicon.ico").permitAll()
+                        .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/assets/**", "/img/**","/favicon.ico").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/webhook/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/produtos/imagem/**").permitAll()
                         .requestMatchers("/produtos/**").hasRole("ADMIN")
                         .requestMatchers("/{path:[^\\.]*}").permitAll()
                 )

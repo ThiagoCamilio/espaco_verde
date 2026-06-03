@@ -7,6 +7,8 @@ import br.com.espaco_verde.entity.Product;
 import br.com.espaco_verde.repository.RepositoryPricingCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -84,7 +86,7 @@ public class ServiceProduto{
     }
 
     public List<ProductDTO> listActive (){
-        List<Product> products = repositoryProduto.findActive();
+        List<Product> products = repositoryProduto.findActive(PageRequest.of(0, 9)).getContent();
         List<ProductDTO> productsDTOS = new ArrayList<>();
         for(Product p : products){
             ProductDTO dto = new ProductDTO(p);
