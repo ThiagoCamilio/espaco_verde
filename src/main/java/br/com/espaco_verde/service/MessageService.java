@@ -150,14 +150,27 @@ public class MessageService {
 
         int currentIndex = (chat.getCatalogPage() > 0) ? 1 : 0;
 
+        if(chat.getCatalogPage() > 0){
+
+            List<Map<String, Object>> buttonCard = new ArrayList<>();
+            buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "PREVIOUS_PAGE", "title", "Pagina anterior")));
+
+            cards.add(Map.of("card_index", 0,
+                    "type", "cta_url",
+                    "header", Map.of("type", "image", "image", Map.of("link", localApiUrl + "/img/right-arrow.png")),
+                    "body", Map.of("text", "Voltar"),
+                    "action", Map.of("buttons", buttonCard)
+            ));
+        }
+
         for (ProductDTO p : products) {
 
             List<Map<String, Object>> buttonCard = new ArrayList<>();
-            buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "ADD_"+p.id(), "title", "Adicionar Cart")));
+            buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "ADD_"+p.id(), "title", "Add ao carrinho")));
 
             cards.add(Map.of("card_index", Integer.toString(currentIndex),
                     "type","cta_url",
-                    "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/produtos/imagem/"+p.imagem())),
+                    "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/produtos/imagem/")),
                     "body", Map.of("text", p.nome()+"\n\n"+"R$"+p.preco()),
                     "action", Map.of("buttons", buttonCard)
             ));
@@ -175,19 +188,6 @@ public class MessageService {
                     "action", Map.of("buttons", buttonCard)
             ));
 
-        }
-
-        if(chat.getCatalogPage() > 0){
-
-            List<Map<String, Object>> buttonCard = new ArrayList<>();
-            buttonCard.add(Map.of("type", "quick_reply", "quick_reply", Map.of("id", "PREVIOUS_PAGE", "title", "Pagina anterior")));
-
-            cards.add(Map.of("card_index", 0,
-                    "type", "cta_url",
-                    "header", Map.of("type", "image", "image", Map.of("link", localApiUrl + "/img/right-arrow.png")),
-                    "body", Map.of("text", "Voltar"),
-                    "action", Map.of("buttons", buttonCard)
-            ));
         }
 
         Map<String, Object> request = new HashMap<>();

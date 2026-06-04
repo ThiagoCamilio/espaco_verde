@@ -4,11 +4,11 @@
             <div class="card-checkout">
                 <h3><i class="fa-solid fa-box-open"></i> Produtos do Pedido</h3>
                 <div class="items-list">
-                    <div class="items-row" *ngFor="let item of items$ | async">
+                    <div class="items-row" *ngFor="let item of cart?.productCartDTOs">
                         <div class="item-name">
-                            <span class="quantity">{{ item.quantity }}x</span>{{ item.name }}
+                            <span class="quantity">{{ item.quantity }}x</span>{{ item.productDTO.nome }}
                         </div>
-                        <span class="item-price">{{(item.price * item.quantity) | currency:'BRL'}}</span>
+                        <span class="item-price">{{(item.sellPrice * item.quantity) | currency:'BRL'}}</span>
                     </div>
                 </div>    
             </div>

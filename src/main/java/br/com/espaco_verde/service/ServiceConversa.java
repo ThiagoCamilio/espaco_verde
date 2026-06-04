@@ -103,7 +103,7 @@ public class ServiceConversa {
 
     @Transactional
     private void handlerMainMenu(Chat chat, Message message){
-        Map<String, String> var = Map.of("nome", "Liv");
+        Map<String, String> var = Map.of("nome", message.getSenderName());
         String systemResponseText = systemMessageService.getMessage("GREETINGS", var);
         Map<String, String> opt = new LinkedHashMap<>();
         opt.put("OPT_CATALOGO", "Ver Catálogo");
@@ -158,7 +158,7 @@ public class ServiceConversa {
     private void handlerCatalog(Chat chat, Message message){
 
         int currentPage = chat.getCatalogPage();
-        int pageSize = 8;
+        int pageSize = 3;
 
         Pageable pageRequest = PageRequest.of(currentPage, pageSize);
         Page<Product> pageProducts = repositoryProduct.findActive(pageRequest);

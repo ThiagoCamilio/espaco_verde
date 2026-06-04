@@ -5,6 +5,7 @@ import { CartService } from '../../services/cart.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { OrderSummaryComponent } from '../../components/order-summary/order-summary.component';
+import { Cart } from '../../models/cart';
 
 @Component({
   selector: 'app-checkout-delivery',
@@ -19,11 +20,14 @@ import { OrderSummaryComponent } from '../../components/order-summary/order-summ
 })
 export class CheckoutDeliveryComponent implements OnInit {
 
+  cart! : Cart;
   deliveryForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private userService: UserService, private cartService: CartService, private router: Router) { }
 
   ngOnInit(): void {
+
+    this.loadCart();
 
     this.deliveryForm = this.formBuilder.group({
       adress: ['', Validators.required],
@@ -35,6 +39,18 @@ export class CheckoutDeliveryComponent implements OnInit {
       this.deliveryForm.patchValue({
         adress: data.adress
       })
+    })
+  }
+
+  
+    loadCart(): void{
+    this.cartService.getMyCart().subscribe({
+      next:(res) =>{
+        this.cart = res
+      },
+      error:(err)=>{
+        console.log(err)
+      }
     })
   }
 
@@ -50,8 +66,9 @@ export class CheckoutDeliveryComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['user/cart']);
   }
-
+  
   get totalPrice() {
-    return this.cartService.totalPrice
+    if (!this.cart || !this.cart.productCartDTOs) return 0;
+    return this.cart.price;
   }
 }

@@ -27,23 +27,6 @@ public class ControlConversa {
     @Autowired
     private RepositoryProduto repositoryProduto;
 
-    /*@GetMapping("/testeCarousel")
-    public void testeCarousel(){
-
-        MensagemCliente m = new MensagemCliente("Oi", "42991057267", "Mensagem");
-
-        List<Product> produtos = repositoryProduto.findAll();
-
-        Map<String, Object> map = messageService.sendCarouselMessage(m , produtos);
-
-        for (String keys : map.keySet())
-        {
-            System.out.println(keys + ":"+ map.get(keys));
-        }
-    }*/
-
-
-
     @GetMapping("/webhook/whatsapp")
     public ResponseEntity<?> webhook(@RequestParam String hub_mode , @RequestParam String hub_challenge, @RequestParam String hub_verify_token ){
         System.out.println(hub_mode);

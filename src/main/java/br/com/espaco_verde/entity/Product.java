@@ -15,13 +15,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
 @SQLDelete(sql = "UPDATE produtos SET excluido = true WHERE orderId = ?")
 @SQLRestriction("excluido = false")
 public class Product implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

@@ -1,9 +1,10 @@
+import { Product } from "./product";
+
 export interface CartItem {
 
-    productId: string;
-    name: string;
+    id: string;
+    productDTO: Product,
     quantity: number;
-    price: number;
-    imageUrl?: string;
+    sellPrice: number;
 
 }

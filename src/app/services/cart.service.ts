@@ -1,60 +1,46 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { CartItem } from '../models/cart-item';
+import { environment } from '../../environment';
+import { HttpClient } from '@angular/common/http';
+import { Cart } from '../models/cart';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  private cartItems = new BehaviorSubject<CartItem[]>(this.getCart());
-  items$ = this.cartItems.asObservable(); 
 
-  constructor() { }
+  private readonly URL = `${environment.apiUrl}/user/cart`;
+  private cartSubject = new BehaviorSubject<Cart | null>(null);
+  public cart$ = this.cartSubject.asObservable();
+
+  constructor(private http : HttpClient) { }
 
   addItem(itemCart : CartItem){
-
-    const presentCart = this.cartItems.value;
-    const existentItem = presentCart.find(item => item.productId === itemCart.productId)
-
-    if(existentItem){
-      existentItem.quantity += 1;
-    }else{
-      presentCart.push({...itemCart, quantity:1})
-    }
-
-    this.updateState(presentCart);
+    return this.http.post<any>(`${this.URL}/add`, itemCart).pipe(
+      tap(updatedCart => this.cartSubject.next(updatedCart))
+    );
   }
 
   removeItem(produtcId: string){
-    let presentCart = this.cartItems.value;
-    const item = presentCart.find(i => i.productId === produtcId);
-
-    if(item && item.quantity > 1){
-      item.quantity -= 1;
-    }else{
-      presentCart = presentCart.filter(i=> i.productId !== produtcId);
-    }
-
-    this.updateState(presentCart);
+    return this.http.delete<any>(`${this.URL}/remove/`+produtcId).pipe(
+      tap(updatedCart => this.cartSubject.next(updatedCart))
+    );
 
   }
 
   clean(){
-    this.updateState([]);
+    return this.http.delete<any>(`${this.URL}/clear`).pipe(
+      tap(updatedCart => this.cartSubject.next(updatedCart))
+    );
+
   }
 
-  get totalItems(){
-    return this.cartItems.value.reduce((acc, item)=> acc + item.quantity, 0)
-  }
-
-  get totalPrice(){
-    return this.cartItems.value.reduce((acc, item)=> acc + (item.price * item.quantity), 0)
-  }
-
-  private updateState(items: CartItem[]){
-    this.cartItems.next(items);
-    localStorage.setItem('cart', JSON.stringify(items))
+  getMyCart():Observable<Cart>{
+    return this.http.get<Cart>(`${this.URL}`).pipe(
+      tap(updatedCart => this.cartSubject.next(updatedCart))
+    )
   }
 
   private getCart(): CartItem[] {

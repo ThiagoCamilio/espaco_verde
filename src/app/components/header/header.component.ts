@@ -21,11 +21,24 @@ export class HeaderComponent implements OnInit{
   totalItens$!: Observable<number>;
   isLoggedIn$!: Observable<boolean>;
 
-  constructor(private cartService: CartService, private router: Router, private authService: AuthService) { }
+  constructor(private cartService: CartService, private router: Router, private authService: AuthService) { 
+    this.totalItens$ = this.cartService.cart$.pipe(
+      map(cart => {
+        if(!cart || !cart.productCartDTOs) return 0;
+        return cart.productCartDTOs.reduce((acc: number, item: any) => acc + item.quantity, 0);
+      })
+    )
+  }
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
-    this.totalItens$ = this.cartService.items$.pipe(map(items => items.reduce ((acc, item)=> acc + item.quantity, 0)))
+    this.cartService.getMyCart().subscribe(
+      {
+        next:(res) =>{
+          console.log(res)
+        }
+      }
+    )
   }
 
   navigateTo(route: string) {

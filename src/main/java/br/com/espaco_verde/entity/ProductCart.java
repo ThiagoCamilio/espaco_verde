@@ -1,5 +1,6 @@
 package br.com.espaco_verde.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -17,37 +18,39 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Entity(name = "ProodutosVendas")
-@Table(name = "ProdutosVendas")
+@Entity(name = "ProductCart")
+@Table(name = "ProductCarts")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@Getter
+@Setter
 public class ProductCart implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Getter @Setter
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "produto_id")
-    @Getter @Setter
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    @Getter @Setter
-    private BigDecimal precoVenda;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
-    @Getter @Setter
-    private int quantidade;
+    private BigDecimal sellPrice;
 
-    public ProductCart(Product product, BigDecimal precoVenda, int quantidade){
+    private int quantity;
+
+    public ProductCart(Product product, BigDecimal sellPrice, int quantity){
         this.product = product;
-        this.precoVenda = precoVenda;
-        this.quantidade = quantidade;
+        this.sellPrice = sellPrice;
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getTotal(){
+        return sellPrice.multiply(new BigDecimal(quantity));
     }
 
 }

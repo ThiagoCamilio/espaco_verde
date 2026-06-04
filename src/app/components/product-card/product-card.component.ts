@@ -34,14 +34,21 @@ export class ProductCardComponent {
     }
     
     const item: CartItem = {
-      productId : this.product.id!,
-      name: this.product.nome,
+      id : this.product.id!,
+      productDTO: this.product,
       quantity: 1,
-      price: this.product.preco,
-      imageUrl : this.product.imagem
+      sellPrice: this.product.preco,
     };
 
-    this.cartService.addItem(item);
+    this.cartService.addItem(item).subscribe({
+      next:(res) =>{
+        console.log("UUHUL")
+        console.log(res)
+      },
+      error(err) {
+        console.log(err)
+      },
+    });
   }
 
 }

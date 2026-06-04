@@ -1,7 +1,7 @@
 <div class="cart-container">
   <h1>O Seu Carrinho</h1>
 
-  <div *ngIf="(items$ | async)?.length === 0; else cartContent" class="empty-cart">
+  <div *ngIf="totalItems === 0; else cartContent" class="empty-cart">
     <div class="empty-icon">🛒</div>
     <h2>O seu carrinho está vazio</h2>
     <p>Parece que ainda não adicionou nenhum product ao seu carrinho.</p>
@@ -11,26 +11,26 @@
   <ng-template #cartContent>
     <div class="cart-grid">
       <div class="cart-items">
-        <div class="cart-item" *ngFor="let item of items$ | async">
+        <div class="cart-item" *ngFor="let item of cart?.productCartDTOs">
           <div class="item-img">
-            <img [src]="baseImageUrl + item.imageUrl" [alt]="item.name">
+            <img [src]="baseImageUrl + item.productDTO.imagem" [alt]="item.productDTO.nome">
           </div>
           
           <div class="item-info">
-            <h3>{{ item.name }}</h3>
-            <p class="unit-price">Preço unitário: {{ item.price | currency:'BRL' }}</p>
+            <h3>{{ item.productDTO.nome }}</h3>
+            <p class="unit-price">Preço unitário: {{ item.sellPrice | currency:'BRL' }}</p>
           </div>
 
           <div class="item-quantity">
             <div class="quantity-controls">
-              <button (click)="removeItem(item.productId)">-</button>
+              <button (click)="removeItem(item.id)">-</button>
               <span>{{ item.quantity }}</span>
               <button (click)="addItem(item)">+</button>
             </div>
           </div>
 
           <div class="item-total">
-            <p>{{ (item.price * item.quantity) | currency:'BRL' }}</p>
+            <p>{{ (item.sellPrice * item.quantity) | currency:'BRL' }}</p>
           </div>
         </div>
 
