@@ -7,6 +7,7 @@ import { environment } from '../../../environment';
 import { Router, RouterLink } from '@angular/router';
 import { OrderSummaryComponent } from '../../components/order-summary/order-summary.component';
 import { Cart } from '../../models/cart';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cart',
@@ -25,7 +26,11 @@ export class CartComponent implements OnInit{
   baseImageUrl = `${environment.apiUrl}/produtos/imagem/`;
 
 
-  constructor(private cartService: CartService, private router: Router) {
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private toastrService: ToastrService
+  ) {
   }
 
   ngOnInit(): void {
@@ -47,15 +52,14 @@ export class CartComponent implements OnInit{
     this.router.navigate(['user/checkout/delivery']);
   }
 
-  addItem(item: CartItem) {
-    console.log(item.quantity)
-    item.quantity = 1
-    this.cartService.addItem(item).subscribe({
+  addItem(produtcId: string) {
+    this.cartService.addItem(produtcId, 1).subscribe({
       next: (res) => {
         this.cart = res;
+        this.toastrService.success("Produto adicionado ao carrinho!", "");
       },
-      error(err) {
-        console.log(err)
+      error:(err) =>{
+        this.toastrService.error("Produto não adicionado", "Algo deu errado");
       },
     });
   }
@@ -65,9 +69,10 @@ export class CartComponent implements OnInit{
     this.cartService.removeItem(productId).subscribe({
       next: (res) => {
         this.cart = res;
+        this.toastrService.warning("Produto removido do carrinho!", "");
       },
-      error(err) {
-        console.log(err)
+      error:(err) => {
+        this.toastrService.error("Produto não removido", "Algo deu errado");
       },
     });
   }
@@ -75,7 +80,7 @@ export class CartComponent implements OnInit{
   cleanCart() {
     this.cartService.clean().subscribe({
       next:(res) =>{
-        console.log("carrinho limpo")
+        this.toastrService.warning("Carrinho limpo!", "");
         this.cart = res;
       },
       error(err){

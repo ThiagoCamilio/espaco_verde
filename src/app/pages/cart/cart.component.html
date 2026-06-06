@@ -25,7 +25,7 @@
             <div class="quantity-controls">
               <button (click)="removeItem(item.id)">-</button>
               <span>{{ item.quantity }}</span>
-              <button (click)="addItem(item)">+</button>
+              <button (click)="addItem(item.productDTO.id!)">+</button>
             </div>
           </div>
 

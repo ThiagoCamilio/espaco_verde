@@ -26,9 +26,9 @@ public class CartControl {
         return ResponseEntity.ok(cartDTO);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<CartDTO> addProduto(@AuthenticationPrincipal User logedUser, @RequestBody ProductCartDTO productCartDTO){
-        CartDTO cartDTO = cartService.addProduct(logedUser.getId(), productCartDTO);
+    @PostMapping("/add/{productId}")
+    public ResponseEntity<CartDTO> addProduto(@AuthenticationPrincipal User logedUser, @PathVariable Integer productId, @RequestParam(defaultValue = "1") int quantity){
+        CartDTO cartDTO = cartService.addProduct(logedUser.getId(), productId, quantity);
         return ResponseEntity.ok(cartDTO);
 
     }

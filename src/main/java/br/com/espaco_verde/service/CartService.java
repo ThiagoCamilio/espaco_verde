@@ -45,25 +45,25 @@ public class CartService {
 
 
     @Transactional
-    public CartDTO addProduct(int userId, ProductCartDTO productCartDTO){
+    public CartDTO addProduct(int userId, Integer productId, int quantity){
 
         Cart cart = getCart(userId);
-        Product product = produtoRepository.findById(productCartDTO.productDTO().id()).orElseThrow(()
+        Product product = produtoRepository.findById(productId).orElseThrow(()
                 -> new RuntimeException("Produto não encontrado"));
 
         Optional<ProductCart> hasItem = cart.getProductCarts().stream()
-                .filter(productCart -> productCart.getProduct().getId() == productCartDTO.productDTO().id())
+                .filter(productCart -> productCart.getProduct().getId() == productId)
                 .findFirst();
 
         if(hasItem.isPresent()){
             ProductCart productCart = hasItem.get();
-            productCart.setQuantity(productCart.getQuantity() + productCartDTO.quantity());
+            productCart.setQuantity(productCart.getQuantity() + quantity);
         }else{
             ProductCart productCart = new ProductCart();
             productCart.setCart(cart);
             productCart.setProduct(product);
-            productCart.setQuantity(productCartDTO.quantity());
-            productCart.setSellPrice(productCartDTO.sellPrice());
+            productCart.setQuantity(quantity);
+            productCart.setSellPrice(product.getPreco());
             cart.getProductCarts().add(productCart);
         }
         cart.setPrice(cart.getTotal());

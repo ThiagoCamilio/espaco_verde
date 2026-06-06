@@ -7,6 +7,7 @@ import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../environment';
 import { AuthService } from '../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-details',
@@ -29,7 +30,8 @@ export class ProductDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private cartService: CartService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService
   ) {
 
   }
@@ -52,7 +54,7 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  addToCart() {
+  addToCart(produtcId: string, quantity: number) {
 
     if (!this.authService.hasToken()) {
       alert('Você precisa estar logado para adicionar itens ao carrinho!');
@@ -67,13 +69,12 @@ export class ProductDetailsComponent implements OnInit {
       sellPrice: this.product.preco,
     };
 
-    this.cartService.addItem(item).subscribe({
+    this.cartService.addItem(produtcId, quantity).subscribe({
       next: (res) => {
-        console.log("UUHUL")
-        console.log(res.productCarts[0].quantity)
+        this.toastrService.success("Produto adicionado ao carrinho!", "");
       },
-      error(err) {
-        console.log(err)
+      error:(err) => {
+        this.toastrService.error("Produto não adicionado", "Algo deu errado");
       },
     });
 

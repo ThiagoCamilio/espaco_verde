@@ -17,8 +17,8 @@ export class CartService {
 
   constructor(private http : HttpClient) { }
 
-  addItem(itemCart : CartItem){
-    return this.http.post<any>(`${this.URL}/add`, itemCart).pipe(
+  addItem(produtcId: string, quantity: number){
+    return this.http.post<any>(`${this.URL}/add/${produtcId}?quantity=${quantity}`, {}).pipe(
       tap(updatedCart => this.cartSubject.next(updatedCart))
     );
   }

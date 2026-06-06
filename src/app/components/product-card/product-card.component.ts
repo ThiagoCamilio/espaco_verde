@@ -7,6 +7,7 @@ import { CartService } from '../../services/cart.service';
 import { CartItem } from '../../models/cart-item';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-product-card',
   standalone: true,
@@ -23,30 +24,28 @@ export class ProductCardComponent {
   @Input() products!: Product[];
   @Input() product!: Product;
 
-  constructor (private cartService: CartService, private authService:AuthService, private router:Router){ }
+  constructor (
+    private cartService: CartService, 
+    private authService:AuthService, 
+    private router:Router,
+    private toastrService: ToastrService
 
-  addToCart(event: Event){
+  ){ }
+
+  addToCart(event: Event, produtcId: string){
     event.stopPropagation();
     if(!this.authService.hasToken()){
       alert('Você precisa estar logado para adicionar itens ao carrinho!');
       this.router.navigate(['/login']);
       return;
     }
-    
-    const item: CartItem = {
-      id : this.product.id!,
-      productDTO: this.product,
-      quantity: 1,
-      sellPrice: this.product.preco,
-    };
 
-    this.cartService.addItem(item).subscribe({
+    this.cartService.addItem(produtcId, 1).subscribe({
       next:(res) =>{
-        console.log("UUHUL")
-        console.log(res)
+        this.toastrService.success("Produto adicionado ao carrinho!", "");
       },
-      error(err) {
-        console.log(err)
+      error:(err) =>{
+        this.toastrService.error("Produto não removido", "Algo deu errado");
       },
     });
   }
