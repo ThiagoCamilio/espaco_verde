@@ -170,7 +170,7 @@ public class MessageService {
 
             cards.add(Map.of("card_index", Integer.toString(currentIndex),
                     "type","cta_url",
-                    "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/produtos/imagem/")),
+                    "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/produtos/imagem/"+p.imagem())),
                     "body", Map.of("text", p.nome()+"\n\n"+"R$"+p.preco()),
                     "action", Map.of("buttons", buttonCard)
             ));

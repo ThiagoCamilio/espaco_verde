@@ -8,10 +8,11 @@ public enum ChatState {
     AWAITING_MENU_RESPONSE("esperando resposta do menu"),
     CATALOG("catalogo"),
     AWAITING_CATALOG_RESPONSE("esperando resposta do catalogo"),
-    ORDERS("pedidos"),
+    AWAITING_ADD_CART_RESPONSE("esperando resposta ao adicionar ao carrinho"),
     CART("carrinho"),
-    STAFF("atendente"),
-    AWAITING_ADD_CART_RESPONSE("esperando resposta ao adicionar ao carrinho");
+    AWAITING_CART_RESPONSE("esperando resposta do carrinho"),
+    ORDERS("pedidos"),
+    STAFF("atendente");
 
     private String type;
 

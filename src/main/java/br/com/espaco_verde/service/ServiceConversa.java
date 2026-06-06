@@ -44,6 +44,9 @@ public class ServiceConversa {
     @Autowired
     private SystemMessageService systemMessageService;
 
+    @Autowired
+    private CartService cartService;
+
     @Transactional
     public void processarMensagem(Message message) throws Exception {
 
@@ -78,11 +81,13 @@ public class ServiceConversa {
             case AWAITING_ADD_CART_RESPONSE:
                 handlerAwaitingAddCartResponse(chat, message);
                 break;
-            /*case "checkout":
-                retorno = "Ainda não disponivel";
-                messageService.sendTextMessage(mensagem, retorno);
+            case CART:
+                handlerCart(chat, message);
                 break;
-            */
+            case AWAITING_CART_RESPONSE:
+                handlerAwaitingCartResponse(chat, message);
+                break;
+
             default:
                 //chat.setEstadoConversa(EstadoConversa.MENU_PRINCIPAL);
                 //messageService.sendButtonMessage(mensagem);
@@ -103,12 +108,12 @@ public class ServiceConversa {
 
     @Transactional
     private void handlerMainMenu(Chat chat, Message message){
-        Map<String, String> var = Map.of("nome", message.getSenderName());
+        Map<String, String> var = Map.of("nome", chat.getUser().getName());
         String systemResponseText = systemMessageService.getMessage("GREETINGS", var);
         Map<String, String> opt = new LinkedHashMap<>();
         opt.put("OPT_CATALOGO", "Ver Catálogo");
         opt.put("OPT_ORDERS", "Meus Pedidos");
-        opt.put("OPT_CART", "Cart");
+        opt.put("OPT_CART", "Carrinho de compras");
         opt.put("OPT_STAFF", "Falar com Atendente");
 
         messageService.sendInteractiveList(chat.getWhatsappNumber(), systemResponseText, opt);
@@ -131,24 +136,20 @@ public class ServiceConversa {
         String userResponse = message.getContent();
 
         switch (userResponse){
-
             case "OPT_CATALOGO":
                 chat.setChatState(ChatState.CATALOG);
                 handlerCatalog(chat, message);
                 break;
-
             case "OPT_ORDERS":
                 chat.setChatState(ChatState.ORDERS);
                 break;
-
             case "OPT_CART":
                 chat.setChatState(ChatState.CART);
+                handlerCart(chat, message);
                 break;
-
             case "OPT_STAFF":
                 chat.setChatState(ChatState.STAFF);
                 break;
-
             default:
                 break;
         }
@@ -199,7 +200,7 @@ public class ServiceConversa {
             handlerCatalog(chat, message);
         } else if(userResponse.startsWith("ADD_")){
             int productId = Integer.parseInt(userResponse.replace("ADD_", ""));
-            //cart service para salvar a planta no carrinho
+            cartService.addProduct(chat.getUser().getId(), productId, 1);
             handlerAddCart(chat);
         }else{
             messageService.sendTextMessage(message, "Por favor, utilize os botões do menu nos cards");
@@ -239,6 +240,67 @@ public class ServiceConversa {
     }
 
     private void handlerCart(Chat chat, Message message) {
+
+        Cart cart = cartService.getCart(chat.getUser().getId());
+        if(cart.getProductCarts() == null || cart.getProductCarts().isEmpty()){
+            String systemResponseText = systemMessageService.getMessage("EMPTY_CART", null);
+            Map<String, String> opt = new LinkedHashMap<>();
+            opt.put("BACK_TO_CATALOG", "Ir para o catalogo");
+            opt.put("BACK_TO_MAIN_MENU", "Voltar ao menu");
+            messageService.sendButtonMessage(chat.getWhatsappNumber(), systemResponseText, opt);
+
+        }else{
+            StringBuilder sb = new StringBuilder();
+            sb.append("*Seu Carrinho de Compras*\n\n");
+
+            for(ProductCart productCart : cart.getProductCarts()){
+                sb.append(productCart.getQuantity()).append("x *").append(productCart.getProduct().getNome()).append("*\n");
+                sb.append("Preço unit.: R$").append(productCart.getSellPrice()).append("\n");
+                sb.append("_Subtotal: R$").append(productCart.getTotal()).append("_\n\n");
+            }
+
+            sb.append("-----------------------------------\n");
+            sb.append("*Total da Compra: R$ ").append(cart.getTotal()).append("*\n"); // Use o seu getter de total
+            sb.append("-----------------------------------\n");
+            sb.append("Como deseja prosseguir?");
+
+            Map<String, String> opt = new LinkedHashMap<>();
+            opt.put("TO_CHECK_OUT", "Finalizar compra");
+            opt.put("CLEAR_CART", "Limpar Carrinho");
+            opt.put("BACK_TO_CATALOG", "Voltar ao catalogo");
+
+            messageService.sendButtonMessage(chat.getWhatsappNumber(), sb.toString(), opt);
+        }
+
+        chat.setChatState(ChatState.AWAITING_CART_RESPONSE);
+        repositoryConversa.save(chat);
+
+    }
+
+    private void handlerAwaitingCartResponse(Chat chat, Message message){
+        String userResponse = message.getContent();
+
+        switch (userResponse){
+            case "CLEAR_CART":
+                chat.setChatState(ChatState.CART);
+                cartService.clearCart(chat.getUser().getId());
+                handlerCart(chat, message);
+                break;
+            case "TO_CHECK_OUT":
+                chat.setChatState(ChatState.CART);
+                handlerCart(chat, message);
+                break;
+            case "BACK_TO_CATALOG":
+                chat.setChatState(ChatState.CATALOG);
+                handlerCatalog(chat, message);
+                break;
+            case "BACK_TO_MAIN_MENU":
+                chat.setChatState(ChatState.GREETINGS);
+                handlerMainMenu(chat, message);
+                break;
+            default:
+                break;
+        }
     }
 
 }
