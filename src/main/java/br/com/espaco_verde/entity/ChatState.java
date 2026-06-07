@@ -12,7 +12,13 @@ public enum ChatState {
     CART("carrinho"),
     AWAITING_CART_RESPONSE("esperando resposta do carrinho"),
     ORDERS("pedidos"),
-    STAFF("atendente");
+    STAFF("atendente"),
+    AWAITING_CHECKOUT_DELIVERY_RESPONSE("esperando resposta para o método de entrega"),
+    CHECKOUT_DELIVERY("Checkout Entrega"),
+    DELIVERY_ADDRESS_INPUT("perguntando ao cliente qual é o endereço de entrega"),
+    AWAITING_DELIVERY_INPUT_RESPONSE("Esperando o cliente digitar o endereço de entrega"),
+    AWAITING_CHECKOUT_CONFIRMATION_RESPONSE("Esperando confirmação do checkout"),
+    AWAITING_ORDER_RESPONSE("Esperando decisão do cliente após criar pedido");
 
     private String type;
 

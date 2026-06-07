@@ -40,6 +40,9 @@ public class Chat {
     @Column(nullable = false, columnDefinition = "int default 0")
     private int catalogPage = 0;
 
+    @Column(columnDefinition = "TEXT")
+    private String deliveryAddress;
+
     public Chat(String whatsappNumber, ChatState chatState){
         this.whatsappNumber = whatsappNumber;
         this.chatState = chatState;
