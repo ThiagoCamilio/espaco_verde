@@ -12,9 +12,9 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  createOrder(orderRequest: any): Observable<any> {
+  createOrder(deliveryAdress: string): Observable<any> {
 
-    return this.http.post(`${this.URL}/orders`, orderRequest);
+    return this.http.post(`${this.URL}/orders`, deliveryAdress);
 
   }
 

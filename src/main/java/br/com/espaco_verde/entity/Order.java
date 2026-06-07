@@ -31,9 +31,11 @@ public class Order {
     private OrderStatus orderStatus;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false
+    )
     private DeliveryMethod deliveryMethod;
 
-    private String deliveryAdress;
+    private String deliveryAddress;
 
     private BigDecimal totalPrice;
 

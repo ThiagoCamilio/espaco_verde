@@ -26,10 +26,9 @@ public class ControlOrder {
     private ServiceReport serviceReport;
 
     @PostMapping("/orders")
-    public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO orderResquest, @AuthenticationPrincipal User user){
-        int userId = user.getId();
-        System.out.println(orderResquest);
-        OrderResponseDTO responseDTO = serviceOrder.createOrder(orderResquest, userId);
+    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody String deliveryAddress, @AuthenticationPrincipal User user){
+        System.out.println(deliveryAddress);
+        OrderResponseDTO responseDTO = serviceOrder.createOrder(deliveryAddress, user.getId());
         return ResponseEntity.status(201).body(responseDTO);
     }
 

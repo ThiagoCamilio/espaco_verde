@@ -4,15 +4,6 @@
     <form [formGroup]="deliveryForm">
 
       <div class="card-checkout">
-        <h3><i class="fa-solid fa-location-dot"></i> Endereço de Entrega</h3>
-        <p class="instrucao">Confirme onde deseja receber os seus produtos do Espaço Verde.</p>
-
-        <div class="input-group">
-          <textarea formControlName="adress" rows="3" placeholder="Endereço completo para entrega"></textarea>
-        </div>
-      </div>
-
-      <div class="card-checkout">
         <h3><i class="fa-solid fa-truck"></i> Método de Entrega</h3>
 
         <div class="options-group">
@@ -31,6 +22,15 @@
             </div>
             <span class="price">Grátis</span>
           </label>
+        </div>
+      </div>
+
+      <div class="card-checkout" *ngIf="deliveryForm.get('deliveryMethod')?.value === 'DELIVERY'">
+        <h3><i class="fa-solid fa-location-dot"></i> Endereço de Entrega</h3>
+        <p class="instrucao">Confirme onde deseja receber os seus produtos do Espaço Verde.</p>
+
+        <div class="input-group">
+          <textarea formControlName="deliveryAddress" rows="3" placeholder="Endereço completo para entrega"></textarea>
         </div>
       </div>
     </form>

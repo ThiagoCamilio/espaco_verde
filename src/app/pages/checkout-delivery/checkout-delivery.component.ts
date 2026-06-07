@@ -20,7 +20,7 @@ import { Cart } from '../../models/cart';
 })
 export class CheckoutDeliveryComponent implements OnInit {
 
-  cart! : Cart;
+  cart!: Cart;
   deliveryForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private userService: UserService, private cartService: CartService, private router: Router) { }
@@ -30,25 +30,24 @@ export class CheckoutDeliveryComponent implements OnInit {
     this.loadCart();
 
     this.deliveryForm = this.formBuilder.group({
-      adress: ['', Validators.required],
-      deliveryMethod: ['PICKUP', Validators.required],
+      deliveryAddress: ['', Validators.required],
+      deliveryMethod: ['DELIVERY', Validators.required],
       obs: ['']
     })
 
     this.userService.getProfile().subscribe(data => {
       this.deliveryForm.patchValue({
-        adress: data.adress
+        deliveryAddress: data.adress
       })
     })
   }
 
-  
-    loadCart(): void{
+  loadCart(): void {
     this.cartService.getMyCart().subscribe({
-      next:(res) =>{
+      next: (res) => {
         this.cart = res
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err)
       }
     })
@@ -59,14 +58,14 @@ export class CheckoutDeliveryComponent implements OnInit {
       return;
     }
     const deliveryData = this.deliveryForm.value;
+    console.log(deliveryData);
     this.router.navigate(['user/checkout/confirmation'], { state: { delivery: deliveryData } })
-
   }
 
   goBack(): void {
     this.router.navigate(['user/cart']);
   }
-  
+
   get totalPrice() {
     if (!this.cart || !this.cart.productCartDTOs) return 0;
     return this.cart.price;

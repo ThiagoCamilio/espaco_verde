@@ -17,8 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RepositoryOrder extends JpaRepository<Order, Integer>, JpaSpecificationExecutor<Order> {
 
-    public List<Order> findAll();
-
     public List<Order> findByCustumerId(int userId);
 
     public List<Order> findByOrderStatus(OrderStatus orderStatus);
@@ -44,4 +42,6 @@ public interface RepositoryOrder extends JpaRepository<Order, Integer>, JpaSpeci
             @Param("status") OrderStatus status,
             Pageable pageable
             );
+
+    List<Order> findTop10ByCustumerIdAndOrderStatusNotInOrderByCreatedAtDesc(Integer userId, List<OrderStatus> statuses);
 }

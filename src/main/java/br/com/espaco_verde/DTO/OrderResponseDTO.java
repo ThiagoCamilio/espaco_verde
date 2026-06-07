@@ -1,7 +1,6 @@
 package br.com.espaco_verde.DTO;
 
 import br.com.espaco_verde.entity.Order;
-import br.com.espaco_verde.entity.Payment;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -47,7 +46,7 @@ public record OrderResponseDTO(
           o.getCreatedAt(),
           itemsDTO,
           o.getDeliveryMethod().name(),
-          o.getDeliveryAdress(),
+          o.getDeliveryAddress(),
           new OrderUserDTO(
             o.getCustumer().getId(),
             o.getCustumer().getName()

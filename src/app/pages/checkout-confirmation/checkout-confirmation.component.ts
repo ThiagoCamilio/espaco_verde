@@ -69,28 +69,35 @@ export class CheckoutConfirmationComponent implements OnInit {
     try {
 
       const currentItems = await firstValueFrom(this.cartService.cart$);
-
+      const deliveryMethod = this.deliveryData.deliveryMethod;
+      var deliveryAddress = " "
 
       if (!currentItems || currentItems.productCartDTOs.length === 0) {
         alert('Seu carrinho está vazio.');
         this.isSubmiting = false;
         return;
       }
+      
+      if(deliveryMethod === "DELIVERY"){
+        deliveryAddress = this.deliveryData.deliveryAddress;
+      }
 
 
-      const orderRequest = {
+      /*const orderRequest = {
         deliveryAdress: this.deliveryData.adress,
         deliveryMethod: this.deliveryData.deliveryMethod,
         items: currentItems.productCartDTOs.map(item => ({
           productId: item.productDTO.id,
           quantity: item.quantity
         }))
-      };
+      };*/
 
-      this.orderService.createOrder(orderRequest).subscribe({
+      this.orderService.createOrder(deliveryAddress).subscribe({
         next: (response) => {
           this.cartService.clean().subscribe({
             next: (res) => {
+              console.log(this.deliveryData.deliveryMethod)
+              console.log(deliveryAddress)
               console.log("carrinho limpo")
               console.log(res)
             },

@@ -5,12 +5,11 @@ import br.com.espaco_verde.entity.*;
 import br.com.espaco_verde.repository.RepositoryOrder;
 import br.com.espaco_verde.repository.RepositoryProduto;
 import br.com.espaco_verde.repository.RepositoryUser;
-import br.com.espaco_verde.repository.specification.OrderSpecification;
 import jakarta.transaction.Transactional;
-import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -35,34 +34,46 @@ public class ServiceOrder {
     @Autowired
     private ServicePayment servicePayment;
 
-    @Transactional
-    public OrderResponseDTO createOrder(OrderRequestDTO orderRequest, int userId){
+    @Autowired
+    private CartService cartService;
 
-        User customer = repositoryUser.findById(userId).orElseThrow(()->new RuntimeException("Usuario não encontrado."));
+    @Transactional
+    public OrderResponseDTO createOrder(String deliveryAddress, int userId){
+
+        Cart cart = cartService.getCart(userId);
+
+        if(cart.getProductCarts().isEmpty()){
+            throw new RuntimeException("Não foi possível finalizar o pedido pois o carrinho esta vazio");
+        }
         Order order = new Order();
-        order.setCustumer(customer);
-        order.setDeliveryMethod(orderRequest.deliveryMethod());
-        order.setDeliveryAdress(orderRequest.deliveryAdress());
+        order.setCustumer(cart.getUser());
+        if(StringUtils.hasText(deliveryAddress)){
+            order.setDeliveryMethod(DeliveryMethod.DELIVERY);
+            order.setDeliveryAddress(deliveryAddress);
+        }else {
+            order.setDeliveryMethod(DeliveryMethod.PICKUP);
+            order.setDeliveryAddress(null);
+        }
         BigDecimal totalPrice = BigDecimal.ZERO;
 
-        for(OrderItemRequestDTO itemRequestDTO : orderRequest.items()){
-            Product product = repositoryProduct.findById(itemRequestDTO.productId())
+        for(ProductCart productCart : cart.getProductCarts()){
+            Product product = repositoryProduct.findById(productCart.getProduct().getId())
                     .orElseThrow(()-> new RuntimeException("Product Indisponivel"));
 
-            if (product.getAvaliableQuantity() < itemRequestDTO.quantity()){
+            if (product.getAvaliableQuantity() < productCart.getQuantity()){
                 throw new RuntimeException("Estoque insuficiente para o produto "+product.getNome());
             }
 
-            product.setReservedQuantity(product.getReservedQuantity() + itemRequestDTO.quantity());
+            product.setReservedQuantity(product.getReservedQuantity() + productCart.getQuantity());
             repositoryProduct.save(product);
 
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setProduct(product);
-            orderItem.setQuantity(itemRequestDTO.quantity());
+            orderItem.setQuantity(productCart.getQuantity());
             orderItem.setUnitPrice(product.getPreco());
             order.getItems().add(orderItem);
-            BigDecimal subtotal = product.getPreco().multiply(BigDecimal.valueOf(itemRequestDTO.quantity()));
+            BigDecimal subtotal = product.getPreco().multiply(BigDecimal.valueOf(productCart.getQuantity()));
             totalPrice = subtotal.add(totalPrice);
         }
         order.setTotalPrice(totalPrice);
@@ -70,6 +81,7 @@ public class ServiceOrder {
         Order persistOrder = repositoryOrder.save(order);
         int pendingOrders = repositoryOrder.countByOrderStatus(OrderStatus.AWAITING_ANALYSIS);
         simpMessagingTemplate.convertAndSend("/topic/pending-orders", pendingOrders);
+        cartService.clearCart(userId);
 
         return new OrderResponseDTO(persistOrder);
 
@@ -158,6 +170,17 @@ public class ServiceOrder {
     @Transactional
     public List<OrderResponseDTO> getUserOrders(int userId) {
         List<Order> orders = repositoryOrder.findByCustumerId(userId);
+
+        return orders.stream()
+                .map(OrderResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderResponseDTO> getActiveUserOrders(Integer userId){
+
+        List<OrderStatus> statuses = List.of(OrderStatus.DELIVERED, OrderStatus.CANCELED);
+
+        List<Order> orders = repositoryOrder.findTop10ByCustumerIdAndOrderStatusNotInOrderByCreatedAtDesc(userId, statuses);
 
         return orders.stream()
                 .map(OrderResponseDTO::new)
