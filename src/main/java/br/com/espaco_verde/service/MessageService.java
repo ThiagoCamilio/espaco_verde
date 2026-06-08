@@ -1,23 +1,22 @@
 package br.com.espaco_verde.service;
 
+import br.com.espaco_verde.DTO.MessageInteractiveListOption;
 import br.com.espaco_verde.DTO.ProductDTO;
 import br.com.espaco_verde.entity.*;
 import br.com.espaco_verde.repository.RepositoryPagina;
 import br.com.espaco_verde.repository.RepositoryUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import tools.jackson.databind.JsonNode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class MessageService {
@@ -43,9 +42,7 @@ public class MessageService {
     public Message parseJson(JsonNode json){
 
         JsonNode value = json.at("/entry/0/changes/0/value");
-
         Message message = new Message();
-
         if (value.has("messages")){
 
             message.setSenderType(SenderType.CLIENT);
@@ -77,13 +74,60 @@ public class MessageService {
                     message.setContent("UNSUPPORTED_MESSAGE_TYPE");
                     break;
             }
-
             message.setTimestampFromEpoch(value.at("/messages/0/timestamp").asString());
             return message;
-
         }
-
         return null;
+    }
+
+    public String sendRequest(Map<String, Object> request){
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = waApiUrl + waPhoneNumberId +"/messages";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(waAcessToken);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<JsonNode> response = restTemplate.postForEntity(url, entity, JsonNode.class);
+
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            JsonNode body = response.getBody();
+            if(body.has("messages") && body.get("messages").isArray() && !body.get("messages").isEmpty()){
+                return response.getBody().get("messages").get(0).get("id").asString();
+            }else if(body.has("success") && body.get("success").asBoolean()){
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public String uploadImage(byte[] imagemBytes){
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = waApiUrl + waPhoneNumberId +"/media";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setBearerAuth(waAcessToken);
+
+        MultiValueMap<String, Object> request = new LinkedMultiValueMap<>();
+        request.add("messaging_product", "whatsapp");
+        request.add("file", new ByteArrayResource(imagemBytes){
+            @Override
+            public String getFilename(){
+                return "qrcode_pix.png";
+            }
+        });
+
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<JsonNode> response = restTemplate.postForEntity(url, entity, JsonNode.class);
+        return response.getBody().get("id").asString();
 
     }
 
@@ -93,36 +137,33 @@ public class MessageService {
         request.put("messaging_product", "whatsapp");
         request.put("status", "read");
         request.put("message_id", message.getWamId());
+
+        sendRequest(request);
+    }
+
+    public void showTypingIndicator(Message message){
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("messaging_product", "whatsapp");
+        request.put("message_id", message.getWamId());
+        request.put("status", "read");
         request.put("typing_indicator", Map.of("type", "text"));
 
         sendRequest(request);
     }
 
-    public void sendTextMessage(Message message, String messageText){
+    public String sendTextMessage(String phone, String systemResponseText){
 
-        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> request = new HashMap<>();
+        request.put("messaging_product", "whatsapp");
+        request.put("to", phone);
+        request.put("type", "text");
+        request.put("text", Map.of("body", systemResponseText));
 
-        String url = waApiUrl + waPhoneNumberId +"/messages";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(waAcessToken);
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("messaging_product", "whatsapp");
-        body.put("to", message.getPhone());
-        body.put("type", "text");
-        body.put("text", Map.of("body", messageText));
-
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
-
-        System.out.println(response);
-
+        return sendRequest(request);
     }
 
-    public void sendButtonMessage(String phone, String systemResponseText, Map<String, String> opt){
+    public String sendButtonMessage(String phone, String systemResponseText, Map<String, String> opt){
 
         List<Map<String, Object>> buttons = new ArrayList<>();
 
@@ -140,11 +181,11 @@ public class MessageService {
                         "action", Map.of("buttons", buttons)
         ));
 
-        sendRequest(request);
+        return sendRequest(request);
 
     }
 
-    public void sendCarouselMessage(Chat chat, List<ProductDTO> products, boolean hasNext) {
+    public String sendCarouselMessage(Chat chat, List<ProductDTO> products, boolean hasNext) {
 
         List<Map<String, Object>> cards = new ArrayList<>();
 
@@ -200,16 +241,19 @@ public class MessageService {
                         "action", Map.of("cards", cards)
                 ));
 
-        sendRequest(request);
+        return sendRequest(request);
     }
 
-    public void sendInteractiveList(String phone, String systemResponseText, Map<String, String> opt) {
+    public String sendInteractiveList(String phone, String systemResponseText, String messageHeader, List<MessageInteractiveListOption> options) {
 
         List<Map<String, Object>> menu = new ArrayList<>();
-        for(Map.Entry<String, String> entry: opt.entrySet()){
+        for(MessageInteractiveListOption opt: options){
             Map<String, Object> row = new HashMap<>();
-            row.put("id", entry.getKey());
-            row.put("title", entry.getValue());
+            row.put("id", opt.id());
+            row.put("title", opt.title());
+            if(opt.description() != null && !opt.description().isEmpty()){
+                row.put("description", opt.description());
+            }
             menu.add(row);
         }
 
@@ -223,7 +267,7 @@ public class MessageService {
 
         Map<String, Object> header = new HashMap<>();
         header.put("type", "text");
-        header.put("text", "Bem vindo à Espaço Verde");
+        header.put("text", messageHeader);
 
         Map<String, Object> interactive = new HashMap<>();
         interactive.put("type", "list");
@@ -238,22 +282,67 @@ public class MessageService {
         request.put("type", "interactive");
         request.put("interactive", interactive);
 
-        sendRequest(request);
+        return sendRequest(request);
 
     }
 
-    public void sendRequest(Map<String, Object> request){
+    public String sendImagemMessage(String phone, String imageId, String systemResponseText){
 
-        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> request = new HashMap<>();
+        request.put("messaging_product", "whatsapp");
+        request.put("recipient_type", "individual");
+        request.put("to", phone);
+        request.put("type", "image");
 
-        String url = waApiUrl + waPhoneNumberId +"/messages";
+        Map<String, String> image = new HashMap<>();
+        image.put("id", imageId);
+        image.put("caption", systemResponseText);
+        request.put("image", image);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(waAcessToken);
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
+        return sendRequest(request);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+    }
+
+    public void sendUpdateOrderMessage(Order order){
+
+        String phone = order.getCustumer().getPhone();
+        StringBuilder sb = new StringBuilder();
+        Map<String, String> opt = new LinkedHashMap<>();
+
+        sb.append("Ola *" +order.getCustumer().getName()+"*! Temos uma atualização para o seu pedido\n\n\n");
+        sb.append("*Pedido #").append(order.getId()).append("*\n");
+        System.out.println(order.getOrderStatus());
+        switch (order.getOrderStatus()){
+            case AWAITING_PAYMENT:
+                sb.append("*O seu pedido foi aceito!*\n\n");
+                sb.append("Acesse o menu de pedidos para realizar o pagamento\n");
+                opt.put("STATELESS_MY_ORDER", "Ver meus pedidos");
+                break;
+
+            case PAID:
+                sb.append("*Seu pagamento foi aprovado!*\n\n");
+                sb.append("Já estamos preparando o seu pedido e ele logo sairá para entrega\n");
+                break;
+
+            case IN_DELIVERY:
+                sb.append("*Seu pedido está a caminho!*\n\n");
+                sb.append("Logo logo entregaremos os seus produtos\n");
+                break;
+
+            case DELIVERED:
+                sb.append("*Pedido entregue!*\n\n");
+                sb.append("Aproveite seus produtos. Obrigado pela preferência e volte sempre!\n");
+                break;
+
+            case CANCELED:
+                sb.append("*Cancelado*\n\n");
+                sb.append("Infelizmente seu pedido não foi aceito. Caso tenha dúvidas, estamos à disposição.\n");
+                break;
+
+        }
+
+        opt.put("STATELESS_BACK_TO_MAIN_MENU", "Voltar ao menu");
+        sendButtonMessage(phone, sb.toString(), opt);
     }
 
 }

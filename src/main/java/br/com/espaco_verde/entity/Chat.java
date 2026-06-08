@@ -28,7 +28,7 @@ public class Chat {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private ChatState chatState = ChatState.NEW_CONTACT;
 
     @Column(nullable = false)
@@ -42,6 +42,9 @@ public class Chat {
 
     @Column(columnDefinition = "TEXT")
     private String deliveryAddress;
+
+    @Column(columnDefinition = "TEXT")
+    private int currentOrderId;
 
     public Chat(String whatsappNumber, ChatState chatState){
         this.whatsappNumber = whatsappNumber;

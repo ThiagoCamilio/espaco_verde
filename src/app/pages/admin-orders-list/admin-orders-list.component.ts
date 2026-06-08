@@ -20,12 +20,12 @@ export class AdminOrdersListComponent implements OnInit {
   ordersMap: Record<string, any[]> = {};
 
   kanbanColumns = [
-    { id: 'AWAITING_ANALYSIS', title: 'Sob Análise', next: 'AWAITING_PAYMENT', cssClass: 'bg-analysis' },
-    { id: 'AWAITING_PAYMENT', title: 'Aguardando Pgto', next: 'PAID', cssClass: 'bg-payment' },
-    { id: 'PAID', title: 'Pago (Preparar)', next: 'IN_DELIVERY', cssClass: 'bg-paid' },
-    { id: 'IN_DELIVERY', title: 'Enviado', next: 'DELIVERED', cssClass: 'bg-shipped' },
-    { id: 'DELIVERED', title: 'Entregue', next: null, cssClass: 'bg-delivered' },
-    { id: 'CANCELED', title: 'Cancelado', next: null, cssClass: 'bg-canceled' }
+    { id: 'Aguardando Análise', title: 'Aguardando Análise', next: 'Aguardando Pagamento', cssClass: 'bg-analysis' },
+    { id: 'Aguardando Pagamento', title: 'Aguardando Pgto', next: 'Pago', cssClass: 'bg-payment' },
+    { id: 'Pago', title: 'Pago', next: 'Em entrega', cssClass: 'bg-paid' },
+    { id: 'Em entrega', title: 'Enviado', next: 'Entregue', cssClass: 'bg-shipped' },
+    { id: 'Entregue', title: 'Entregue', next: null, cssClass: 'bg-delivered' },
+    { id: 'Cancelado', title: 'Cancelado', next: null, cssClass: 'bg-canceled' }
   ];
 
   constructor(private orderService: OrderService, private layoutService:LayoutService) { }
@@ -69,7 +69,7 @@ export class AdminOrdersListComponent implements OnInit {
 
   cancelOrder(order: any): void {
     if (confirm(`Tem certeza que deseja CANCELAR o pedido #${order.id}? Essa ação devolverá o estoque.`)) {
-      this.updateStatus(order, 'CANCELED');
+      this.updateStatus(order, 'Cancelado');
     }
   }
 

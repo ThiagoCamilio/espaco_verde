@@ -47,12 +47,12 @@ export class UserOrderListComponent implements OnInit {
 
   getStatusInfo(status: string): { label: string, cssClass: string } {
     const statusMap: Record<string, { label: string, cssClass: string }> = {
-      'AWAITING_ANALYSIS':  { label: 'Sob Análise', cssClass: 'status-analysis' },
-      'AWAITING_PAYMENT':   { label: 'Aguardando Pagamento', cssClass: 'status-payment' },
-      'PAID':               { label: 'Pago', cssClass: 'status-paid' },
-      'IN_DELIVERY':        { label: 'Enviado', cssClass: 'status-in-delivery' },
-      'DELIVERED':          { label: 'Entregue', cssClass: 'status-delivered' },
-      'CANCELED':           { label: 'Cancelado', cssClass: 'status-canceled' }
+      'Aguardando Análise':  { label: 'Sob Análise', cssClass: 'status-analysis' },
+      'Aguardando Pagamento':   { label: 'Aguardando Pagamento', cssClass: 'status-payment' },
+      'Pago':               { label: 'Pago', cssClass: 'status-paid' },
+      'Em entrega':        { label: 'Enviado', cssClass: 'status-in-delivery' },
+      'Entregue':          { label: 'Entregue', cssClass: 'status-delivered' },
+      'Cancelado':           { label: 'Cancelado', cssClass: 'status-canceled' }
     };
 
     return statusMap[status] || { label: status, cssClass: 'status-default' };

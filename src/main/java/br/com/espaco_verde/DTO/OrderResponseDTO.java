@@ -41,7 +41,7 @@ public record OrderResponseDTO(
 
         this(
           o.getId(),
-          o.getOrderStatus().name(),
+          o.getOrderStatus().getType(),
           o.getTotalPrice(),
           o.getCreatedAt(),
           itemsDTO,

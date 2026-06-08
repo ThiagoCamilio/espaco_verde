@@ -25,13 +25,13 @@
 
     <div class="action-col">
 
-        <div class="status-box" *ngIf="orderStatus === 'AWAITING_ANALYSIS'">
+        <div class="status-box" *ngIf="orderStatus === 'Aguardando Análise'">
             <h3>Pedido em Análise</h3>
             <p>Estamos confirmando a disponibilidade das suas plantas em nosso estoque. Você receberá uma notificação
                 assim que o pagamento for liberado.</p>
         </div>
 
-        <div class="status-box" *ngIf="orderStatus === 'AWAITING_PAYMENT'">
+        <div class="status-box" *ngIf="orderStatus === 'Aguardando Pagamento'">
             <h3>Pagamento via Pix</h3>
             <p>Aponte a câmera do seu celular para o QR Code abaixo:</p>
 
@@ -48,26 +48,26 @@
             </div>
         </div>
 
-        <div class="status-box" *ngIf="orderStatus === 'PAID'">
+        <div class="status-box" *ngIf="orderStatus === 'Pago'">
             <div class="circle-check">✓</div>
             <h3>Pagamento Confirmado!</h3>
             <p>Obrigado por comprar no Espaço Verde. Seu pedido já está em fase de preparação.</p>
         </div>
 
-        <div class="status-box" *ngIf="orderStatus === 'IN_DELIVERY'">
+        <div class="status-box" *ngIf="orderStatus === 'Em entrega'">
             <div class="circle-icon shipping">🚚</div>
             <h3>Pedido Enviado!</h3>
             <p>Já estamos a caminho do seu endereço de entrega. Fique atento!</p>
         </div>
 
-        <div class="status-box" *ngIf="orderStatus === 'DELIVERED'">
+        <div class="status-box" *ngIf="orderStatus === 'Entregue'">
             <div class="circle-check">✓</div>
             <h3>Pedido Entregue</h3>
             <p>Seu pedido foi entregue com sucesso! Esperamos que goste. Obrigado por comprar no
                 Espaço Verde!</p>
         </div>
 
-        <div class="status-box" *ngIf="orderStatus === 'CANCELED'">
+        <div class="status-box" *ngIf="orderStatus === 'Cancelado'">
             <h3 style="color: #d93025;">Pedido Cancelado</h3>
             <p>Este pedido não pôde ser concluído ou o tempo de pagamento expirou.</p>
         </div>

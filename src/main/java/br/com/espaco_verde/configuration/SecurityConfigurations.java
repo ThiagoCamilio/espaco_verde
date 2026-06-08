@@ -42,6 +42,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/produtos/imagem/**").permitAll()
                         .requestMatchers("/produtos/**").hasRole("ADMIN")
+                        .requestMatchers("/chats/**").hasRole("ADMIN")
                         .requestMatchers("/{path:[^\\.]*}").permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

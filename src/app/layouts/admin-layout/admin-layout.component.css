@@ -1,6 +1,8 @@
 .dashboard-content{
     margin-left: 80px;
     transition: margin-left 0.3s ease;
+    flex: 1;
+    overflow: hidden;
 
 }
 

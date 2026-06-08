@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Client, Message } from '@stomp/stompjs'
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Client, Message, StompSubscription } from '@stomp/stompjs'
 import { AuthService } from './auth.service';
 import SockJS from 'sockjs-client';
 import { HttpClient } from '@angular/common/http';
@@ -13,6 +13,9 @@ export class NotificationService {
 
   private badgeOrderCounter = new BehaviorSubject<number>(0);
   public badgeOrderCounter$: Observable<number> = this.badgeOrderCounter;
+
+  private attendanceQueueTrigger = new Subject<void>();
+  public attendanceQueueTrigger$ = this.attendanceQueueTrigger.asObservable();
 
   private stompClient!: Client;
 
@@ -37,7 +40,6 @@ export class NotificationService {
   public conect() {
     const token = this.authService.getToken();
     
-
     const socket = new SockJS('http://localhost:8080/ws');
     this.stompClient = new Client({
       webSocketFactory: () => socket,
@@ -61,6 +63,12 @@ export class NotificationService {
             this.badgeOrderCounter.next(newCount);
           }
         });
+
+        this.stompClient.subscribe('/topic/attendance-queue', (message: Message) =>{
+          this.playSound();
+          this.toastrService.info("Um novo cliente solicitou atendimento humano", "Atendimento!");
+          this.attendanceQueueTrigger.next();
+        });
       }
 
       this.stompClient.subscribe('/user/queue/order-updates', (message: Message)=>{
@@ -78,6 +86,13 @@ export class NotificationService {
     if (this.stompClient && this.stompClient.active) {
       this.stompClient.deactivate();
     }
+  }
+
+  public subscribeToChat(chatId: number, callback: (message: Message)=>void): StompSubscription | null{
+    if(this.stompClient && this.stompClient.connected){
+      return this.stompClient.subscribe(`/topic/chat/${chatId}`, callback);
+    }
+    return null;
   }
 
   private playSound(){

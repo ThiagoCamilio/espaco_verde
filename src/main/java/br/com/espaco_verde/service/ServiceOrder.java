@@ -37,6 +37,9 @@ public class ServiceOrder {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private MessageService messageService;
+
     @Transactional
     public OrderResponseDTO createOrder(String deliveryAddress, int userId){
 
@@ -92,7 +95,7 @@ public class ServiceOrder {
         Order order = repositoryOrder.findById(orderId).orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
         String oldStatus = order.getOrderStatus().name();
-        String newStatus = updateOrder.status();
+        String newStatus = OrderStatus.fromString(updateOrder.status()).name();
 
         if(oldStatus.equals(newStatus)){
             return new OrderResponseDTO(order);
@@ -109,6 +112,7 @@ public class ServiceOrder {
             if(wasPending && isNowApproved){
                 product.setStockQuantity(product.getStockQuantity() - quantity);
                 product.setReservedQuantity(product.getReservedQuantity() - quantity);
+                order.getPayment().setStatus("PAID");
             }else if(wasPending && isNowCanceled){
                 product.setReservedQuantity(product.getReservedQuantity() - quantity);
             }else if(!wasPending && isNowCanceled){
@@ -141,8 +145,6 @@ public class ServiceOrder {
             );
 
             order.setPayment(payment);
-            System.out.println(order.getPayment().getCopyAndPastCode());
-            System.out.println(order.getPayment().getQrCodeBase());
 
         }
 
@@ -155,6 +157,8 @@ public class ServiceOrder {
                 "/queue/order-updates",
                 "Seu pedido #"+order.getId()+" agora esta: "+order.getOrderStatus().getType()
         );
+
+        messageService.sendUpdateOrderMessage(order);
 
         return new OrderResponseDTO(order);
     }

@@ -20,6 +20,7 @@ import { AdminOrdersListComponent } from './pages/admin-orders-list/admin-orders
 import { PricingDashboardComponent } from './pages/pricing-dashboard/pricing-dashboard.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { UserOrderDetailsComponent } from './pages/user-order-details/user-order-details.component';
+import { AttendanceComponent } from './components/attendance/attendance.component';
 
 export const routes: Routes = [
   {
@@ -47,7 +48,8 @@ export const routes: Routes = [
       { path: 'estoque/product/:id', component: StorageProductDetailsComponent},
       { path: 'orders', component: AdminOrdersListComponent},
       { path: 'pricing', component: PricingDashboardComponent},
-      { path: 'reports', component: ReportsComponent}
+      { path: 'reports', component: ReportsComponent},
+      { path: 'attendance', component: AttendanceComponent}
 
     ],   
   },

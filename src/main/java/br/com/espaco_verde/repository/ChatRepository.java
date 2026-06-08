@@ -1,13 +1,18 @@
 package br.com.espaco_verde.repository;
 
 import br.com.espaco_verde.entity.Chat;
+import br.com.espaco_verde.entity.ChatState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface RepositoryConversa extends JpaRepository<Chat, Integer> {
+public interface ChatRepository extends JpaRepository<Chat, Long> {
 
     Chat findByWhatsappNumber(String WhatsappNumber);
+
     boolean existsByWhatsappNumber(String whatsappNumber);
 
+    List<Chat> findByChatState(ChatState chatState);
 }

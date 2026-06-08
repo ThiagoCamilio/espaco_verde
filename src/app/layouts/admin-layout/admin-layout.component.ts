@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
 import { BannerComponent } from '../../components/banner/banner.component';
@@ -16,7 +16,8 @@ import { CommonModule, NgIf } from '@angular/common';
     DashboardComponent,
     BannerComponent,
     NgIf,
-    CommonModule
+    CommonModule,
+    RouterLinkActive
   ],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css'

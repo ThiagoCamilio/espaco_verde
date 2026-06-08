@@ -1,14 +1,10 @@
 package br.com.espaco_verde.control;
 
-import br.com.espaco_verde.DTO.OrderRequestDTO;
 import br.com.espaco_verde.DTO.OrderResponseDTO;
-import br.com.espaco_verde.DTO.ReportFilterDTO;
 import br.com.espaco_verde.DTO.UpdateOrderDTO;
-import br.com.espaco_verde.entity.Report;
 import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.service.ServiceOrder;
 import br.com.espaco_verde.service.ServiceReport;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

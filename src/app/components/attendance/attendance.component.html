@@ -1,0 +1,86 @@
+<div class="attendance-container">
+
+    <div class="queue-panel">
+        <div class="queue-header">
+            <h3>Aguardando Atendimento</h3>
+        </div>
+
+        <div *ngIf="attendanceQueue.length === 0" class="empty-queue">
+            <p>Nenhum cliente na fila no momento.</p>
+        </div>
+
+        <div class="queue-list">
+            <div class="client-card" *ngFor="let chat of attendanceQueue" (click)="openChat(chat.id)"
+                [class.active]="chat.id === activeChatId">
+                <div class="client-info">
+                    <strong>{{ chat.customerName }}</strong>
+                    <span class="phone">{{ chat.whatsappNumber }}</span>
+                </div>
+                <div class="client-meta">
+                    <small>{{ chat.lastInteractionAt | date:'shortTime' }}</small>
+                    <span class="status-badge"
+                        [ngClass]="chat.chatState === 'IN_HUMAN_ATTENDANCE' ? 'badge-human' : 'badge-bot'">
+                        {{ chat.chatState === 'IN_HUMAN_ATTENDANCE' ? 'Atendimento' : 'Robô' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-panel" *ngIf="activeChatId; else noSelection">
+
+        <div class="chat-header">
+            <div class="chat-title">
+                <h4>{{ activeChatState === 'IN_HUMAN_ATTENDANCE' ? 'Atendimento em andamento' : 'Visualizando
+                    históricodo Robô' }}</h4>
+            </div>
+            <button *ngIf="activeChatState === 'IN_HUMAN_ATTENDANCE'" class="btn-close" (click)="closeChat()"
+                title="Devolver cliente para o Bot">
+                Encerrar Atendimento
+            </button>
+        </div>
+
+        <div class="messages-container" id="chat-scroll-area">
+            <div *ngFor="let msg of currentMessages" class="message-wrapper"
+                [ngClass]="msg.senderType === 'CLIENT' ? 'wrapper-client' : 'wrapper-admin'">
+
+                <div class="message-bubble" [ngClass]="msg.senderType === 'CLIENT' ? 'bubble-client' : 'bubble-admin'">
+                    <p class="message-text">{{ msg.content }}</p>
+                    <span class="message-time">{{ msg.timestamp | date:'shortTime' }}</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="chat-input-area" [class.area-disabled]="activeChatState !== 'IN_HUMAN_ATTENDANCE'">
+            <input 
+            type="text" 
+            [(ngModel)]="newMessage" 
+            (keyup.enter)="activeChatState === 'IN_HUMAN_ATTENDANCE' ? sendMessage() : null"
+            placeholder="Digite a sua mensagem para o cliente..."
+            [disabled]="activeChatState !== 'IN_HUMAN_ATTENDANCE'"
+            autocomplete="off"/>
+
+            <button 
+            class="btn-send" 
+            (click)="sendMessage()" 
+            [disabled]="activeChatState !== 'IN_HUMAN_ATTENDANCE' || !newMessage.trim()">>
+                Enviar
+            </button>
+        </div>
+
+        <div *ngIf="activeChatState !== 'IN_HUMAN_ATTENDANCE'" class="bot-warning-banner">
+            Este cliente está a ser atendido pelo sistema automático. Apenas leitura permitida.
+        </div>
+    </div>
+
+    <ng-template #noSelection>
+        <div class="no-selection-panel">
+            <div class="no-selection-content">
+                <h3>Central de Atendimento</h3>
+                <p>Selecione um cliente na lista ao lado para iniciar a conversa.</p>
+            </div>
+        </div>
+    </ng-template>
+
+</div>
