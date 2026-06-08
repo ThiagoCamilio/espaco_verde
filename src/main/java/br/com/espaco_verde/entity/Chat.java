@@ -1,6 +1,7 @@
 package br.com.espaco_verde.entity;
 
 
+import br.com.espaco_verde.configuration.DataCryptoConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,6 +41,7 @@ public class Chat {
     @Column(nullable = false, columnDefinition = "int default 0")
     private int catalogPage = 0;
 
+    @Convert(converter = DataCryptoConverter.class)
     @Column(columnDefinition = "TEXT")
     private String deliveryAddress;
 

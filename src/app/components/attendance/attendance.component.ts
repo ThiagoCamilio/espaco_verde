@@ -96,14 +96,7 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 
     const text = this.newMessage;
     this.newMessage = '';
-    const sentMessage: Message = {
-      id: Date.now(),
-      content: text,
-      senderType: 'SYSTEM',
-      timestamp: new Date().toISOString()
-    }
-
-    this.currentMessages.push(sentMessage);
+    console.log("hall")
     this.scrollToBottom();
 
     this.chatService.sendAttendantMessage(this.activeChatId, text).subscribe({

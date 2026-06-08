@@ -1,5 +1,6 @@
 package br.com.espaco_verde.entity;
 
+import br.com.espaco_verde.configuration.DataCryptoConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,8 +32,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @Convert(converter = DataCryptoConverter.class)
     private String phone;
 
+    @Convert(converter = DataCryptoConverter.class)
     private String adress;
 
     public User(String name, String login, String password, UserRole role, String phone, String adress) {

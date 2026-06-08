@@ -1,5 +1,6 @@
 package br.com.espaco_verde.entity;
 
+import br.com.espaco_verde.configuration.DataCryptoConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Message {
 
     private String senderName;
 
+    @Convert(converter = DataCryptoConverter.class)
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
@@ -40,6 +42,7 @@ public class Message {
     @Column(columnDefinition = "TEXT", unique = true, nullable = false)
     private String wamId;
 
+    @Convert(converter = DataCryptoConverter.class)
     @Column(columnDefinition = "TEXT", nullable = false)
     private String phone;
 
