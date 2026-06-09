@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.JsonNode;
 
-@Controller
+@RestController
 @RequestMapping("/webhook")
 public class ControlWebhook {
 
@@ -64,7 +64,6 @@ public class ControlWebhook {
     @PostMapping("/whatsapp")
     public ResponseEntity<?> webhook(@RequestBody JsonNode json) throws Exception {
         Message message = messageService.parseJson(json);
-
         if (message != null && message.getSenderType().equals(SenderType.CLIENT)){
             chatService.processMessage(message);
         }

@@ -19,4 +19,8 @@ export class UserService {
   updateProfile(data:any): Observable<any>{
     return this.http.put(`${this.URL}/profile`, data);
   }
+
+  completeProfile(data:any): Observable<any>{
+    return this.http.put(`${this.URL}/complete-profile`, data);
+  }
 }

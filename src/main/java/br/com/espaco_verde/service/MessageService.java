@@ -1,14 +1,18 @@
 package br.com.espaco_verde.service;
 
+import br.com.espaco_verde.DTO.MessageDTO;
 import br.com.espaco_verde.DTO.MessageInteractiveListOption;
 import br.com.espaco_verde.DTO.ProductDTO;
 import br.com.espaco_verde.entity.*;
+import br.com.espaco_verde.repository.ChatRepository;
+import br.com.espaco_verde.repository.MessageRepository;
 import br.com.espaco_verde.repository.RepositoryPagina;
 import br.com.espaco_verde.repository.RepositoryUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -38,6 +42,15 @@ public class MessageService {
 
     @Autowired
     private RepositoryUser repositoryUser;
+
+    @Autowired
+    private ChatRepository chatRepository;
+
+    @Autowired
+    private MessageRepository messageRepository;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     public Message parseJson(JsonNode json){
 
@@ -198,7 +211,7 @@ public class MessageService {
 
             cards.add(Map.of("card_index", 0,
                     "type", "cta_url",
-                    "header", Map.of("type", "image", "image", Map.of("link", localApiUrl + "/img/right-arrow.png")),
+                    "header", Map.of("type","image", "image",Map.of("link", localApiUrl+"/img/left-arrow.png")),
                     "body", Map.of("text", "Voltar"),
                     "action", Map.of("buttons", buttonCard)
             ));
@@ -342,7 +355,20 @@ public class MessageService {
         }
 
         opt.put("STATELESS_BACK_TO_MAIN_MENU", "Voltar ao menu");
-        sendButtonMessage(phone, sb.toString(), opt);
+        String wamId = sendButtonMessage(phone, sb.toString(), opt);
+
+        Chat chat = chatRepository.findByWhatsappNumber(phone).orElseThrow();
+
+        Message systemMessage = new Message();
+        systemMessage.setChat(chat);
+        systemMessage.setSenderType(SenderType.SYSTEM);
+        systemMessage.setContent(sb.toString());
+        systemMessage.setPhone(phone);
+        systemMessage.setTimestamp(LocalDateTime.now());
+        systemMessage.setWamId(wamId);
+        messageRepository.save(systemMessage);
+        MessageDTO messageDTO = new MessageDTO(systemMessage);
+        simpMessagingTemplate.convertAndSend("/topic/chat/" + chat.getId(), messageDTO);
     }
 
 }

@@ -35,8 +35,8 @@ public class WebSocketBrokerConfigurations implements WebSocketMessageBrokerConf
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("http://localhost:4200")
+        registry.addEndpoint("/api/ws")
+                .setAllowedOriginPatterns("http://localhost:4200", "https://cat-big-cobra.ngrok-free.app")
                 .withSockJS();
 
     }

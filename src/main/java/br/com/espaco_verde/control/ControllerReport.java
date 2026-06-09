@@ -16,7 +16,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("admin/reports")
+@RequestMapping("/admin/reports")
 public class ControllerReport {
 
     @Autowired

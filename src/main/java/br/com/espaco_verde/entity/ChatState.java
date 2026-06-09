@@ -21,7 +21,9 @@ public enum ChatState {
     AWAITING_MY_ORDERS_RESPONSE("Esperando escolha nos pedidos do cliente"),
     AWAITING_ORDER_DETAILS_RESPONSE("Esperando resposta nos detalhes do pedido"),
     AWAITING_PAYMENT_RESPONSE("Esperando resposta do pagamento"),
-    IN_HUMAN_ATTENDANCE("Em atendimento humano");
+    IN_HUMAN_ATTENDANCE("Em atendimento humano"),
+    AWAITING_NEW_CONTACT_INPUT("Esperando novo usuário digitar seu nome"),
+    AWAITING_REGISTRATION_COMPLETION("Esperando o cliente finalizar o cadastro");
 
     private String type;
 

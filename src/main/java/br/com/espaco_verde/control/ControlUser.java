@@ -1,5 +1,6 @@
 package br.com.espaco_verde.control;
 
+import br.com.espaco_verde.DTO.UserDTO;
 import br.com.espaco_verde.DTO.UserResponseDTO;
 import br.com.espaco_verde.DTO.UserUpdateDTO;
 import br.com.espaco_verde.entity.User;
@@ -27,4 +28,8 @@ public class ControlUser {
         return serviceUser.updateUser(logedUser, updateData);
     }
 
+    @PutMapping("/complete-profile")
+    public ResponseEntity<?> completeUser(@RequestBody @Valid UserDTO updateData){
+        return serviceUser.completeUser(updateData);
+    }
 }

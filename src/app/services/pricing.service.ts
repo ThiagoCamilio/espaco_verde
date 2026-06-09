@@ -16,7 +16,7 @@ export class PricingService {
   
   constructor(private http: HttpClient) { }
 
-  getConfig(): Observable<PricingConfig>{
+  getConfig(): Observable<PricingConfig>{ 
     return this.http.get<PricingConfig>(`${this.URL}/config`);
   }
 

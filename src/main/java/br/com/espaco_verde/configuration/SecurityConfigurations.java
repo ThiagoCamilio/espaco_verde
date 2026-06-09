@@ -32,18 +32,22 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/assets/**", "/img/**","/favicon.ico").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/webhook/**").permitAll()
-                        .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/produtos/imagem/**").permitAll()
-                        .requestMatchers("/produtos/**").hasRole("ADMIN")
-                        .requestMatchers("/chats/**").hasRole("ADMIN")
-                        .requestMatchers("/{path:[^\\.]*}").permitAll()
+                .authorizeHttpRequests(auth -> {
+                        auth.requestMatchers("/api/auth/**").permitAll();
+                        auth.requestMatchers(HttpMethod.PUT,"/api/user/complete-profile").permitAll();
+                        auth.requestMatchers("/api/admin/**").hasRole("ADMIN");
+                        auth.requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN");
+                        auth.requestMatchers("/api/webhook/**").permitAll();
+                        auth.requestMatchers("/api/ws/**").permitAll();
+                        auth.requestMatchers(HttpMethod.GET, "/api/produtos/**").permitAll();
+                        auth.requestMatchers(HttpMethod.GET, "/api/produtos/imagem/**").permitAll();
+                        auth.requestMatchers("/api/produtos/**").hasRole("ADMIN");
+                        auth.requestMatchers("/api/chats/**").hasRole("ADMIN");
+                        auth.requestMatchers("/", "/index.html", "/*.*", "/*.js", "/*.css", "/assets/**", "/img/**", "/favicon.ico").permitAll();
+                        auth.requestMatchers("/{path:[^\\.]*}").permitAll();
+                        auth.anyRequest().permitAll();
+                        }
+
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

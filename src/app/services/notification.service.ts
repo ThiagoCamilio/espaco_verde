@@ -5,11 +5,14 @@ import { AuthService } from './auth.service';
 import SockJS from 'sockjs-client';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
+
+  private readonly URL = `${environment.apiUrl}`;
 
   private badgeOrderCounter = new BehaviorSubject<number>(0);
   public badgeOrderCounter$: Observable<number> = this.badgeOrderCounter;
@@ -27,7 +30,7 @@ export class NotificationService {
 
   private loadBadgeCount() {
     if (this.authService.getRole() === "admin") {
-      this.http.get<number>('http://localhost:8080/admin/orders/pending-count')
+      this.http.get<number>(`${this.URL}/admin/orders/pending-count`)
         .subscribe({
           next: (count) => {
             this.badgeOrderCounter.next(count);
@@ -40,7 +43,7 @@ export class NotificationService {
   public conect() {
     const token = this.authService.getToken();
     
-    const socket = new SockJS('http://localhost:8080/ws');
+    const socket = new SockJS(`/api/ws`);
     this.stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,

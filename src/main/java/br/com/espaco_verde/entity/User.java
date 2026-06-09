@@ -77,4 +77,10 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean isProfileComplete(){
+        return this.login != null && !this.login.isBlank()
+                && this.adress != null && !this.adress.isBlank()
+                && this.password != null && !this.password.isBlank();
+    }
 }

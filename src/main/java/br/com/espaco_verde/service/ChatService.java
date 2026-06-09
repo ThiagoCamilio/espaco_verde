@@ -13,6 +13,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -23,6 +25,10 @@ public class ChatService {
 
     @Value("${wa.api.phone.number}")
     private String waPhoneNumber;
+
+    @Value("${local.url}")
+    private String localUrl;
+
 
     @Autowired
     private ChatRepository chatRepository;
@@ -76,13 +82,13 @@ public class ChatService {
             return;
         }
 
-        String systemResponseText = "";
-
         switch (chat.getChatState()){
             case NEW_CONTACT:
-                systemResponseText = systemMessageService.getMessage("NEW_CONTACT", Map.of("nome", message.getSenderName()));
-                messageService.sendTextMessage(chat.getWhatsappNumber(), systemResponseText);
-                chat.setChatState(ChatState.GREETINGS);
+                handlerNewContact(chat, message);
+                break;
+
+            case AWAITING_NEW_CONTACT_INPUT:
+                handlerAwaitingNewContactInput(chat, message);
                 break;
 
             case GREETINGS, STAND_BY:
@@ -133,6 +139,10 @@ public class ChatService {
                 handlerAwaitingPaymentResponse(chat, message);
                 break;
 
+            case AWAITING_REGISTRATION_COMPLETION:
+                handlerAwaitingRegistrationCompletion(chat, message);
+                break;
+
             default:
                 handlerMainMenu(chat, message);
                 break;
@@ -174,11 +184,21 @@ public class ChatService {
     }
 
     private Chat getChat(Message message){
-        if (chatRepository.existsByWhatsappNumber(message.getPhone())){
-            return chatRepository.findByWhatsappNumber(message.getPhone());
+
+        Optional<Chat> optionalChat = chatRepository.findByWhatsappNumber(message.getPhone());
+        if (optionalChat.isPresent()){
+            return optionalChat.get();
         }else{
             Chat chat = new Chat(message.getPhone(), ChatState.NEW_CONTACT);
-            repositoryUser.findByPhone(message.getPhone()).ifPresent(chat::setUser);
+            Optional<User> optionalUser = repositoryUser.findByPhone(message.getPhone());
+            if(optionalUser.isPresent()){
+                chat.setUser(optionalUser.get());
+            }else {
+                User newUser = new User();
+                newUser.setPhone(message.getPhone());
+                repositoryUser.save(newUser);
+                chat.setUser(newUser);
+            }
             return chatRepository.save(chat);
         }
     }
@@ -215,6 +235,25 @@ public class ChatService {
         saveMessage(chat, wamId, systemResponseText);
         chatRepository.save(chat);
 
+    }
+
+    private void handlerNewContact(Chat chat, Message message) {
+        String systemResponseText = systemMessageService.getMessage("NEW_CONTACT", null);
+        String wamId = messageService.sendTextMessage(chat.getWhatsappNumber(), systemResponseText);
+        saveMessage(chat, wamId, systemResponseText);
+        chat.setChatState(ChatState.AWAITING_NEW_CONTACT_INPUT);
+        chatRepository.save(chat);
+    }
+
+    private void handlerAwaitingNewContactInput(Chat chat, Message message) {
+        String userResponse = message.getContent();
+        User user = chat.getUser();
+        user.setName(userResponse);
+        String systemResponseText = systemMessageService.getMessage("NEW_USER", null);
+        String wamId = messageService.sendTextMessage(chat.getWhatsappNumber(), systemResponseText);
+        saveMessage(chat, wamId, systemResponseText);
+        handlerMainMenu(chat, message);
+        chatRepository.save(chat);
     }
 
     @Transactional
@@ -409,6 +448,23 @@ public class ChatService {
     }
 
     private void handlerCheckoutDelivery(Chat chat, Message message){
+
+        User user = chat.getUser();
+        if(!user.isProfileComplete()){
+            String encodedUserName = URLEncoder.encode(user.getName(), StandardCharsets.UTF_8);
+            String registerLink = localUrl+"/register?phone="+user.getPhone()+"&name="+encodedUserName;
+            String systemResponseText = "Quase lá, " + user.getName() + "! \n\n"
+                    + "Para finalizarmos o seu pedido, precisamos de alguns dados que ainda não temos.\n\n"
+                    + "É bem rápido! Conclua o seu cadastro no nosso ambiente seguro clicando no link abaixo:\n"
+                    + registerLink + "\n\n"
+                    + "Assim que terminar, digite *PRONTO* aqui e nós finalizamos o seu pedido!";
+            String wamId = messageService.sendTextMessage(chat.getWhatsappNumber(), systemResponseText);
+            saveMessage(chat, wamId, systemResponseText);
+            chat.setChatState(ChatState.AWAITING_REGISTRATION_COMPLETION);
+            chatRepository.save(chat);
+            return;
+        }
+
         String systemResponseText = systemMessageService.getMessage("CHECKOUT_DELIVERY", null);
         Map<String, String> opt = new LinkedHashMap<>();
         opt.put("DELIVERY", "Entrega");
@@ -418,6 +474,25 @@ public class ChatService {
         chat.setChatState(ChatState.AWAITING_CHECKOUT_DELIVERY_RESPONSE);
         chatRepository.save(chat);
 
+    }
+
+    private void handlerAwaitingRegistrationCompletion(Chat chat, Message message) {
+
+        User user = repositoryUser.findById(chat.getUser().getId()).orElseThrow();
+        if(user.isProfileComplete()){
+            String systemResponseText = systemMessageService.getMessage("USER_REGISTER", null);
+            String wamId = messageService.sendTextMessage(chat.getWhatsappNumber(), systemResponseText);
+            saveMessage(chat, wamId, systemResponseText);
+            handlerCheckoutDelivery(chat, message);
+            return;
+        }else{
+            String encodedUserName = URLEncoder.encode(user.getName(), StandardCharsets.UTF_8);
+            String registerLink = localUrl+"/register?phone="+user.getPhone()+"&name="+encodedUserName;
+            String systemResponseText = systemMessageService.getMessage("USER_DIDNT_REGISTER", null);
+            String wamId = messageService.sendTextMessage(chat.getWhatsappNumber(), systemResponseText + registerLink);
+            saveMessage(chat, wamId, systemResponseText);
+            return;
+        }
     }
 
     private void handlerAwaitingCheckoutDeliveryResponse(Chat chat, Message message){
@@ -682,7 +757,7 @@ public class ChatService {
         messageService.sendTextMessage(chat.getWhatsappNumber(), copyPastePixSystemResponseText);
 
         Map<String, String> opt = new LinkedHashMap<>();
-        opt.put("MY_ORDERS", "Ver meus pedido");
+        opt.put("MY_ORDERS", "Ver meus pedidos");
         opt.put("BACK_TO_MAIN_MENU", "Voltar ao menu");
         String wamId =  messageService.sendButtonMessage(chat.getWhatsappNumber(), copyAndPastPix, opt);
         saveMessage(chat, wamId, systemResponseText);

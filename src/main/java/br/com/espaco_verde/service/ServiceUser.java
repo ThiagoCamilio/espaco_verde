@@ -5,10 +5,13 @@ import br.com.espaco_verde.DTO.LoginResponseDTO;
 import br.com.espaco_verde.DTO.UserDTO;
 import br.com.espaco_verde.DTO.UserUpdateDTO;
 import br.com.espaco_verde.entity.User;
+import br.com.espaco_verde.entity.UserRole;
 import br.com.espaco_verde.repository.RepositoryUser;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ServiceUser implements UserDetailsService {
@@ -69,5 +73,29 @@ public class ServiceUser implements UserDetailsService {
         updateUser.setPhone(updateData.phone());
 
         return ResponseEntity.status(201).build();
+    }
+
+    public ResponseEntity<?> completeUser(UserDTO updateData) {
+
+        Optional<User> optionalUser = repositoryUser.findByPhone(updateData.phone());
+        if(optionalUser.isEmpty()){
+            return ResponseEntity.badRequest().body("Usuário não encontrado");
+        }
+
+        User user = optionalUser.get();
+
+        if(user.isProfileComplete()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Esse perfil já está completo, por favor, faça o login");
+        }
+        user.setLogin(updateData.login());
+        String encryptedPassword = new BCryptPasswordEncoder().encode(updateData.password());
+        user.setPassword(encryptedPassword);
+        user.setName(updateData.name());
+        user.setAdress(updateData.adress());
+        user.setRole(UserRole.USER);
+
+        repositoryUser.save(user);
+        return ResponseEntity.status(201).body(Map.of("message", "Usuario " +updateData.name() + " cadastrado com sucesso!"));
+
     }
 }
