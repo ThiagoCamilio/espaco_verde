@@ -48,7 +48,7 @@
         [class.is-invalid]="tipo.invalid && tipo.touched">
         <option value="" disabled>Selecione um tipo</option>
         <option *ngFor="let tipo of tiposProdutos" [value]="tipo">
-          {{ getTipoIcon(tipo) }} {{ getTipoDescricao(tipo) }}
+           {{ getTipoDescricao(tipo) }}
         </option>
       </select>
       <div *ngIf="tipo.invalid && tipo.touched" class="error-message">
@@ -76,24 +76,6 @@
         <span *ngIf="stockQuantity.errors?.['required']">stockQuantity é obrigatória</span>
         <span *ngIf="stockQuantity.errors?.['min']">stockQuantity não pode ser negativa</span>
         <span *ngIf="stockQuantity.errors?.['max']">stockQuantity máxima é 99999</span>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="dataDeEntrada">
-        <i class="fas fa-calendar-alt"></i> Data de Entrada *
-      </label>
-      <input
-        type="date"
-        id="dataDeEntrada"
-        name="dataDeEntrada"
-        [(ngModel)]="product.dataDeEntrada"
-        #dataDeEntrada="ngModel"
-        required
-        [max]="today"
-        [class.is-invalid]="dataDeEntrada.invalid && dataDeEntrada.touched">
-      <div *ngIf="dataDeEntrada.invalid && dataDeEntrada.touched" class="error-message">
-        <span *ngIf="dataDeEntrada.errors?.['required']">Data de entrada é obrigatória</span>
       </div>
     </div>
 

@@ -97,6 +97,13 @@ public class ServiceProduto{
 
     }
 
+
+    public void toggleStatus(int id) {
+        Product product = repositoryProduto.findById(id).orElseThrow();
+        product.setActive(!product.isActive());
+        repositoryProduto.save(product);
+    }
+
     public ResponseEntity<?> delete(int id) {
         repositoryProduto.deleteById(id);
         return ResponseEntity.noContent().build();

@@ -108,6 +108,12 @@ public class ControlProdutos {
         }
     }
 
+    @PatchMapping("/{id}/toggle-status")
+    public ResponseEntity<Void> toggleStatus(@PathVariable int id){
+        serviceProduto.toggleStatus(id);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable int id){
         return serviceProduto.delete(id);

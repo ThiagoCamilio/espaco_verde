@@ -39,6 +39,10 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.URL}/active`);
   }
 
+  toggleStatus(id: string):Observable<void>{
+    return this.http.patch<void>(`${this.URL}/${id}/toggle-status`, {})
+  }
+
   listById(id:string): Observable<Product>{
     return this.http.get<Product>(`${this.URL}/`+id)
   }

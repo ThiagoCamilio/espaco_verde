@@ -1,9 +1,8 @@
-import {Component, OnInit } from '@angular/core';
-import {FormsModule, NgForm} from '@angular/forms';
-import {CurrencyPipe, PercentPipe, CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CurrencyPipe, PercentPipe, CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product';
 import { TiposProdutos } from '../../models/tipos-produtos';
 import { LayoutService } from '../../services/layout.service';
 
@@ -23,38 +22,29 @@ import { LayoutService } from '../../services/layout.service';
 })
 export class ProductFormComponent implements OnInit {
 
-  product: Product = {
+  product: any = {
     nome: '',
     tipo: '',
     stockQuantity: 0,
-    reservedQuantity: 0,
-    dataDeEntrada: '',
     precoCusto: 0,
     preco: 0,
-    suggestedPrice:0,
-    useSuggestedPrice:false,
-    imagem: '',
-    descricao:''
+    descricao: ''
   };
 
   tiposProdutos = Object.values(TiposProdutos);
 
   successMessage: string = '';
   errorMessage: string = '';
-  today: string = '';
   cartItemsCount: number = 0;
   imagePreview: string | ArrayBuffer | null = null;
   arquivoSelecionado!: File
 
-  constructor(private produtoService: ProductService, private layoutService: LayoutService) {
-    this.today = new Date().toISOString().split('T')[0];
-  }
+  constructor(private produtoService: ProductService, private layoutService: LayoutService) {  }
 
   ngOnInit(): void {
     setTimeout(() => {
       this.layoutService.updateBannerText("Cadastre novos produtos", "Adicione produtos ao seu estoque ", "Começar agora");
     });
-    this.loadCartCount();
   }
 
   onSubmit(): void {
@@ -65,10 +55,10 @@ export class ProductFormComponent implements OnInit {
 
     this.produtoService.save(this.product, this.arquivoSelecionado).subscribe({
       next: (res) => {
-      alert('Produto salvo!');
+        alert('Produto salvo!');
 
-    },
-    error: (err) => alert('Erro ao salvar product.')
+      },
+      error: (err) => alert()
     });
 
     this.successMessage = 'Produto cadastrado com sucesso!';
@@ -81,12 +71,8 @@ export class ProductFormComponent implements OnInit {
       this.errorMessage = 'Preço de venda não pode ser menor que o preço de custo!';
       return false;
     }
-    if (this.product.stockQuantity< 0) {
+    if (this.product.stockQuantity < 0) {
       this.errorMessage = 'Quantidade não pode ser negativa!';
-      return false;
-    }
-    if (this.product.dataDeEntrada > this.today) {
-      this.errorMessage = 'Data de entrada não pode ser futura!';
       return false;
     }
 
@@ -98,13 +84,8 @@ export class ProductFormComponent implements OnInit {
       nome: '',
       tipo: '',
       stockQuantity: 0,
-      reservedQuantity: 0,
-      dataDeEntrada: '',
       precoCusto: 0,
       preco: 0,
-      suggestedPrice:0,
-      useSuggestedPrice:false,
-      imagem: '',
       descricao: ''
     };
     this.clearMessages();
@@ -119,8 +100,6 @@ export class ProductFormComponent implements OnInit {
     return this.product.nome?.trim().length >= 3 &&
       this.product.tipo &&
       this.product.stockQuantity >= 0 &&
-      this.product.dataDeEntrada &&
-      this.product.dataDeEntrada <= this.today &&
       this.product.precoCusto >= 0 &&
       this.product.preco >= 0 &&
       this.product.preco >= this.product.precoCusto;
@@ -144,18 +123,6 @@ export class ProductFormComponent implements OnInit {
     return this.product.preco * this.product.stockQuantity;
   }
 
-  getTipoIcon(tipo: string): string {
-    const icons: { [key: string]: string } = {
-      'PLANTAS': '🌱',
-      'VASOS': '🏺',
-      'FERTILIZANTES': '💧',
-      'FERRAMENTAS': '🔧',
-      'DECORACAO': '🎨',
-      'SEMENTES': '🌰'
-    };
-    return icons[tipo] || '📦';
-  }
-
   getTipoDescricao(tipo: string): string {
     const descricoes: { [key: string]: string } = {
       'PLANTAS': 'Plantas',
@@ -175,27 +142,17 @@ export class ProductFormComponent implements OnInit {
     }
   }
 
-  onLogin(): void {
-    console.log('Abrir modal de login');
 
-  }
-
-  onFileSelected(event:any){
+  onFileSelected(event: any) {
     const file = event.target.files[0];
-    if(file){
+    if (file) {
       this.arquivoSelecionado = file
       const reader = new FileReader();
-      reader.onload = ()=>{
+      reader.onload = () => {
         this.imagePreview = reader.result;
       };
       reader.readAsDataURL(file);
     }
   }
-
-  private loadCartCount(): void {
-    this.cartItemsCount = 0;
-  }
-
-
 
 }

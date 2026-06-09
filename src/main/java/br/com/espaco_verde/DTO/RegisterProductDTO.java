@@ -8,8 +8,7 @@ import java.math.BigDecimal;
 public record RegisterProductDTO(
         String nome,
         TiposProdutos tipo,
-        int quantidade,
-        String dataDeEntrada,
+        int stockQuantity,
         BigDecimal precoCusto,
         BigDecimal preco,
         String descricao
@@ -20,8 +19,7 @@ public record RegisterProductDTO(
         Product p = new Product();
         p.setNome(this.nome);
         p.setTipo(this.tipo);
-        p.setStockQuantity(this.quantidade);
-        p.setDataDeEntrada(this.dataDeEntrada);
+        p.setStockQuantity(this.stockQuantity);
         p.setPrecoCusto(this.precoCusto);
         p.setPreco(this.preco);
         p.setDescricao(this.descricao);

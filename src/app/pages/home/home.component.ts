@@ -7,6 +7,7 @@ import { ProductCardComponent } from '../../components/product-card/product-card
 import { BannerComponent } from '../../components/banner/banner.component';
 import { LayoutService } from '../../services/layout.service';
 import { FiltersComponent } from '../../components/filters/filters.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,7 @@ export class HomeComponent implements OnInit{
 
   activeFilter: string = 'Todas';
 
-  constructor(private router: Router, private productService: ProductService, public layoutService: LayoutService) {}
+  constructor(private productService: ProductService, public layoutService: LayoutService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -38,26 +39,17 @@ export class HomeComponent implements OnInit{
   }
 
   loadProducts(){
-    this.productService.listAllActive().subscribe({
+    this.productService.listAll().subscribe({
       next: (data) =>{
         this.products = data;
       },
-      error(err) {
-        console.log("Houve um erro", err)
+      error:(err)=> {
+        this.toastr.error(err, "Houve um erro")
       },
     })
   }
 
   filterProducts(category: string) {
     this.activeFilter = category;
-  }
-
-  addToCart(product: any) {
-    alert(`${product.name} adicionado ao carrinho!`);
-
-  }
-
-  navigateTo(route: string) {
-    this.router.navigate([`/${route}`]);
   }
 }

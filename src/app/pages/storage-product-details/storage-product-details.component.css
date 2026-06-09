@@ -32,11 +32,11 @@
     margin-top: 20px;
     width: 100%;
     justify-content: center;
-    align-items: flex-start; 
+    align-items: flex-start;
 }
 
 .action-btns button {
-    height: 45px; 
+    height: 45px;
     padding: 0 24px;
     border: none;
     border-radius: 8px;
@@ -96,19 +96,22 @@
     margin-bottom: 30px;
 }
 
-.suggested-price, .cost-price {
+.suggested-price,
+.cost-price {
     display: flex;
     flex-direction: column;
 }
 
-.suggested-price label, .cost-price label {
+.suggested-price label,
+.cost-price label {
     font-size: 0.75rem;
     text-transform: uppercase;
     color: #64748b;
     font-weight: bold;
 }
 
-.suggested-price .value, .cost-price .value {
+.suggested-price .value,
+.cost-price .value {
     font-size: 1.4rem;
     font-weight: 700;
     color: #94a3b8;
@@ -249,7 +252,7 @@ input:disabled+.slider:before {
 
 .reserved-quantity {
     font-size: 0.85rem;
-    color: #64748b; 
+    color: #64748b;
 }
 
 .product-type {
@@ -332,4 +335,37 @@ input[type="file"] {
 
 .custom-file-input:hover {
     background-color: #2980b9;
+}
+
+.input-product-quantity {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #1e293b;
+    width: 100px !important;
+    text-align: center;
+}
+
+
+.edit-cost-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.input-cost-price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #64748b; 
+    width: 120px !important;
+}
+
+
+.product-info-section input[type="number"]::-webkit-inner-spin-button,
+.product-info-section input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

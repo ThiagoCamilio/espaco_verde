@@ -40,6 +40,9 @@
                 <strong *ngIf="!editToggle" class="reserved-quantity">{{product.reservedQuantity}} UNIDADES
                     RESERVADAS</strong>
 
+                <strong *ngIf="editToggle">UNIDADES EM ESTOQUE</strong>
+                <input *ngIf="editToggle" type="number" [(ngModel)]="editedProduct.stockQuantity"
+                    class="input-product-quantity" placeholder="Estoque">
             </div>
         </div>
 
@@ -55,8 +58,14 @@
 
             <div class="cost-price">
                 <label>Preço de custo</label>
-                <span class="value">{{ product.precoCusto | currency:'BRL' }}</span>
+                <span *ngIf="!editToggle" class="value">{{ product.precoCusto | currency:'BRL' }}</span>
+
+                <div *ngIf="editToggle" class="edit-cost-wrapper">
+                    R$ <input type="number" [(ngModel)]="editedProduct.precoCusto" class="input-cost-price"
+                        placeholder="Custo">
+                </div>
             </div>
+
             <div class="suggested-price" [class.active]="product.useSuggestedPrice">
                 <label>Sugerido</label>
                 <span class="value">{{ product.suggestedPrice | currency:'BRL' }}</span>

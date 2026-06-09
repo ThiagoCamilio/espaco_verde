@@ -63,7 +63,7 @@ public class ServiceOrder {
             Product product = repositoryProduct.findById(productCart.getProduct().getId())
                     .orElseThrow(()-> new RuntimeException("Product Indisponivel"));
 
-            if (product.getAvaliableQuantity() < productCart.getQuantity()){
+            if (product.getAvailableQuantity() < productCart.getQuantity()){
                 throw new RuntimeException("Estoque insuficiente para o produto "+product.getNome());
             }
 

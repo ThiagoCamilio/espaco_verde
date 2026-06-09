@@ -19,7 +19,8 @@ public record ProductDTO(
         String imagem,
         String descricao,
         boolean useSuggestedPrice,
-        PricingCategory pricingCategory
+        PricingCategory pricingCategory,
+        boolean active
 ) {
 
     public ProductDTO(Product p){
@@ -37,7 +38,8 @@ public record ProductDTO(
             p.getImagem(),
             p.getDescricao(),
             p.isUseSuggestedPrice(),
-            p.getPricingCategory()
+            p.getPricingCategory(),
+            p.isActive()
         );
     }
 
@@ -57,6 +59,7 @@ public record ProductDTO(
         p.setDescricao(this.descricao);
         p.setUseSuggestedPrice(this.useSuggestedPrice);
         p.setPricingCategory(this.pricingCategory);
+        p.setActive(this.active);
         return p;
     }
 }

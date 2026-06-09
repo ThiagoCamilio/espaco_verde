@@ -71,7 +71,18 @@ export class StorageProductCardComponent {
         this.toastr.error("Erro ao sincornizar o preço do produto", "Erro")
       },
     })
+  }
 
+  onToggleStatus(){
+    this.productService.toggleStatus(this.product.id!).subscribe({
+      next: () =>{
+        this.toastr.success("Estado do produto alterado", "Sucesso");
+      },
+      error: () =>{
+        this.product.active = !this.product.active
+        this.toastr.error("Erro ao alterar estado do produto", "Erro");
+      }
+    })
   }
 
 }

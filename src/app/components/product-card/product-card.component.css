@@ -41,6 +41,24 @@
   font-size: 1.1rem;
 }
 
+:host ::ng-deep .inactive {
+    filter: grayscale(100%);
+    opacity: 0.5; 
+    transition: all 0.3s ease;
+    pointer-events: none; 
+    cursor: not-allowed;
+}
+
+.badge-indisponivel {
+    background-color: #64748b;
+    color: white;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
 @media (max-width: 480px) {
   .add-cart-btn {
     font-size: 0.85rem;

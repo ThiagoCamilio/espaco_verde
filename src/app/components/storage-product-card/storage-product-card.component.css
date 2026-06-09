@@ -64,10 +64,11 @@
 }
 
 .pricing-controls {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 10px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 40px;
   align-items: center;
+  margin-top: 10px;
 }
 
 .control-group label {
@@ -144,4 +145,35 @@ input:checked + .slider:before {
 .reserved-quantity {
     color: #64748b;
     font-weight: 600;
+}
+
+.status-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.status-control label:first-child {
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+:host ::ng-deep .inativo {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+:host ::ng-deep .inativo .action-btns button,
+:host ::ng-deep .inativo .precificar-toggle input {
+    pointer-events: none; 
+    cursor: not-allowed;
+}
+
+:host ::ng-deep .inativo .status-toggle {
+    pointer-events: auto; 
 }

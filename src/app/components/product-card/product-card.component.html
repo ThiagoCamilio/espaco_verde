@@ -1,7 +1,11 @@
 <app-base-product-card
     [product]="product"
-    [route]="'/product/'+product.id!">  
-    <div class="action-btns">
+    [route]="'/product/'+product.id!"
+    [class.inactive]="!product.active || product.stockQuantity === 0 || product.reservedQuantity >= product.stockQuantity">  
+    <div *ngIf="!product.active || product.stockQuantity === 0 || product.reservedQuantity >= product.stockQuantity" class="badge-inactive">
+        {{ (!product.active && product.stockQuantity > product.reservedQuantity) ? 'INDISPONÍVEL' : 'ESGOTADO' }}
+    </div>
+    <div *ngIf="product.active && product.stockQuantity !== 0 && product.reservedQuantity < product.stockQuantity" class="action-btns">
         <button class="add-cart-btn" (click)="addToCart($event, product.id!)"><i class="fa-solid fa-cart-plus"></i></button>
     </div>
 </app-base-product-card>

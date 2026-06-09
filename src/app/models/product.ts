@@ -15,4 +15,5 @@ export interface Product {
       pricingCategory?: PricingCategory
       imagem: string;
       descricao: string;
+      active: boolean;
 }
