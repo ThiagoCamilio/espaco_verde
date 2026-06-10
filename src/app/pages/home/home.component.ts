@@ -6,7 +6,6 @@ import { Product } from '../../models/product';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { LayoutService } from '../../services/layout.service';
-import { FiltersComponent } from '../../components/filters/filters.component';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -19,14 +18,11 @@ import { ToastrService } from 'ngx-toastr';
     NgFor, 
     RouterLink, 
     ProductCardComponent,
-    BannerComponent,
-    FiltersComponent
+    BannerComponent
   ]
 })
 export class HomeComponent implements OnInit{
   products : Product[] = [];
-
-  activeFilter: string = 'Todas';
 
   constructor(private productService: ProductService, public layoutService: LayoutService, private toastr: ToastrService) {}
 
@@ -47,9 +43,5 @@ export class HomeComponent implements OnInit{
         this.toastr.error(err, "Houve um erro")
       },
     })
-  }
-
-  filterProducts(category: string) {
-    this.activeFilter = category;
   }
 }

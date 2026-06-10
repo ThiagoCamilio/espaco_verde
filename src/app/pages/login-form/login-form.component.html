@@ -1,8 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <div class="banner">
-  <div class="banner-content">
-    <h2>Bem-vindo de volta!</h2>
-  </div>
+  <app-banner></app-banner>
 </div>
 
 <div class="form-container" id="form-container">
@@ -35,13 +33,6 @@
           placeholder="Digite sua senha">
       </div>
     </div>
-    <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
-      <label style="display: flex; align-items: center; cursor: pointer;">
-        <input type="checkbox" style="width: auto; margin-right: 8px;">
-        <span>Lembrar-me</span>
-      </label>
-      <a href="#" class="forgot-password">Esqueci minha senha?</a>
-    </div>
     <div class="form-actions">
       <button type="submit" class="btn-submit">
         <i class="fas fa-sign-in-alt"></i> Entrar
@@ -51,8 +42,8 @@
       </button>
     </div>
 
-    <div class="register-link" style="text-align: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-      <p>Não tem uma conta? <a routerLink="/register" style="color: var(--verde-principal); text-decoration: none; font-weight: 600;">Cadastre-se aqui</a></p>
+    <div class="register-link">
+      <p>Não tem uma conta? <a routerLink="/register">Cadastre-se aqui</a></p>
     </div>
   </form>
 </div>

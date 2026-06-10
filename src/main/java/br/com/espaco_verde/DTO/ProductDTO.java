@@ -12,7 +12,6 @@ public record ProductDTO(
         TiposProdutos tipo,
         int stockQuantity,
         int reservedQuantity,
-        String dataDeEntrada,
         BigDecimal precoCusto,
         BigDecimal suggestedPrice,
         BigDecimal preco,
@@ -31,7 +30,6 @@ public record ProductDTO(
             p.getTipo(),
             p.getStockQuantity(),
             p.getReservedQuantity(),
-            p.getDataDeEntrada(),
             p.getPrecoCusto(),
             p.getSuggestedPrice(),
             p.getPreco(),
@@ -51,7 +49,6 @@ public record ProductDTO(
         p.setTipo(this.tipo);
         p.setStockQuantity(this.stockQuantity);
         p.setReservedQuantity(this.reservedQuantity);
-        p.setDataDeEntrada(this.dataDeEntrada);
         p.setPrecoCusto(this.precoCusto);
         p.setSuggestedPrice(this.suggestedPrice);
         p.setPreco(this.preco);

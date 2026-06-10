@@ -38,4 +38,10 @@ public class ChatControl {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/{chatId}/mark-as-read")
+    public ResponseEntity<Void> markAsRead(@PathVariable Long chatId) {
+        chatService.markAsRead(chatId);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -7,6 +7,10 @@
   --header-height: 101px;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: var(--primary-font);
   -webkit-font-smoothing: antialiased;

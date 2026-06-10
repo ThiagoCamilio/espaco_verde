@@ -5,6 +5,8 @@ import { ProductCardComponent } from '../../components/product-card/product-card
 import { NgFor } from '@angular/common';
 import { LayoutService } from '../../services/layout.service';
 import { DashboardCardComponent } from '../../components/dashboard-card/dashboard-card.component';
+import { NotificationService } from '../../services/notification.service';
+import { AttendanceComponent } from '../../components/attendance/attendance.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,9 +23,10 @@ import { DashboardCardComponent } from '../../components/dashboard-card/dashboar
 })
 export class DashboardComponent implements OnInit{
 
-  constructor(private layoutService: LayoutService){}
+  constructor(private layoutService: LayoutService, private notificationService: NotificationService){}
 
   ngOnInit(): void {
+    this.notificationService.loadBadgeCount();
     setTimeout(() => {
       this.layoutService.updateBannerText("Bem-vindo ao seu Dashboard!", "Gerencie seu estoque e veja relatorios de suas vendas", "Comece agora");
     });

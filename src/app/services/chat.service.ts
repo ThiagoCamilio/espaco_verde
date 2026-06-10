@@ -30,5 +30,9 @@ export class ChatService {
     return this.http.put<void>(`${this.URL}/${chatId}/close`, {})
   }
 
+  markAsRead(chatId: number) {
+    return this.http.patch(`${this.URL}/${chatId}/mark-as-read`, {});
+  }
+
 
 }

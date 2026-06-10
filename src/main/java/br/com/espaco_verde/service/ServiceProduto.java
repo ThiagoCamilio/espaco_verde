@@ -7,7 +7,6 @@ import br.com.espaco_verde.entity.Product;
 import br.com.espaco_verde.repository.RepositoryPricingCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,9 +91,7 @@ public class ServiceProduto{
             ProductDTO dto = new ProductDTO(p);
             productsDTOS.add(dto);
         }
-
         return productsDTOS;
-
     }
 
 

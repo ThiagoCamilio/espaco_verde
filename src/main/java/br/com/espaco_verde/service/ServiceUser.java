@@ -8,7 +8,6 @@ import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.entity.UserRole;
 import br.com.espaco_verde.repository.RepositoryUser;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;

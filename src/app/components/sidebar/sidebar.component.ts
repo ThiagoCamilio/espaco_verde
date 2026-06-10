@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,8 +23,11 @@ export class SidebarComponent implements OnInit{
 
   orderCount: number = 0;
   private sub!: Subscription;
+  badgeOrderCounter!: Observable<number>
 
-  constructor(private authService: AuthService, private router:Router, private notificationService: NotificationService){}
+  constructor(private authService: AuthService, private router:Router, private notificationService: NotificationService){
+
+  }
 
   ngOnInit(): void {
       this.sub = this.notificationService.badgeOrderCounter$.subscribe({

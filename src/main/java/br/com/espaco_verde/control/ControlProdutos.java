@@ -2,7 +2,6 @@ package br.com.espaco_verde.control;
 
 import br.com.espaco_verde.DTO.RegisterProductDTO;
 import br.com.espaco_verde.DTO.ProductDTO;
-import br.com.espaco_verde.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;

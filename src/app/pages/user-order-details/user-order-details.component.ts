@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { interval, Subscription, switchMap, takeWhile } from 'rxjs';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-user-order-details',
@@ -20,13 +21,14 @@ export class UserOrderDetailsComponent implements OnInit {
   orderId: string | null = null;
   order!: any;
   orderStatus!: string;
-  private pollingSubscription!: Subscription;
+  private orderSub!: Subscription;
 
   constructor(
     private orderService: OrderService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private notificationService: NotificationService
   ) {
 
   }
@@ -46,13 +48,9 @@ export class UserOrderDetailsComponent implements OnInit {
   }
 
   paymentVerification(): void {
-    this.pollingSubscription = interval(4000)
-      .pipe(
-        switchMap(() => this.orderService.getOrderById(this.orderId!)),
-        takeWhile(order => order.orderStatus !== "DELIVERED" && order.orderStatus !== "CANCELED", true)
-      )
-      .subscribe({
+    this.orderSub = this.notificationService.orderUpdate$.subscribe({
         next: (order) => {
+          this.order = order
           if (this.orderStatus !== order.orderStatus) {
             this.orderStatus = order.orderStatus;
             this.cdr.detectChanges();
@@ -81,8 +79,8 @@ export class UserOrderDetailsComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    if (this.pollingSubscription) {
-      this.pollingSubscription.unsubscribe();
+    if (this.orderSub) {
+      this.orderSub.unsubscribe();
     }
   }
 

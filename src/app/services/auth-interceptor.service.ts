@@ -12,6 +12,8 @@ export class AuthInterceptorService implements HttpInterceptor{
     
     const token = sessionStorage.getItem("auth-token")
 
+    let header = req.headers.set('ngrok-skip-browser-warning', 'true')
+
     if(token){
       const request = req.clone({
         setHeaders:{
@@ -20,7 +22,13 @@ export class AuthInterceptorService implements HttpInterceptor{
       })
       return next.handle(request)
     }
+
+    const request = req.clone({
+      setHeaders:{
+        'ngrok-skip-browser-warning':'True'
+      }
+    })
     
-    return next.handle(req)
+    return next.handle(request)
   }
 }

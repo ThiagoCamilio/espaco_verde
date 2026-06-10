@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE produtos SET excluido = true WHERE orderId = ?")
+@SQLDelete(sql = "UPDATE produtos SET excluido = true WHERE id= ?")
 @SQLRestriction("excluido = false")
 public class Product implements Serializable {
 

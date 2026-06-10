@@ -48,6 +48,9 @@ public class Chat {
     @Column(columnDefinition = "TEXT")
     private int currentOrderId;
 
+    @Column(name = "unread_count")
+    private Integer unreadCount = 0;
+
     public Chat(String whatsappNumber, ChatState chatState){
         this.whatsappNumber = whatsappNumber;
         this.chatState = chatState;

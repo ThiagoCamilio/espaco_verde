@@ -1,7 +1,6 @@
 package br.com.espaco_verde.service;
 
 import br.com.espaco_verde.DTO.CartDTO;
-import br.com.espaco_verde.DTO.ProductCartDTO;
 import br.com.espaco_verde.entity.Cart;
 import br.com.espaco_verde.entity.Product;
 import br.com.espaco_verde.entity.ProductCart;

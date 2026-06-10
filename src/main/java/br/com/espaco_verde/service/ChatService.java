@@ -29,7 +29,6 @@ public class ChatService {
     @Value("${local.url}")
     private String localUrl;
 
-
     @Autowired
     private ChatRepository chatRepository;
 
@@ -38,9 +37,6 @@ public class ChatService {
 
     @Autowired
     private RepositoryProduto repositoryProduct;
-
-    @Autowired
-    private RepositoryPagina repositoryPagina;
 
     @Autowired
     private RepositoryUser repositoryUser;
@@ -73,6 +69,9 @@ public class ChatService {
         simpMessagingTemplate.convertAndSend("/topic/chat/" + chat.getId(), messageDTO);
 
         if(chat.getChatState() == ChatState.IN_HUMAN_ATTENDANCE){
+            simpMessagingTemplate.convertAndSend("/topic/message","NEW_MESSAGE");
+            chat.setUnreadCount(chat.getUnreadCount()+1);
+            chatRepository.save(chat);
             return;
         }
         messageService.showTypingIndicator(message);
@@ -241,12 +240,17 @@ public class ChatService {
         String systemResponseText = systemMessageService.getMessage("NEW_CONTACT", null);
         String wamId = messageService.sendTextMessage(chat.getWhatsappNumber(), systemResponseText);
         saveMessage(chat, wamId, systemResponseText);
+        sendBackToMenuButton(chat);
         chat.setChatState(ChatState.AWAITING_NEW_CONTACT_INPUT);
         chatRepository.save(chat);
     }
 
     private void handlerAwaitingNewContactInput(Chat chat, Message message) {
         String userResponse = message.getContent();
+        if(userResponse.equals("BACK_TO_MAIN_MENU")){
+            handlerMainMenu(chat, message);
+            return;
+        }
         User user = chat.getUser();
         user.setName(userResponse);
         String systemResponseText = systemMessageService.getMessage("NEW_USER", null);
@@ -328,6 +332,7 @@ public class ChatService {
         String wamId = messageService.sendCarouselMessage(chat, productsDTOS, hasNextPage);
         saveMessage(chat, wamId, "Catalogo");
         chat.setChatState(ChatState.AWAITING_CATALOG_RESPONSE);
+        sendBackToMenuButton(chat);
         chatRepository.save(chat);
 
     }
@@ -348,7 +353,9 @@ public class ChatService {
             int productId = Integer.parseInt(userResponse.replace("ADD_", ""));
             cartService.addProduct(chat.getUser().getId(), productId, 1);
             handlerAddCart(chat, message);
-        }else{
+        } else if (userResponse.equals("BACK_TO_MAIN_MENU")) {
+            handlerMainMenu(chat,message);
+        } else{
             handlerWrongAnswer(chat, message);
             handlerCatalog(chat, message);
         }
@@ -413,6 +420,7 @@ public class ChatService {
             opt.put("TO_CHECK_OUT", "Finalizar compra");
             opt.put("CLEAR_CART", "Limpar Carrinho");
             opt.put("BACK_TO_CATALOG", "Voltar ao catalogo");
+            sendBackToMenuButton(chat);
 
             String wamId = messageService.sendButtonMessage(chat.getWhatsappNumber(), sb.toString(), opt);
             saveMessage(chat, wamId, sb.toString());
@@ -664,6 +672,7 @@ public class ChatService {
                 chat.getWhatsappNumber(), systemResponseText, messageHeader, opt
         );
         saveMessage(chat, wamId, systemResponseText);
+        sendBackToMenuButton(chat);
         chat.setChatState(ChatState.AWAITING_MY_ORDERS_RESPONSE);
         chatRepository.save(chat);
 
@@ -676,6 +685,8 @@ public class ChatService {
             chat.setCurrentOrderId(orderId);
             chatRepository.save(chat);
             handlerOrderDetails(chat, message);
+        }else if (userResponse.equals("BACK_TO_MAIN_MENU")){
+            handlerMainMenu(chat, message);
         }else {
             handlerWrongAnswer(chat, message);
             handlerMyOrders(chat, message);
@@ -792,6 +803,22 @@ public class ChatService {
         chat.setChatState(ChatState.IN_HUMAN_ATTENDANCE);
         chatRepository.save(chat);
         simpMessagingTemplate.convertAndSend("/topic/attendance-queue", chat.getId());
+
+    }
+
+    private void sendBackToMenuButton(Chat chat){
+        String systemResponseText = "Ou, se quiser retornar ao menu principal";
+        Map<String, String> opt = new LinkedHashMap<>();
+        opt.put("BACK_TO_MAIN_MENU", "Voltar ao menu");
+        String wamId = messageService.sendButtonMessage(chat.getWhatsappNumber(), systemResponseText, opt);
+        saveMessage(chat, wamId, systemResponseText);
+        chatRepository.save(chat);
+    }
+
+    public void markAsRead(Long chatId) {
+        Chat chat = chatRepository.findById(chatId).orElseThrow();
+        chat.setUnreadCount(0);
+        chatRepository.save(chat);
 
     }
 }

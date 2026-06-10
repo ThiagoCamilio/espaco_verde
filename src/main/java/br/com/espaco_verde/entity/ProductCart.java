@@ -12,9 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 

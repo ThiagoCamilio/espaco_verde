@@ -12,12 +12,14 @@ import br.com.espaco_verde.entity.Product;
 
 @Repository
 public interface RepositoryProduto extends JpaRepository<Product, Integer> {
-    
+
+    @Query("SELECT p FROM produtos p WHERE p.excluido = false")
     public List<Product> findAll();
 
     public Product findByNomeLike(String nome);
 
     @Query("SELECT p FROM produtos p WHERE p.active = true AND (p.stockQuantity - p.reservedQuantity) > 0")
     public Page<Product> findActive(Pageable pageable);
+
 
 }

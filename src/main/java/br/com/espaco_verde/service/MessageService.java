@@ -6,8 +6,6 @@ import br.com.espaco_verde.DTO.ProductDTO;
 import br.com.espaco_verde.entity.*;
 import br.com.espaco_verde.repository.ChatRepository;
 import br.com.espaco_verde.repository.MessageRepository;
-import br.com.espaco_verde.repository.RepositoryPagina;
-import br.com.espaco_verde.repository.RepositoryUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -36,12 +34,6 @@ public class MessageService {
 
     @Value("${local.api.url}")
     private String localApiUrl;
-
-    @Autowired
-    private RepositoryPagina repositoryPagina;
-
-    @Autowired
-    private RepositoryUser repositoryUser;
 
     @Autowired
     private ChatRepository chatRepository;

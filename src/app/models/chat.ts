@@ -4,5 +4,6 @@ export interface Chat{
     whatsappNumber: string;
     chatState : string;
     lastInteractionAt : string
+    unreadCount: number
 
 }

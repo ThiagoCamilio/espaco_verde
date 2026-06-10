@@ -23,8 +23,10 @@ export class AttendanceComponent implements OnInit, OnDestroy {
   attendanceQueue: Chat[] = [];
   currentMessages: Message[] = [];
   activeChatId: number | null = null;
-  newMessage: string = '';
   activeChatState: string | null = null;
+  activeChatCustomer: string = '';
+  newMessage: string = '';
+  isChatOpen: boolean = false;
 
   private chatSubscription: StompSubscription | null = null;
 
@@ -43,9 +45,14 @@ export class AttendanceComponent implements OnInit, OnDestroy {
     })
   }
 
+  toggleChat(): void {
+    this.isChatOpen = !this.isChatOpen;
+    if (this.isChatOpen && this.activeChatId) {
+      this.scrollToBottom();
+    }
+  }
+
   loadQueue(): void {
-
-
     this.chatService.getAttendanceQueue().subscribe({
       next: (queue) => {
         this.attendanceQueue = queue.sort((a, b) => {
@@ -74,11 +81,19 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 
     const clickedChat = this.attendanceQueue.find(c => c.id === chatId);
     this.activeChatState = clickedChat ? clickedChat.chatState : null;
+    this.activeChatCustomer = clickedChat ? clickedChat.customerName : 'Cliente';
     this.chatService.getMessageHistory(chatId).subscribe(history => {
       this.currentMessages = history
       this.scrollToBottom();
+    })
+
+    if (clickedChat && clickedChat.unreadCount > 0) {
+      clickedChat.unreadCount = 0;
+
+      this.chatService.markAsRead(chatId).subscribe({
+        error: (err) => console.error('Erro ao marcar mensagens como lidas', err)
+      });
     }
-    )
 
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe();
@@ -88,6 +103,12 @@ export class AttendanceComponent implements OnInit, OnDestroy {
       const newMessage: Message = JSON.parse(msgRaw.body);
       this.currentMessages.push(newMessage);
       this.scrollToBottom();
+
+      if (newMessage.senderType === 'CLIENT') {
+        this.chatService.markAsRead(chatId).subscribe();
+        const currentChat = this.attendanceQueue.find(c => c.id === chatId);
+        if (currentChat) currentChat.unreadCount = 0;
+      } 
     })
   }
 
@@ -125,5 +146,10 @@ export class AttendanceComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.chatSubscription) this.chatSubscription.unsubscribe();
   }
+
+  get totalUnreadCount(): number {
+  if (!this.attendanceQueue) return 0;
+  return this.attendanceQueue.reduce((total, chat) => total + (chat.unreadCount || 0), 0);
+}
 
 }

@@ -4,7 +4,6 @@ import br.com.espaco_verde.DTO.*;
 import br.com.espaco_verde.entity.*;
 import br.com.espaco_verde.repository.RepositoryOrder;
 import br.com.espaco_verde.repository.RepositoryProduto;
-import br.com.espaco_verde.repository.RepositoryUser;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -21,9 +20,6 @@ public class ServiceOrder {
 
     @Autowired
     private RepositoryOrder repositoryOrder;
-
-    @Autowired
-    private RepositoryUser repositoryUser;
 
     @Autowired
     private RepositoryProduto repositoryProduct;
@@ -154,8 +150,14 @@ public class ServiceOrder {
         int userId = order.getCustumer().getId();
         simpMessagingTemplate.convertAndSendToUser(
                 String.valueOf(userId),
-                "/queue/order-updates",
+                "/queue/order-updates-message",
                 "Seu pedido #"+order.getId()+" agora esta: "+order.getOrderStatus().getType()
+        );
+
+        simpMessagingTemplate.convertAndSendToUser(
+                String.valueOf(userId),
+                "/queue/order-updates",
+                new OrderResponseDTO(order)
         );
 
         messageService.sendUpdateOrderMessage(order);

@@ -1,12 +1,8 @@
 package br.com.espaco_verde.control;
 
 import br.com.espaco_verde.DTO.CartDTO;
-import br.com.espaco_verde.DTO.ProductCartDTO;
-import br.com.espaco_verde.entity.Cart;
-import br.com.espaco_verde.entity.ProductCart;
 import br.com.espaco_verde.entity.User;
 import br.com.espaco_verde.service.CartService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

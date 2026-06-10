@@ -21,8 +21,6 @@ import { Order } from '../../models/order';
 
 export class UserOrderListComponent implements OnInit {
 
-
-
   orders: Order[] = []
 
   constructor(private orderService: OrderService) { }

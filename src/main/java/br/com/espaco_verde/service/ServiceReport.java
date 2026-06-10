@@ -1,6 +1,5 @@
 package br.com.espaco_verde.service;
 
-import br.com.espaco_verde.DTO.OrderResponseDTO;
 import br.com.espaco_verde.DTO.ReportFilterDTO;
 import br.com.espaco_verde.DTO.ReportTopProductProjection;
 import br.com.espaco_verde.entity.Order;
@@ -12,7 +11,6 @@ import br.com.espaco_verde.repository.RepositoryReport;
 import br.com.espaco_verde.repository.specification.OrderSpecification;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import jakarta.transaction.Transactional;
-import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;

@@ -9,6 +9,7 @@ public record ChatDTO(
         String customerName,
         String whatsappNumber,
         String chatState,
+        Integer unreadCount,
         LocalDateTime lastInteractionAt
 ) {
 
@@ -18,6 +19,7 @@ public record ChatDTO(
             chat.getUser().getName(),
             chat.getWhatsappNumber(),
             chat.getChatState().name(),
+            chat.getUnreadCount(),
             chat.getLastUserInteraction()
         );
     }

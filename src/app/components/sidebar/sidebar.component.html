@@ -12,6 +12,11 @@
 
     <div class="menu">
         <div class="menu-itens">
+            <a class="menu-item" title="Dashboard" routerLink="/admin/dashboard">
+                <i class="fa-solid fa-chart-bar"></i><span class="menu-text"> Dashboard</span>
+            </a>
+        </div>
+        <div class="menu-itens">
             <a class="menu-item" title="Estoque" routerLink="/admin/estoque">
                 <i class="fa-solid fa-barcode"></i><span class="menu-text"> Estoque</span>
             </a>
@@ -41,6 +46,11 @@
     </div>
 
     <div class="bottom">
+        <div class="menu-itens">
+            <a class="menu-item" title="Pagina inicial" routerLink="/home">
+                <i class="fa-solid fa-home"></i><span class="menu-text"> Pagina inicial</span>
+            </a>
+        </div>
         <button class="logout-btn" title="Sair" (click)="logout()">
             <i class="fa-solid fa-arrow-right-from-bracket"></i><span class="menu-text"> Logout</span>
         </button>

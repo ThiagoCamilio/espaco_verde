@@ -15,7 +15,10 @@ export class NotificationService {
   private readonly URL = `${environment.apiUrl}`;
 
   private badgeOrderCounter = new BehaviorSubject<number>(0);
-  public badgeOrderCounter$: Observable<number> = this.badgeOrderCounter;
+  public badgeOrderCounter$ = this.badgeOrderCounter.asObservable();
+
+  private orderUpdateSource = new Subject<any>;
+  public orderUpdate$ = this.orderUpdateSource.asObservable();
 
   private attendanceQueueTrigger = new Subject<void>();
   public attendanceQueueTrigger$ = this.attendanceQueueTrigger.asObservable();
@@ -28,7 +31,7 @@ export class NotificationService {
     }
   }
 
-  private loadBadgeCount() {
+  public loadBadgeCount() {
     if (this.authService.getRole() === "admin") {
       this.http.get<number>(`${this.URL}/admin/orders/pending-count`)
         .subscribe({
@@ -43,7 +46,7 @@ export class NotificationService {
   public conect() {
     const token = this.authService.getToken();
     
-    const socket = new SockJS(`/api/ws`);
+    const socket = new SockJS(`${this.URL}/ws`);
     this.stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
@@ -54,7 +57,7 @@ export class NotificationService {
 
     this.stompClient.onConnect = (frame) => {
       if (this.authService.getRole() === 'admin') {
-        this.stompClient.subscribe('/topic/pending-orders', (message: Message) => {
+        this.stompClient.subscribe('/topic/pending-orders-message', (message: Message) => {
           if (message.body) {
             const newCount = parseInt(message.body, 10);
             const oldCount = this.badgeOrderCounter.value;
@@ -67,6 +70,12 @@ export class NotificationService {
           }
         });
 
+          this.stompClient.subscribe('/topic/message', (message: Message) =>{
+          this.playSound();
+          this.toastrService.info("Voce tem uma nova mensagem", "Mensagem!");
+          this.attendanceQueueTrigger.next();
+        });
+
         this.stompClient.subscribe('/topic/attendance-queue', (message: Message) =>{
           this.playSound();
           this.toastrService.info("Um novo cliente solicitou atendimento humano", "Atendimento!");
@@ -74,11 +83,16 @@ export class NotificationService {
         });
       }
 
-      this.stompClient.subscribe('/user/queue/order-updates', (message: Message)=>{
+      this.stompClient.subscribe('/user/queue/order-updates-message', (message: Message)=>{
         if(message.body){
           this.playSound();
           this.toastrService.info(message.body, "Atualização do Pedido")
         }
+      })
+
+      this.stompClient.subscribe('/user/queue/order-updates', (message: Message)=>{
+        const payload = JSON.parse(message.body);
+        this.orderUpdateSource.next(payload);
       })
 
     };

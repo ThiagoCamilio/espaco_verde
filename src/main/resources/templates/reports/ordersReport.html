@@ -298,7 +298,7 @@
                         <div class="detail-address">
                             <strong>Endereço de Entrega:</strong>
                             <span
-                                    th:text="${order.deliveryAdress != null and !order.deliveryAdress.isEmpty() ? order.deliveryAdress : 'Retirada no local ou não informado'}">Rua
+                                    th:text="${order.deliveryAddress != null and !order.deliveryAddress.isEmpty() ? order.deliveryAddress : 'Retirada no local ou não informado'}">Rua
                                         Exemplo, 123</span>
                         </div>
                     </div>
@@ -323,7 +323,6 @@
                 </div>
             </td>
         </tr>
-
     </th:block>
     </tbody>
 </table>

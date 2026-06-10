@@ -5,6 +5,7 @@ import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { BannerService } from '../../services/banner.service';
 import { CommonModule, NgIf } from '@angular/common';
+import { AttendanceComponent } from '../../components/attendance/attendance.component';
 
 @Component({
   selector: 'app-admin-layout',
@@ -17,7 +18,8 @@ import { CommonModule, NgIf } from '@angular/common';
     BannerComponent,
     NgIf,
     CommonModule,
-    RouterLinkActive
+    RouterLinkActive,
+    AttendanceComponent
   ],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css'

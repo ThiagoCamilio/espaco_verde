@@ -6,7 +6,6 @@ import { NgFor, NgIf } from '@angular/common';
 import { StorageProductCardComponent } from '../../components/storage-product-card/storage-product-card.component';
 import { DeleteModalComponent } from '../../components/delete-modal/delete-modal.component';
 import { RouterLink } from '@angular/router';
-import { FiltersComponent } from '../../components/filters/filters.component';
 import { PricingCategory } from '../../models/pricing-category';
 import { PricingService } from '../../services/pricing.service';
 
@@ -18,8 +17,7 @@ import { PricingService } from '../../services/pricing.service';
     NgFor,
     DeleteModalComponent,
     NgIf,
-    RouterLink,
-    FiltersComponent
+    RouterLink
   ],
   templateUrl: './storage.component.html',
   styleUrl: './storage.component.css'

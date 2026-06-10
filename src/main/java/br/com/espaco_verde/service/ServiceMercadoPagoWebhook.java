@@ -34,21 +34,15 @@ public class ServiceMercadoPagoWebhook {
             int orderId = orderData.externalReference();
 
             if("approved".equals(orderData.status()) && "accredited".equals(orderData.statusDetail())){
-                serviceOrder.updateOrderStatus(orderId, new UpdateOrderDTO("PAID"));
-            } else if ("canceled".equals(orderData.status()) || "expired".equals(orderData.status())) {
-                serviceOrder.updateOrderStatus(orderId, new UpdateOrderDTO("CANCELED"));
+                serviceOrder.updateOrderStatus(orderId, new UpdateOrderDTO("Pago"));
+            } else if ("canceled".equals(orderData.status()) || "expired".equals(orderData.statusDetail())) {
+                serviceOrder.updateOrderStatus(orderId, new UpdateOrderDTO("Cancelado"));
             }
         }
 
     }
 
     private boolean isValidSign(String dataId, String xRequestId, String xSignature) {
-
-        //gambiarra para o webhook funcionar em ambiente de testes. O codigo real esta no try catch
-        if (dataId != null && (dataId.startsWith("ORDTST"))) {
-            System.out.println("[SANDBOX] Ignorando assinatura HMAC para ID de teste: " + dataId);
-            return true;
-        }
 
         try{
             String ts = "";
